@@ -40,10 +40,10 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new Contributor(R.drawable.ic_my_location_black_48dp,"GPS측정은 어떻게 이루어지나요?", "GPS 측정은 스마트폰에 내장된 GPS 측정 장치를 통해 이루어지게 됩니다. GPS 감도를 높일수록 배터리 사용량이 증가하게 됩니다. 지도를 사용하는 기능은 배터리 소모량을 증가시킬 수 있습니다.".replace(" ","\u00A0")));
         items.add(new Contributor(R.drawable.ic_directions_bike_black_48dp ,"길 찾기 기능은 어떻게 이루어지나요?",
                 "길 찾기는 카카오내비 앱을 연동하여 이루어지며 카카오내비 앱의 미 설치시 설치 화면으로 넘어갑니다.".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_trending_up_black_48dp,"경로 저장 기능은 어떻게 이루어지나요?", "경로 저장은 사용자의 활동을 감지하여 사용자가 머무르거나 지나간 지역이 표시되며, 통계치를 확인 할 수 있습니다.".replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_trending_up_black_48dp,"경로 저장 기능은 어떻게 이루어지나요?", "경로 저장은 시작버튼을 누르면 시작되며, 새로고침을 클릭하면 저장이 완료됩니다. 주행에 관련된 정보와 경로를 확인 할 수 있습니다.".replace(" ","\u00A0")));
         items.add(new Contributor(R.drawable.ic_sms_black_48dp,"안전 서비스 기능은 어떻게 이루어지나요?", "안전 서비스는 스마트폰에 내장된 센서로 사용자의 넘어짐을 감지하며 넘어짐 감지시 사용자에게 응답을 요구하고, 일정 시간 동안 응답이 없을 경우에 사용자가 등록한 번호로 위치를 SMS로 전송하는 기능입니다.".replace(" ","\u00A0")));
         items.add(new Contributor(R.drawable.ic_keyboard_voice_black_48dp,"음성 안내 기능은 어떻게 이루어지나요?",
-                "음성 안내 기능은 스마트폰에 내장된 TTS(Text to Speech) 음성합성기술을 이용하며, 스마트폰 기종에 따라 지원 폭이 상이할 수 있습니다. 음성 안내가 나오지 않을 경우 설정 창에서 진동이나 무음을 소리로 바꿔주세요. 지속적으로 음성 안내가 나오지 않을 경우 개발자에게 메일로 문의 부탁드립니다.".replace(" ","\u00A0")));
+                "음성 안내 기능은 스마트폰에 내장된 TTS(Text to Speech) 음성합성기술을 이용하며, 스마트폰 기종에 따라 지원 폭이 상이할 수 있습니다. 음성 안내가 나오지 않을 경우 설정 창에서 진동이나 무음을 소리로 바꿔주세요. 지속적으로 음성 안내가 나오지 않을 경우 앱을 재실행 해주세요!".replace(" ","\u00A0")));
         items.add(new Contributor(R.drawable.ic_warning_black_48dp,"위험구간 안내 기능은 어떻게 이루어지나요?",
                 "위험 구간 안내 서비스는 스마트폰에 내장된 GPS인식 장치로 이루어지며, 시작 버튼을 누르게 되면 실행됩니다. 이 기능은 배터리 사용량을 증가 시킬 수 있습니다.(위치 오차로 인해 간혹 위험 알림이 제대로 작동하지 않을 수 있습니다.) 기본 속도계 화면에선 속도를 측정하여 25km 이상의 속도로 운행시 과속운행 주의 음성 안내와 화면 전환 안내가 발생합니다. 또한, 속도가 20km이상이 되면 화면 터치가 불가능 하며 정지하여 볼륨업(소리 키우기)버튼을 클릭하여 화면 잠금을 해제해주세요.".replace(" ","\u00A0")));
 
@@ -56,7 +56,6 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new License("about-page", "drakeet", License.APACHE_2, "https://github.com/drakeet/about-page"));
         items.add(new License("EasyWeather","code-crusher",License.APACHE_2, "https://github.com/code-crusher/EasyWeather"));
         items.add(new License("SpeedMeter","flyingrub",License.GPL_V2,"https://github.com/flyingrub/SpeedMeter"));
-        items.add(new License("GPStracker","CarlBarks",License.APACHE_2,"https://github.com/CarlBarks/GPS-and-Activity-Tracker"));
         items.add(new License("picasso","square",License.APACHE_2, "https://github.com/square/picasso"));
         items.add(new License("okhttp","square", License.APACHE_2,"https://github.com/square/okhttp"));
         items.add(new License("butternife","JakeWharton",License.APACHE_2,"https://github.com/JakeWharton/butterknife"));

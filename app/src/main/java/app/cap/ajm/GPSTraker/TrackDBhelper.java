@@ -110,6 +110,7 @@ public class TrackDBhelper{
     public TrackDBhelper(Context context){
         this.mCtx =context;
     }
+
     public TrackDBhelper open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
@@ -221,14 +222,21 @@ public class TrackDBhelper{
     //모든 값 가져오기
     public Cursor fetchAllList() {
         return mDb.query(DATABASE_TABLE,
-                new String[]{KEY_ROWID, KEY_START_ADDR, KEY_END_ADDR, KEY_START_TIME, KEY_END_TIME, KEY_AVG_SPEED, KEY_CALORIE,KEY_DISTANCE, KEY_TEMP, KEY_WET},
+                new String[]{KEY_ROWID, KEY_START_ADDR, KEY_END_ADDR, KEY_START_TIME, KEY_END_TIME, KEY_AVG_SPEED, KEY_CALORIE, KEY_DISTANCE, KEY_TEMP, KEY_WET},
                 null, null, null, null,null);
     }
-
-    public void removeList(int id){
+    //_id로 내림차순 정렬하여 모두 가져오기 3, 2, 1- - -.
+    public Cursor fetchAllListOrderBYDec() {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
+        Cursor res =  mDb.rawQuery( "select * from "+ DATABASE_TABLE +" order by "+KEY_ROWID + " desc", null);
+        return res;
+}
 
+    public int removeList(int id){
+        mDbHelper = new DatabaseHelper(mCtx);
+        mDb = mDbHelper.getReadableDatabase();
+        return mDb.delete(DATABASE_TABLE, "_id = ?",new String[]{String.valueOf(id)});
         //Toast.makeText(getApplicationContext(),"번호가 삭제되었습니다.",Toast.LENGTH_SHORT).show();
     }
     //id로 값 가져오기

@@ -190,8 +190,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
                         try {
-                            Toast.makeText(getApplicationContext(), "안녕하세요! 앱을 사용하기 전에 안전모 창에서 \n도움말을 읽어주세요! :) ", Toast.LENGTH_LONG).show();
-                            DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.mainDrawerLayout);
+                            Toast.makeText(getApplicationContext(), "안녕하세요! 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :) ", Toast.LENGTH_LONG).show();
                             if (drawerLayout.isDrawerOpen(GravityCompat.START))
                             {
                                 drawerLayout.openDrawer(GravityCompat.START);
@@ -367,12 +366,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     AJMapp ajMapp = (AJMapp) getApplicationContext();
                     ajMapp.setStartAddr(getGeocode(lat, lng));
                     ajMapp.setStartTime(getCurrentSec());
-                    Log.w("시작: ", ajMapp.getStartAddr()+", "+ajMapp.getStartTime());
                     TrackDBhelper trackDBhelper = new TrackDBhelper(this);
                     trackDBhelper.open();
-                    //trackDBhelper.trackDBstartFetch(getGeocode(lat, lng), getCurrentSec());
                     trackDBhelper.trackDBlocationStart(getCurrentSec(), lat, lng);
-                    Log.w("Main", "Service start Time: " + getCurrentDateTime()+", "+ lat +", "+ lng +", " + String.valueOf(getGeocode(lat, lng)));
                     trackDBhelper.close();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -395,11 +391,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 TrackDBhelper trackDBhelper = new TrackDBhelper(this);
                 trackDBhelper.open();
                 AJMapp ajMapp = (AJMapp) getApplicationContext();
+                //출발주소, 도착주소, 출발시간, 도착시간, 평균속도, 칼로리, 거리, 온도, 습도
                 trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), getGeocode(lat, lng), ajMapp.getStartTime(), getCurrentSec(),
-                        averageSpeed.getText().toString(), calorie.getText().toString(), distance.getText().toString(), weather5.getText().toString(), weather2.getText().toString());
-                Log.w("종료: ", ajMapp.getStartAddr()+", "+ajMapp.getStartTime());
-                //trackDBhelper.trackDBendFetch(getGeocode(lat, lng), getCurrentSec(), data.getAverageSpeed().toString(),
-                //        data.getCalorieMeter().toString(), data.getDistance().toString(), weather2.getText().toString(), weather5.getText().toString());
+                        data.getAverageSpeed().toString(), data.getCalorieMeter().toString(), data.getDistance().toString(), weather5.getText().toString(), weather2.getText().toString());
                 trackDBhelper.trackDBlocationStop(getCurrentSec(), lat, lng);
                 trackDBhelper.close();
             }catch (Exception e){
@@ -508,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             Intent stop2 = new Intent(getApplicationContext(), GpsServices.class);
             stopService(stop1);
             stopService(stop2);
+            resetData();
             mLocationManager.removeUpdates(this);
         }
         showNotification("안전모", "자전거 이용으로 " + trees + "그루의 낙엽송을 심었습니다:)");

@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.app.ProgressDialog;
@@ -31,35 +33,38 @@ public class TrackActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("동기화중...");
         progressDialog.show();
         progressDialog.setCancelable(false);
         setContentView(R.layout.activity_track);
-        final TrackDBhelper trackDBhelper = new TrackDBhelper(this);
-        listView = (ListView)findViewById(R.id.trackListview);
         textView = (TextView)findViewById(R.id.trackTitle);
+        listView = (ListView)findViewById(R.id.trackListview);
+        TrackDBhelper trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
-        Cursor cursor = trackDBhelper.fetchAllList();
+        Cursor cursor = trackDBhelper.fetchAllListOrderBYDec();
         if (cursor.getCount()==0){
             textView.setText("저장 된 기록이 없습니다.");
             progressDialog.cancel();
             trackDBhelper.close();
         }
         else {
-        cursor = trackDBhelper.fetchAllList();
-        int i = 0;
-        while(!cursor.isAfterLast()){
-            TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
-            listView.setAdapter(trackAdapter);
-            i++;
-            cursor.moveToNext();
+            try {
+                int i = -1;
+                while (!cursor.isAfterLast()) {
+                    TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+                    listView.setAdapter(trackAdapter);
+                    i++;
+                    cursor.moveToNext();
+                }
+
+                textView.setText("저장된 기록 : 총 "+ i +" 개" );
+                trackDBhelper.close();
+            }catch (IllegalStateException e){
+                e.printStackTrace();
             }
-            cursor.close();
-            trackDBhelper.close();
-            textView.setText("저장된 기록 : 총 "+ i +" 개" );
             progressDialog.cancel();
         }
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -70,7 +75,21 @@ public class TrackActivity extends AppCompatActivity {
                 alertDialog.setMessage("해당 목록을 삭제하시겠습니까?");
                 alertDialog.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
-
+                        try {
+                            TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
+                            trackDBhelper1.open();
+                            Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
+                            TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+                            Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
+                            Log.w("TRACK_POSITION:", String.valueOf(position));
+                            int index = cursor1.getInt(cursor1.getColumnIndex(TrackDBhelper.KEY_ROWID));
+                            trackDBhelper1.removeList(index);
+                            trackDBhelper1.close();
+                            listView.setAdapter(trackAdapter);
+                            Toast.makeText(getApplicationContext(),"기록이 삭제 되었습니다.",Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 });
                 alertDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
@@ -83,49 +102,8 @@ public class TrackActivity extends AppCompatActivity {
             }
         });
     }
-
-    public class ProgressDlg extends AsyncTask<Integer, String, Integer> {
-        private ProgressDialog pDlg;
-        private Context con;
-        public ProgressDlg(Context context) {
-            con = context;
-        }
-        @Override
-        protected void onPreExecute(){
-            pDlg = new ProgressDialog(con);
-            pDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            pDlg.setMessage("동기화중...");
-            pDlg.show();
-            super.onPreExecute();
-        }
-        @Override
-        protected Integer doInBackground(Integer...params) {
-            final int taskCnt = params[0];
-            publishProgress("max", Integer.toString(taskCnt));
-            for (int i = 0; i < taskCnt; i++) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                publishProgress("progress", Integer.toString(i), "Task" + Integer.toString(i)+ "nuber");
-            }
-            return taskCnt;
-        }
-        @Override
-        protected void onProgressUpdate(String...values){
-        if (values[0].equals("progress")){
-            pDlg.setProgress(Integer.parseInt(values[1]));
-            pDlg.setMessage(values[2]);
-        }else if(values[0].equals("max")){
-            pDlg.setMax(Integer.parseInt(values[1]));
-        }
-        }
-        @Override
-        protected void onPostExecute(Integer integer){
-            pDlg.dismiss();
-            Toast.makeText(con, Integer.toString(integer)+ "total sum", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
     }
 }

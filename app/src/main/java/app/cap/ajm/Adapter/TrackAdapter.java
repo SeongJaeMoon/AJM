@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class TrackAdapter extends CursorAdapter{
     }
 
     @Override
-    public void bindView(final View view, final Context context, final Cursor cursor) {
+    public void bindView(final View view, final Context context, final Cursor cursor){
 
         final int getid = cursor.getInt(id);
         final String sttime = cursor.getString(startTime);
@@ -77,9 +78,7 @@ public class TrackAdapter extends CursorAdapter{
                 avgsp.setText(String.valueOf(speed));
                 distanceView.setText(String.valueOf(dis));
                 calorieView.setText(String.valueOf(cal));
-                tempView.setText(String.valueOf(temp));
-                wetView.setText(String.valueOf(wet));
-
+                tempView.setText(String.valueOf(temp)+"°C");
+                wetView.setText(String.valueOf(wet)+"%");
     }
-
 }
