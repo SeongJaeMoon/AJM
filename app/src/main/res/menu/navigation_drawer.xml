@@ -4,35 +4,35 @@
     <item
         android:id="@+id/nav_direction"
         android:icon="@drawable/ic_directions_bike_black_48dp"
-        android:title="경로찾기" />
+        android:title="@string/nav_title_direction"/>
 
     <item
         android:id="@+id/nav_route"
         android:icon="@drawable/ic_trending_up_black_48dp"
-        android:title="경로확인" />
+        android:title="@string/nav_title_route" />
     <item
         android:id="@+id/nav_weather"
         android:icon="@drawable/ic_wb_sunny_black_48dp"
-        android:title="날씨정보"/>
+        android:title="@string/nav_title_weather"/>
 
     <item
         android:id="@+id/nav_compatable"
         android:icon="@drawable/ic_home_black_48dp"
-        android:title="편의시설찾기"/>
+        android:title="@string/nav_title_com"/>
 
     <item
         android:id="@+id/nav_sms"
         android:icon="@drawable/ic_sms_black_48dp"
-        android:title="안전서비스관리"/>
+        android:title="@string/nav_title_timetask"/>
 
     <item
         android:id="@+id/nav_alarm"
         android:icon="@drawable/ic_alarm_black_48dp"
-        android:title="설정" />
+        android:title="@string/action_settings"/>
 
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/ic_android_black_48dp"
-        android:title="안전모"
+        android:title="@string/nav_title_ajm"
         />
 </menu>

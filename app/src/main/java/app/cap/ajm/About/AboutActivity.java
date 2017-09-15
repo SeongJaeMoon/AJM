@@ -33,10 +33,10 @@ public class AboutActivity extends AbsAboutActivity {
     @Override @SuppressWarnings("SpellCheckingInspection")
     protected void onItemsCreated(@NonNull Items items) {
         /* @formatter:off */
-        items.add(new Category("소개"));
+        items.add(new Category(getString(R.string.introduce)));
         items.add(new Card(getString(R.string.about_page).replace(" ", "\u00A0"), "공유"));
         items.add(new Line());
-        items.add(new Category("도움말"));
+        items.add(new Category(getString(R.string.app_info)));
         items.add(new Contributor(R.drawable.ic_my_location_black_48dp,"GPS측정은 어떻게 이루어지나요?", "GPS 측정은 스마트폰에 내장된 GPS 측정 장치를 통해 이루어지게 됩니다. GPS 감도를 높일수록 배터리 사용량이 증가하게 됩니다. 지도를 사용하는 기능은 배터리 소모량을 증가시킬 수 있습니다.".replace(" ","\u00A0")));
         items.add(new Contributor(R.drawable.ic_directions_bike_black_48dp ,"길 찾기 기능은 어떻게 이루어지나요?",
                 "길 찾기는 카카오내비 앱을 연동하여 이루어지며 카카오내비 앱의 미 설치시 설치 화면으로 넘어갑니다.".replace(" ","\u00A0")));

@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
                         try {
-                            Toast.makeText(getApplicationContext(), "안녕하세요! 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :) ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.ajm_support), Toast.LENGTH_LONG).show();
                             if (drawerLayout.isDrawerOpen(GravityCompat.START))
                             {
                                 drawerLayout.openDrawer(GravityCompat.START);
@@ -314,19 +314,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 switch (item.getItemId()) {
                     case R.id.nav_direction:
                         startActivity(new Intent(MainActivity.this, RouteActivity.class));
-                        Toast.makeText(getApplicationContext(), "이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mobile_data), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_weather:
                         startActivity(new Intent(MainActivity.this, Weathers.class));
-                        Toast.makeText(getApplicationContext(), "이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mobile_data), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_route:
                         startActivity(new Intent(MainActivity.this, TrackActivity.class));
-                        Toast.makeText(getApplicationContext(), "이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.route_data), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_compatable:
                         startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                        Toast.makeText(getApplicationContext(), "이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mobile_data), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_alarm:
                         Intent intent = new Intent(MainActivity.this, Settings.class);
@@ -631,15 +631,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     public void showGpsDisabledDialog(){
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
-        alertDialog.setTitle("GPS 설정");
-        alertDialog.setMessage("GPS설정이 필요합니다. 설정창으로 가시겠습니까?");
-        alertDialog.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.action_settings));
+        alertDialog.setMessage(getString(R.string.please_enable_gps));
+        alertDialog.setPositiveButton(getString(R.string.action_settings), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
         });
-        alertDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
