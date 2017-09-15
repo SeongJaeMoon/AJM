@@ -71,13 +71,22 @@ public class TrackAdapter extends CursorAdapter{
         TextView calorieView = (TextView) view.findViewById(R.id.Calorie);
         TextView tempView = (TextView) view.findViewById(R.id.Temp);
         TextView wetView = (TextView) view.findViewById(R.id.Wet);
+
                 stTime.setText(sttime);
                 edTime.setText(endtime);
                 startA.setText(stAddr);
                 endA.setText(edAddr);
-                avgsp.setText(String.valueOf(speed));
-                distanceView.setText(String.valueOf(dis));
-                calorieView.setText(String.valueOf(cal));
+                avgsp.setText(String.valueOf(speed)+"km/h");
+                if(dis<1000f) {
+                    distanceView.setText(String.valueOf(dis)+"m");
+                }else{
+                    distanceView.setText(String.valueOf(dis/1000f)+"km");
+                }
+                if (cal<1000f){
+                calorieView.setText(String.valueOf(cal)+"cal");}
+                else{
+                 calorieView.setText(String.valueOf(cal)+"kcal");
+                }
                 tempView.setText(String.valueOf(temp)+"°C");
                 wetView.setText(String.valueOf(wet)+"%");
     }

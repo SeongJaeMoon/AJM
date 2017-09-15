@@ -316,8 +316,9 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                              try {
                                                  //Firebase에서 위치 정보 가져오기
                                                  String content = dataSnapshot.getValue(String.class);
-                                                 Toast.makeText(getApplicationContext(), content + " 에 접근중입니다. 주의하세요.", Toast.LENGTH_SHORT).show();
+                                                 if (!mTTS.isSpeaking())
                                                  speakword("전방에 "+content+ "입니다. 주의하세요.");
+                                                 //Toast.makeText(getApplicationContext(), content + " 에 접근중입니다. 주의하세요.", Toast.LENGTH_SHORT).show();
                                                  Log.w(TAG,"content: "+ String.valueOf(content));
 
                                              }catch (Exception e){
@@ -369,7 +370,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                                  String content = dataSnapshot.getValue(String.class);
                                                  Toast.makeText(getApplicationContext(), content + "에 진입하였습니다.", Toast.LENGTH_SHORT).show();
                                                  Log.w(TAG,"content: "+ String.valueOf(content));
-
                                              }catch (Exception e){
                                                  e.printStackTrace();
                                              }
