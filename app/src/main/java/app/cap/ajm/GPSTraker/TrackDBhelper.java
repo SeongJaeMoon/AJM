@@ -120,7 +120,7 @@ public class TrackDBhelper{
     public void close() {
         mDbHelper.close();
     }
-
+    //종료할 때 출발 시간,시간 저장
     public long trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, String calroie, String distance, String temp, String wet){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_START_ADDR, startAddr);

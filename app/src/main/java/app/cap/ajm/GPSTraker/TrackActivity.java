@@ -31,7 +31,7 @@ public class TrackActivity extends AppCompatActivity {
     private ArrayList<TrackConstans>trackConstanses;
     private ArrayList<TrackPoint>trackPoints;
     private ProgressDialog progressDialog;
-
+    private int i;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -52,14 +52,13 @@ public class TrackActivity extends AppCompatActivity {
         }
         else {
             try {
-                int i = -1;
+                i = -1;
                 while (!cursor.isAfterLast()) {
                     TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
                     listView.setAdapter(trackAdapter);
                     i++;
                     cursor.moveToNext();
                 }
-
                 textView.setText("저장된 기록 : 총 "+ i +" 개" );
                 trackDBhelper.close();
             }catch (IllegalStateException e){
@@ -81,11 +80,14 @@ public class TrackActivity extends AppCompatActivity {
                             Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
                             TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
                             Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
-                            Log.w("TRACK_POSITION:", String.valueOf(position));
                             int index = cursor1.getInt(cursor1.getColumnIndex(TrackDBhelper.KEY_ROWID));
                             trackDBhelper1.removeList(index);
-                            trackDBhelper1.close();
+                            Cursor newcursor = trackDBhelper1.fetchAllListOrderBYDec();
+                            trackAdapter.changeCursor(newcursor);
                             listView.setAdapter(trackAdapter);
+                            trackDBhelper1.close();
+                            i--;
+                            textView.setText("저장된 기록 : 총 "+ i +" 개" );
                             Toast.makeText(getApplicationContext(),"기록이 삭제 되었습니다.",Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             e.printStackTrace();
@@ -101,6 +103,7 @@ public class TrackActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
     @Override
     protected void onDestroy(){
