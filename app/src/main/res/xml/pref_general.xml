@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/settings">
+        <SwitchPreference
+        android:key="auto_average"
+        android:title="@string/pref_auto_average"
+        android:summary="@string/pref_auto_average_summary" />
+
+        <SwitchPreference
+        android:key="miles_per_hour"
+        android:title="@string/pref_miles_per_hour"
+        android:summary="@string/pref_miles_per_hour_summary" />
+
+        <SwitchPreference
+        android:key="route"
+        android:title="@string/route_saver"
+        android:summary="@string/autosaving"/>
+
+        <SwitchPreference
+            android:key="alert"
+            android:title="@string/alert_title"
+            android:summary="@string/alertsetting" />
+
+        <SwitchPreference
+            android:key="translate"
+            android:title="@string/translate_title"
+            android:summary="@string/translate"
+            />
+
+        <SwitchPreference
+            android:key="autoservice"
+            android:title="@string/autocancle_title"
+            android:summary="@string/autocancel"/>
+
+        <ListPreference
+            android:key="gps_level"
+            android:title="@string/gps_level"
+            android:entries="@array/gps_weight"
+            android:entryValues="@array/gps_values"
+            android:dialogIcon="@drawable/ic_my_location_black_48dp"
+            android:defaultValue="@string/default_gps_value"/>
+
+        <EditTextPreference
+            android:key = "weight_value"
+            android:inputType="number"
+            android:title ="@string/weight_value"
+            android:summary="몸무게는 40키로부터 100키로까지 입력해주세요."
+            android:dialogIcon="@drawable/ic_add_alert_black_48dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:selectAllOnFocus="true"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

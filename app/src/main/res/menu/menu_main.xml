@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="app.cap.beshop.MainActivity">
+
+    <item
+        android:id="@+id/action_flash"
+        android:icon="@drawable/ic_lightbulb_outline_black_48dp"
+        android:orderInCategory="100"
+        android:title="@string/app_name"
+        app:showAsAction="always|collapseActionView" />
+</menu>

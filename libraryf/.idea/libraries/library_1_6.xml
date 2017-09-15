@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.6">
+    <CLASSES>
+      <root url="file://D:/Android_SDK/.android/build-cache/a592e3935d032e847e55cfb52e3daddc129a3ff9/output/res" />
+      <root url="jar://D:/Android_SDK/.android/build-cache/a592e3935d032e847e55cfb52e3daddc129a3ff9/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.borax12.materialdaterangepicker/library/1.6/9cffd377c1ab65a640ebfb8b525d3e0f747cb192/library-1.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    android:backgroundTintMode="src_over"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingTop="30dp">
+
+    <ImageView
+        android:id="@+id/xcivUserProfileImage"
+        android:paddingTop="40dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/mainlogo2"/>
+
+    <TextView
+        android:id="@+id/xtvUserNameInNavigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/xcivUserProfileImage"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_name"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/xtvUserEmailInNavigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/xtvUserNameInNavigation"
+        android:text="CONTACT US : seongjae.m@gmail.com"
+        android:textColor="@android:color/black"/>
+
+
+</RelativeLayout>

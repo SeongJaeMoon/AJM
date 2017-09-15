@@ -1,0 +1,76 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="app.cap.ajm.Map.RouteActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"  >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etOrigin"
+        android:hint="출발지 입력" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="도착지 입력"
+        android:id="@+id/etDestination"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:text="길찾기"
+            android:id="@+id/btnFindPath"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:background="@color/red_dark"
+            android:textColor="@color/white"
+            android:text="현재 위치로 출발지 설정"
+            android:id="@+id/myFindPath"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:text="지도에서 선택"
+            android:id="@+id/myMapPath"/>
+    </LinearLayout>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <net.daum.mf.map.api.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/mypositions"
+        android:onClick="positions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_my_location_black_24dp"
+        android:background="#00ff0000"
+        android:layout_gravity="left|bottom"
+        fab:fab_colorNormal="@color/red"
+        fab:fab_colorPressed="@color/black"
+        fab:fab_colorRipple="@color/white"
+        fab:fab_type="normal"
+        />
+</FrameLayout>
+</LinearLayout>

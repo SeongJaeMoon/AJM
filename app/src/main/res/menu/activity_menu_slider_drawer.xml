@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all"
+            android:icon="@drawable/ic_calendar_multiple"
+            android:title="모든 시간" />
+        <item
+            android:id="@+id/nav_today"
+            android:icon="@drawable/ic_calendar_today"
+            android:title="오늘" />
+        <item
+            android:id="@+id/nav_picker"
+            android:icon="@drawable/ic_calendar_text"
+            android:title="기간 설정" />
+    </group>
+</menu>

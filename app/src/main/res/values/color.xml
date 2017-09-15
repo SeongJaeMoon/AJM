@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="navi_button">#feee35</color>
+    <!-- NEW DISIGN -->
+    <color name="color2">#B2B2B2</color>
+    <color name="color3">#2A2A2A</color>
+    <color name="color6">#FFFFFF</color>
+    <color name="grey_lighter">#E0E0E0</color>
+    <color name="grey_light">#9E9E9E</color>
+    <color name="grey_dark">#424242</color>
+    <color name="red">#F44336</color>
+    <color name="red_dark">#D32F2F</color>
+    <color name="blue_light">#03A9F4</color>
+    <color name="blue">#1E88E5</color>
+    <color name="blue_dark">#01579B</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000000</color>
+    <color name="green">#0f0</color>
+    <color name="ash">#D4CBCD</color>
+    <color name="light_black">#333333</color>
+    <color name="primary">#00BCD4</color>
+    <color name="primary_dark">#0097A7</color>
+    <color name="primary_light">#B2EBF2</color>
+    <color name="accent">#607D8B</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <drawable name="ab_bg_black">#88000000</drawable>
+    <drawable name="black_color">#ff000000</drawable>
+    <drawable name="selected_list_color">#ff32A800</drawable>
+    <drawable name="default_list_color">#ffffffff</drawable>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_direction"
+        android:icon="@drawable/ic_directions_bike_black_48dp"
+        android:title="경로찾기" />
+
+    <item
+        android:id="@+id/nav_route"
+        android:icon="@drawable/ic_trending_up_black_48dp"
+        android:title="경로확인" />
+    <item
+        android:id="@+id/nav_weather"
+        android:icon="@drawable/ic_wb_sunny_black_48dp"
+        android:title="날씨정보"/>
+
+    <item
+        android:id="@+id/nav_compatable"
+        android:icon="@drawable/ic_home_black_48dp"
+        android:title="편의시설찾기"/>
+
+    <item
+        android:id="@+id/nav_sms"
+        android:icon="@drawable/ic_sms_black_48dp"
+        android:title="안전서비스관리"/>
+
+    <item
+        android:id="@+id/nav_alarm"
+        android:icon="@drawable/ic_alarm_black_48dp"
+        android:title="설정" />
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_android_black_48dp"
+        android:title="안전모"
+        />
+</menu>

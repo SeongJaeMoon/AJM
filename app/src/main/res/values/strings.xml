@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">안전모</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="max_speed">최고속도:</string>
+    <string name="average_speed">평균속도:</string>
+    <string name="distance">주행거리:</string>
+    <string name="time">주행시간:</string>
+    <string name="accuracy">위치오차:</string>
+    <string name="startAddr">출발주소:</string>
+    <string name="endAddr">도착주소:</string>
+    <string name="startTime">출발시간:</string>
+    <string name="endTime">도착시간:</string>
+    <string name="calorie">칼로리:</string>
+    <string name="temp">온도:</string>
+    <string name="wet">습도:</string>
+    <string name="satellite">위성</string>
+    <string name="msg">권한을 요청합니다.</string>
+    <string name="waiting_for_fix">GPS 수신중 …</string>
+    <string name="gps_disabled">GPS 사용 안함</string>
+    <string name="please_enable_gps">이 앱을 사용하기 위해선 GPS 정보가 필요로 합니다.</string>
+    <string name="running">진행중인 경로 지정 중…</string>
+    <string name="notification">소모칼로리 : %1$s, 거리 : %2$s.</string>
+    <string name="previsions">예보</string>
+    <string name="settings">설정</string>
+    <string name="app_info">앱 정보</string>
+    <string name="pref_auto_average">자동으로 정지 시간을 감지</string>
+    <string name="pref_auto_average_summary">정지 시간은 평균 속도에 포함되지 않습니다.</string>
+    <string name="pref_miles_per_hour">시간당 마일 사용</string>
+    <string name="pref_miles_per_hour_summary">속도를 km/h 대신에 mi/h로 표시합니다.</string>
+    <string name="accept">확인</string>
+    <string name="select_place">리스트에서 선택해주십시오.</string>
+    <string name="no_internet_conection">인터넷 요청이 중단되었습니다.</string>
+    <string name="no_way">목적지를 찾을 수 없습니다.</string>
+    <string name="weight_value">칼로리 계산을 위해 몸무게를 입력해주세요.</string>
+    <string name="action_settings">설정</string>
+    <string name="hello_world">!</string>
+    <string name="menu">메뉴</string>
+    <string name="falha_conectar_servidor">서버에 연결하지 못했습니다.</string>
+    <string name="falha_ao_serializar">서버에서받은 JSON을 역직렬화하는데 실패했습니다.</string>
+    <string name="license">라이센스</string>
+    <string name="donate_summary">내 작업을 지원하려면 클릭하십시오 :) …</string>
+    <string name="source_code">GitHub</string>
+    <string name="source_code_summary">소스 코드에 대한 액세스.</string>
+    <string name="version">안전모 버전</string>
+    <string name="alert">화면 전환 알람을 받으시겠습니까?</string>
+    <string name="route_saver">자동 경로 저장을 실행하시겠습니까?</string>
+    <string name="gps_level">GPS수신 감도를 설정합니다.</string>
+    <string name="noti_id" translatable="false">안전모</string>
+    <string name="title_activity_test">Map</string>
+    <string name="AddActivityTitle">도시 검색</string>
+    <string name="villes_favorites">인기 도시</string>
+    <string name="meteo">날씨</string>
+    <string name="ajouter_ville">도시 추가</string>
+    <string name="permission_error_title">위치 권한 에러</string>
+    <string name="permission_error_location">기기의 위치 권한을 켜주세요.</string>
+    <string name="permission_error_app_location">앱의 권한 설정에서 위치 권한을 켜주세요.</string>
+    <string name="permission_error_okay">확인</string>
+    <string name="permission_error_cancel">취소</string>
+    <string name="start">시작</string>
+    <string name="stop">정지</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="local_service_started">22</string>
+    <string name="action_contacts">Contacts</string>
+    <string name="title_activity_contacts">ContactsActivity</string>
+    <string name="emergency_contacts">EmergencyContacts</string>
+    <string name="default_gps_value">default</string>
+    <string-array name="gps_values">
+        <item>high</item>
+        <item>middle</item>
+        <item>low</item>
+        <item>default</item>
+    </string-array>
+    <string-array name="gps_weight">
+        <item>높은 GPS 수신강도</item>
+        <item>중간 GPS 수신강도</item>
+        <item>낮은 GPS 수신강도</item>
+        <item>기본 GPS 수신강도</item>
+    </string-array>
+    <string name="install">다운로드</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="no_location_detected">
+        위치가 발견되지 않았습니다. 장치에서 위치설정이 활성화되어 있는지 확인하십시오.
+    </string>
+    <!-- Activity detection strings -->
+    <string name="in_vehicle">차로 이동</string>
+    <string name="on_bicycle">자전거 타는 중</string>
+    <string name="on_foot">걷는 중</string>
+    <string name="still">진행 중</string>
+    <string name="tilting">기울이기</string>
+    <string name="unknown">알 수없는 활동</string>
+    <string name="walking">산책</string>
+    <string name="unidentifiable_activity">확인할 수없는 활동:%1$d </string>
+    <string name="detected_activities_title">탐지 된 활동</string>
+    <string name="request_activity_updates">업데이트 요청</string>
+    <string name="remove_activity_updates">업데이트 삭제</string>
+    <string name="activity_updates_added">활동 업데이트 추가</string>
+    <string name="activity_updates_removed">활동 업데이트가 제거되었습니다.</string>
+    <string name="not_connected">GoogleApiClient가 아직 연결되지 않았습니다. 다시 선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
+    <string name="title_activity_menu_slider">날짜 설정</string>
+    <string name="action_track">설정</string>
+    <string name="current_mode_text">현재 선택된 모드</string>
+    <string name="kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
+    <string name="translate_title">Language Setting</string>
+    <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
+    <string name="translate">If you want to translate to English, turn on it.</string>
+    <string name="alertsetting">선택을 해지하면 위험 구간 안내가 나오지 않습니다.</string>
+    <string name="autosaving">선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
+    <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
+    <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>
+    <string name="bike">자전거</string>
+
+</resources>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.0.0">
+    <CLASSES>
+      <root url="jar://D:/Android_SDK/.android/build-cache/5bb5c732061ad7b752c52ac2c26803cb2852d1cf/output/jars/classes.jar!/" />
+      <root url="file://D:/Android_SDK/.android/build-cache/5bb5c732061ad7b752c52ac2c26803cb2852d1cf/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/github.vatsal.easyweather/library/1.0.0/f1076720105429a6a93ba48be443c56de20a3ed4/library-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
