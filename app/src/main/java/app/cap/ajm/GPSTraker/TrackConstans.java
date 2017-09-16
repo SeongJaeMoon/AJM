@@ -22,18 +22,9 @@ public class TrackConstans {
     public double pLat;
     public double pLng;
 
-    public TrackConstans(String startAddr, String endAddr, String startTime,
-                          String endTime, double avgSpeed, double calorie, double distance, double temp, double wet){
-
-        this.startAddr = startAddr;
-        this.endAddr = endAddr;
+    public TrackConstans(String startTime, String endTime){
         this.startTime = startTime;
         this.endTime = endTime;
-        this.avgSpeed = avgSpeed;
-        this.calorie = calorie;
-        this.distance = distance;
-        this.temp = temp;
-        this.wet = wet;
     }
     //<-값 가져오기->
     public String getStartAddr(){return startAddr;}

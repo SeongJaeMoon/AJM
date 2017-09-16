@@ -10,10 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import app.cap.ajm.Prox.SMSContact;
 
@@ -84,7 +87,7 @@ public class TrackDBhelper{
 
     private HashMap hp;
     private ArrayList<TrackConstans>tracklist;
-
+    private ArrayList<TrackPoint>trackPoints;
     private final Context mCtx;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -195,29 +198,32 @@ public class TrackDBhelper{
         return numRows;
     }
 
-    public ArrayList<TrackConstans>getAllitem(){
-        tracklist = new ArrayList<>();
+    //출발 시간 between 도착 시간 사이에 있는 값 다가져오기
+    public ArrayList<TrackPoint> fetchBetweenTime(String start, String end){
+        trackPoints = new ArrayList<>();
         mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getReadableDatabase();
-        Cursor res = mDb.rawQuery("select * from "+DATABASE_TABLE, null);
+        mDb =  mDbHelper.getReadableDatabase();
+        Cursor res = mDb.rawQuery("select * from " + DATABASE_TABLE_MAP+" where "+ KEY_RUNNING_TIME +" between "+start+" and "+end, null);
         res.moveToFirst();
-        while(!res.isAfterLast()){
-            String stAddr = res.getString(res.getColumnIndex(KEY_START_ADDR));
-            String edAddr = res.getString(res.getColumnIndex(KEY_END_ADDR));
-            String stTime = res.getString(res.getColumnIndex(KEY_START_TIME));
-            String edTime = res.getString(res.getColumnIndex(KEY_END_TIME));
-            String avg = res.getString(res.getColumnIndex(KEY_AVG_SPEED));
-            String cal = res.getString(res.getColumnIndex(KEY_CALORIE));
-            String dis = res.getString(res.getColumnIndex(KEY_DISTANCE));
-            String temp = res.getString(res.getColumnIndex(KEY_TEMP));
-            String wet = res.getString(res.getColumnIndex(KEY_WET));
-            tracklist.add(new TrackConstans(stAddr, edAddr, stTime, edTime,
-                    Double.parseDouble(avg), Double.parseDouble(cal), Double.parseDouble(dis),
-                    Double.parseDouble(temp), Double.parseDouble(wet)));
+        while (!res.isAfterLast()) {
+            String lat = res.getString(res.getColumnIndex(KEY_COORDINATE_X));
+            String lng = res.getString(res.getColumnIndex(KEY_COORDINATE_Y));
+            trackPoints.add(new TrackPoint(Double.parseDouble(lat), Double.parseDouble(lng)));
             res.moveToNext();
         }
         res.close();
-        return tracklist;
+        return trackPoints;
+    }
+    //출발 마커용 좌표 가져오기
+    public ArrayList<TrackPoint> fetchMarker(String start){
+        trackPoints = new ArrayList<>();
+        mDbHelper = new DatabaseHelper(mCtx);
+        mDb = mDbHelper.getReadableDatabase();
+        Cursor res = mDb.rawQuery("select " + KEY_COORDINATE_X + ", " + KEY_COORDINATE_Y + " from " + DATABASE_TABLE_MAP + " wehre " + KEY_START_TIME + "=" + start, null);
+        String startPoint = res.getString(res.getColumnIndex(KEY_COORDINATE_X));
+        String endPoint = res.getString(res.getColumnIndex(KEY_COORDINATE_Y));
+        trackPoints.add(new TrackPoint(Double.parseDouble(startPoint),Double.parseDouble(endPoint)));
+        return  trackPoints;
     }
     //모든 값 가져오기
     public Cursor fetchAllList() {

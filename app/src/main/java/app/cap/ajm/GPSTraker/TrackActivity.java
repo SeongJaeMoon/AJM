@@ -42,7 +42,7 @@ public class TrackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_track);
         textView = (TextView)findViewById(R.id.trackTitle);
         listView = (ListView)findViewById(R.id.trackListview);
-        TrackDBhelper trackDBhelper = new TrackDBhelper(this);
+        final TrackDBhelper trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
         Cursor cursor = trackDBhelper.fetchAllListOrderBYDec();
         if (cursor.getCount()==0){
@@ -66,6 +66,27 @@ public class TrackActivity extends AppCompatActivity {
             }
             progressDialog.cancel();
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try{
+                    TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
+                    trackDBhelper1.open();
+                    Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
+                    TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+                    Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
+                    String startTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_START_TIME));
+                    String endTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_END_TIME));
+                    Intent intent = new Intent(TrackActivity.this, MapActivity.class);
+                    intent.putExtra("startTime", startTime);
+                    intent.putExtra("endTime", endTime);
+
+                    Log.w("OnItemClick: ", startTime+", "+endTime);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
