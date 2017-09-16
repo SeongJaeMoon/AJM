@@ -15,7 +15,6 @@ import android.content.pm.Signature;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -79,7 +78,6 @@ import github.vatsal.easyweather.retrofit.models.ForecastResponseModel;
 import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import app.cap.ajm.Adapter.TrackAdapter;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 
 public class MainActivity extends AppCompatActivity implements LocationListener, TextToSpeech.OnInitListener {
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Bind(R.id.weather5)
     TextView weather5;
     private int MY_DATA_CHECK_CODE = 0;
-    private String startAddr, startTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,10 +189,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     if (starts!=null && starts.equals("start")) {
                         try {
                             Toast.makeText(getApplicationContext(),getString(R.string.ajm_support), Toast.LENGTH_LONG).show();
-                            if (drawerLayout.isDrawerOpen(GravityCompat.START))
-                            {
-                                drawerLayout.openDrawer(GravityCompat.START);
-                            }
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -372,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     trackDBhelper.close();
                 }catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "정상적으로 경로 저장이 실행되지 않았습니다." ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.route_not_setup ,Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -398,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 trackDBhelper.close();
             }catch (Exception e){
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "정상적으로 경로 저장이 실행되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.route_not_setup), Toast.LENGTH_SHORT).show();
             }
         }
         resetData();
@@ -505,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             resetData();
             mLocationManager.removeUpdates(this);
         }
-        showNotification("안전모", "자전거 이용으로 " + trees + "그루의 낙엽송을 심었습니다:)");
+        showNotification(getString(R.string.app_name), "자전거 이용으로 " + trees + "그루의 낙엽송을 심었습니다:)");
     }
 
     @Override
@@ -519,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         int id = item.getItemId();
         if (id == R.id.action_flash) {
             if (!hasFlash) {
-                Toast.makeText(MainActivity.this, "죄송합니다. 이 기능을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.sorry_not_settup), Toast.LENGTH_SHORT).show();
             }
             //NoobCameraManager.getInstance().takePermissions();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -650,9 +644,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     public void showCallDialog(){
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
-        alertDialog.setTitle("119 전화 걸기");
-        alertDialog.setMessage("전화를 거시겠습니까? 장난 전화는 금물입니다!");
-        alertDialog.setPositiveButton("걸기", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.call_emergency));
+        alertDialog.setMessage(getString(R.string.call_alert));
+        alertDialog.setPositiveButton(getString(R.string.action_call), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:119"));
                         try {
@@ -662,7 +656,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         }
             }
         });
-        alertDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
@@ -689,10 +683,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onBackPressed() {
-        //Intent a = new Intent(Intent.ACTION_MAIN);
-        //a.addCategory(Intent.CATEGORY_HOME);
-        //a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //startActivity(a);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.mainDrawerLayout);
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
         {
@@ -700,7 +690,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
         else
         {
-            //super.onBackPressed();
             backPressCloseHandler.onBackPressed();
         }
     }
@@ -770,20 +759,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     if (requestCode == MY_DATA_CHECK_CODE) {
         if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
             tts = new TextToSpeech(this,this);
-            //tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            //  @Override
-            //  public void onInit(int status) {
-            //      if (status == TextToSpeech.SUCCESS)
-            //      {
-            //          if (tts.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE)
-            //              tts.setLanguage(Locale.KOREA);
-            //      }
-            //      else if (status == TextToSpeech.ERROR)
-            //      {
-            //          Toast.makeText(getApplicationContext(), "음성 안내를 사용할 수 없습니다... 개발자에게 메일로 문의하세요.", Toast.LENGTH_LONG).show();
-            //      }
-            //  }
-            // });
         }
     }
     else {
@@ -792,15 +767,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         startActivity(installTTSIntent);
         }
     }
-
+    @Override
     public void onInit(int initStatus) {
-
         if (initStatus == TextToSpeech.SUCCESS) {
             if(tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
                 tts.setLanguage(Locale.KOREA);
         }
         else if (initStatus == TextToSpeech.ERROR) {
-            Toast.makeText(getApplicationContext(), "음성 안내를 사용할 수 없습니다... 개발자에게 메일로 문의하세요.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -814,13 +788,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
             @Override
             public void failure(String message) {
-                //Toast.makeText(getApplicationContext(),"날씨 정보 업데이트에 실패하였습니다.",Toast.LENGTH_LONG).show();
             }
         });
         weatherMap.getCityForecast(city, new ForecastCallback() {
             @Override
             public void success(ForecastResponseModel response) {
-                //ForecastResponseModel responseModel = response;
             }
 
             @Override
@@ -878,14 +850,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             // TODO Auto-generated catch block
             Log.e("name not found", e.toString());
         }
-    }
-
-    public String getCurrentDateTime() {
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-        String getTime = sdf.format(date);
-        return getTime;
     }
 
     public String getCurrentSec(){

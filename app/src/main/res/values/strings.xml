@@ -3,14 +3,14 @@
     <string name="open">열기</string>
     <string name="close">닫기</string>
     <string name="mobile_data">이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.</string>
-    <string name="route_data">목록 삭제: 길게누르기\n 지도 보기: 짧게누르기</string>
+    <string name="route_data">길게 누르면 목록 삭제 및 지도를 볼 수 있습니다.</string>
     <string name="nav_title_direction">경로 찾기</string>
     <string name="nav_title_route">주행 기록</string>
     <string name="nav_title_weather">오늘 날씨</string>
     <string name="nav_title_com">시설 검색</string>
     <string name="nav_title_timetask">넘어짐 감지 관리</string>
     <string name="nav_title_ajm">안전모 도움말</string>
-    <string name="ajm_support">안녕하세요! 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :)</string>
+    <string name="ajm_support">처음 오셨군요, 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :)</string>
     <string name="max_speed">최고속도:</string>
     <string name="average_speed">평균속도:</string>
     <string name="distance">주행거리:</string>
@@ -39,13 +39,11 @@
     <string name="pref_miles_per_hour_summary">속도를 km/h 대신에 mi/h로 표시합니다.</string>
     <string name="accept">확인</string>
     <string name="select_place">리스트에서 선택해주십시오.</string>
-    <string name="no_internet_conection">인터넷 요청이 중단되었습니다.</string>
+    <string name="no_internet_conection">인터넷 연결이 되지않았습니다. \n일부 기능을 이용할 수 없습니다.</string>
     <string name="no_way">목적지를 찾을 수 없습니다.</string>
     <string name="weight_value">칼로리 계산을 위해 몸무게를 입력해주세요.</string>
     <string name="action_settings">설정</string>
     <string name="menu">메뉴</string>
-    <string name="falha_conectar_servidor">서버에 연결하지 못했습니다.</string>
-    <string name="falha_ao_serializar">서버에서받은 JSON을 역직렬화하는데 실패했습니다.</string>
     <string name="source_code_summary">소스 코드에 대한 액세스.</string>
     <string name="version">안전모 버전</string>
     <string name="alert">화면 전환 알람을 받으시겠습니까?</string>
@@ -59,8 +57,15 @@
     <string name="permission_error_okay">확인</string>
     <string name="permission_error_cancel">취소</string>
     <string name="start">시작</string>
+    <string name="start_positon">출발 위치</string>
+    <string name="arrive_position">도착 위치</string>
+    <string name="show_map">주행 지도 보기</string>
     <string name="stop">정지</string>
-
+    <string name="what">목록</string>
+    <string name="remove">목록 삭제</string>
+    <string name="category">선택해주세요.</string>
+    <string name="remove_category">기록이 삭제 되었습니다.</string>
+    <string name="tts_not_setup">음성 안내를 사용할 수 없습니다. \n앱을 다시 실행해주세요.</string>
     <string name="default_gps_value">default</string>
     <string-array name="gps_values">
         <item>high</item>
@@ -89,4 +94,22 @@
     <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>
     <string name="bike">자전거</string>
     <string name="introduce">소개</string>
-</resources>
+    <string name="wrong_data">저장 된 기록이 잘못 되었습니다.</string>
+    <string name="wrong_map">지도정보를 불러오는데 문제가 있습니다. \n다시 시도해주세요.</string>
+    <string name="left_alert">주위 구간에서 벗어납니다.</string>
+    <string name="moved_alert">주위 구간에 진입하였습니다.</string>
+    <string name="call_emergency">119 전화 걸기</string>
+    <string name="action_call">걸기</string>
+    <string name="call_alert">전화를 거시겠습니까? 장난 전화는 금물입니다!</string>
+    <string name="sorry_not_settup">죄송합니다. 이 기능을 사용할 수 없습니다.</string>
+    <string name="route_not_setup">정상적으로 경로 저장이 실행되지 않았습니다.</string>
+    <string name="fall_detect">넘어짐을 감지했습니다.</string>
+    <string name="be_careful">갑작스러운 움직임이 감지되었습니다, 안전한 라이딩 하세요!</string>
+    <string name="be_careful_tts">안전한 라이딩 부탁드려요</string>
+    <string name="set_number">긴급 문자를 발송할 번호를 설정해주세요.</string>
+    <string name="number_ok">번호 설정 완료</string>
+    <string name="start_detect">안전 서비스 시작</string>
+    <string name="stop_detect">안전 서비스 중지</string>
+    <string name="remove_all_num">등록 번호 전체 삭제</string>
+    <string name="list">리스트:</string>
+    </resources>

@@ -12,7 +12,7 @@
     tools:context="app.cap.ajm.AccActivity">
 
     <TextView
-        android:text="긴급 문자를 발송할 번호를 설정해주세요."
+        android:text="@string/set_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -27,7 +27,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="번호 설정 완료"
+        android:text="@string/number_ok"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:id="@+id/add"
@@ -35,7 +35,7 @@
         android:background="@color/red"/>
 
     <Button
-        android:text="안전 서비스 시작"
+        android:text="@string/start_detect"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@color/red_dark"
@@ -46,7 +46,7 @@
         />
 
     <Button
-        android:text="안전 서비스 중지"
+        android:text="@string/stop_detect"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@color/red"
@@ -56,7 +56,7 @@
         android:layout_marginTop="10dp"
         />
     <Button
-        android:text="등록 번호 전체 삭제"
+        android:text="@string/remove_all_num"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@color/red_dark"
@@ -68,7 +68,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="리스트:"
+        android:text="@string/list"
         android:textSize="16sp"
         />
 

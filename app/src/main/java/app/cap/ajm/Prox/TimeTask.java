@@ -24,10 +24,10 @@ import java.util.TimerTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+
+import app.cap.ajm.R;
 
 public class TimeTask extends Service implements
         TextToSpeech.OnInitListener,
@@ -86,10 +86,7 @@ public class TimeTask extends Service implements
 
     private Runnable doPeriodicTask = new Runnable() {
         public void run() {
-            Log.d("Delay", "***********Delay Ended**********");
-            Log.d("Updating flag", "run");
             sentRecently = 'N';
-//          mPeriodicEventHandler.postDelayed(doPeriodicTask, PERIODIC_EVENT_TIMEOUT);
         }
     };
 
@@ -122,23 +119,19 @@ public class TimeTask extends Service implements
             mTTS.stop();
             mTTS.shutdown();
         }
-
         mPeriodicEventHandler.removeCallbacks(doPeriodicTask);
-        Log.d("OnDestroy", "서비스 정상 중지");
         senSensorManager.unregisterListener(this);
         sendCount = 0;
         locationManager.removeUpdates(locationListener);
     }
     @Override
     public void onInit(int status) {
-        Log.v("Timetask","onInit");
         if (status == TextToSpeech.SUCCESS)
         {
             int result = mTTS.setLanguage(Locale.KOREA);
             if (result == TextToSpeech.LANG_NOT_SUPPORTED||
                     result==TextToSpeech.LANG_MISSING_DATA)
             {
-                Log.v("onInit","언어를 지원하지 않는다!!");
             }
             else if(mTTS.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE)
             {
@@ -147,7 +140,7 @@ public class TimeTask extends Service implements
         }
         else if (status == TextToSpeech.ERROR)
         {
-            Toast.makeText(TimeTask.this, "TTS를 사용할 수 없습니다...", Toast.LENGTH_LONG).show();
+            Toast.makeText(TimeTask.this, getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
             Intent installTTSIntent = new Intent();
             installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
             startActivity(installTTSIntent);
@@ -288,7 +281,7 @@ public class TimeTask extends Service implements
 
 
         //timestep에 의해 이 축을 중심으로 각속도와 통합
-        //이 샘플에서 시간 경과에 따른 델타 로테이션을 얻으려면
+        //이 샘플에서 시간 경과에 따른 델타 값의 회전변환을 얻으려면
         //델타 회전의 축각 표현의 변환 필요
         //회전 행렬로 변환하기 전에 쿼터니언으로 변환
         float thetaOverTwo = omegaMagnitude * timeFactor;
@@ -422,10 +415,9 @@ public class TimeTask extends Service implements
                     FILTER_COEFFICIENT * gyroOrientation[2]
                             + oneMinusCoeff * accMagOrientation[2];
 
-            //**********Sensing Danger**********
+            //**********위험 감지**********
             double SMV = Math.sqrt(accel[0] * accel[0] + accel[1] * accel[1] + accel[2] * accel[2]);
 
-            //원래 25
             if (SMV > 35) {
                 if (sentRecently == 'N') {
                     Log.d("Accelerometer vector:", "" + SMV);
@@ -438,7 +430,7 @@ public class TimeTask extends Service implements
                     if (degreeFloat > 30 || degreeFloat2 > 30) {
                         Log.d("Degree1:", "" + degreeFloat);
                         Log.d("Degree2:", "" + degreeFloat2);
-                        speekword("넘어짐을 감지했습니다.");
+                        speekword(getString(R.string.fall_detect));
 
                         Intent intent = new Intent(TimeTask.this, DialogActivity.class);
                         intent.putExtra("lastlat",latitude);
@@ -451,8 +443,8 @@ public class TimeTask extends Service implements
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(TimeTask.this.getApplicationContext(), "갑작스러운 움직임이 감지되었습니다, 안전한 라이딩 하세요!", Toast.LENGTH_LONG).show();
-                                speekword("안전한 라이딩 부탁드려요");
+                                Toast.makeText(TimeTask.this.getApplicationContext(), getString(R.string.be_careful), Toast.LENGTH_LONG).show();
+                                speekword(getString(R.string.be_careful_tts));
                                 Log.d("Send!", "센서 값 변화!!!!! " + sendCount);
                             }
                         });

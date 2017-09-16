@@ -1,35 +1,23 @@
 package app.cap.ajm.GPSTraker;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.app.ProgressDialog;
 import android.widget.Toast;
-
-
-import java.util.ArrayList;
-
 import app.cap.ajm.Adapter.TrackAdapter;
-import app.cap.ajm.MainActivity;
 import app.cap.ajm.R;
 
 public class TrackActivity extends AppCompatActivity {
     private TextView textView;
     private ListView listView;
-    private ArrayList<TrackConstans>trackConstanses;
-    private ArrayList<TrackPoint>trackPoints;
     private ProgressDialog progressDialog;
     private int i;
     @Override
@@ -66,34 +54,13 @@ public class TrackActivity extends AppCompatActivity {
             }
             progressDialog.cancel();
         }
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try{
-                    TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
-                    trackDBhelper1.open();
-                    Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
-                    TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
-                    Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
-                    String startTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_START_TIME));
-                    String endTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_END_TIME));
-                    Intent intent = new Intent(TrackActivity.this, MapActivity.class);
-                    intent.putExtra("startTime", startTime);
-                    intent.putExtra("endTime", endTime);
-
-                    Log.w("OnItemClick: ", startTime+", "+endTime);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
                 android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(TrackActivity.this);
-                alertDialog.setTitle("목록 삭제");
-                alertDialog.setMessage("해당 목록을 삭제하시겠습니까?");
-                alertDialog.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                alertDialog.setTitle(getString(R.string.what));
+                alertDialog.setMessage(getString(R.string.category));
+                alertDialog.setPositiveButton(getString(R.string.remove), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
                         try {
                             TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
@@ -109,22 +76,37 @@ public class TrackActivity extends AppCompatActivity {
                             trackDBhelper1.close();
                             i--;
                             textView.setText("저장된 기록 : 총 "+ i +" 개" );
-                            Toast.makeText(getApplicationContext(),"기록이 삭제 되었습니다.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.remove_category),Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             e.printStackTrace();
                         }
                     }
                 });
-                alertDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                alertDialog.setNegativeButton(getString(R.string.show_map), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
+                                trackDBhelper1.open();
+                                Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
+                                TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+                                Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
+                                String startTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_START_TIME));
+                                String endTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_END_TIME));
+                                Intent intent = new Intent(TrackActivity.this, MapActivity.class);
+                                intent.putExtra("startTime", startTime);
+                                intent.putExtra("endTime", endTime);
+                                startActivity(intent);
+                            }
+                        });
+                        alertDialog.setNeutralButton(getString(R.string.close), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
                 alertDialog.show();
                 return false;
             }
         });
-
     }
     @Override
     protected void onDestroy(){

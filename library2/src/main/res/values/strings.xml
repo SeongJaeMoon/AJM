@@ -1,3 +1,9 @@
 <resources>
     <string name="about_page">안녕하세요, \'안전하게 자전거 타는 모임\' 안전모입니다. 우리의 앱은 오픈 소스 라이센스를 기반으로 개발 되었으며 서울시 자전거 이용자들을 대상으로 조금 더 안전한 자전거 타는 문화를 조성하고자 앱을 개발하게 되었습니다. 자체적으로 공간분석한 교차로 주의 안내와 안전한 라이딩이 필요한 5077개의 위치에서의 위치 기반 음성 안내 서비스 제공을 목적으로 합니다. 여러분의 많은 관심과 조언으로 더 나은 앱을 만들 수 있도록 도와주세요 :) 많은 공유 부탁드립니다. -안전모 개발자-</string>>
+    <string name="about_pageHi">소개</string>
+    <string name="about_pageHelp">도움말</string>
+    <string name="about_pageCS">자전거 관리 상식</string>
+    <string name="about_pageLicense">오픈소스 라이센스</string>
+    <string name="about_pagePL">공공데이터 출처</string>
+    <string name="about_pageAlert">주의사항</string>
 </resources>

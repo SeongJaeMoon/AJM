@@ -3,22 +3,10 @@ package app.cap.ajm.GPSTraker;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import app.cap.ajm.Prox.SMSContact;
 
 public class TrackDBhelper{
 
@@ -59,23 +47,6 @@ public class TrackDBhelper{
                     +KEY_TEMP+" TEXT,"
                     +KEY_WET+" TEXT"+ ");";
 
-    private static final String DATABASE_CREATE_START =
-            "CREATE TABLE "+ DATABASE_TABLE +" ("
-                    +KEY_ROWID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    +KEY_START_ADDR+" TEXT,"
-                    +KEY_START_TIME+" TEXT," + ");";
-
-    private static final String DATABASE_CREATE_END =
-            "CREATE TABLE "+ DATABASE_TABLE +" ("
-                    +KEY_ROWID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    +KEY_END_ADDR+" TEXT,"
-                    +KEY_END_TIME+" TEXT,"
-                    +KEY_AVG_SPEED+" TEXT,"
-                    +KEY_CALORIE+ " TEXT,"
-                    +KEY_DISTANCE+" TEXT,"
-                    +KEY_TEMP+" TEXT,"
-                    +KEY_WET+" TEXT"+ ");";
-
     private static final String DATABASE_CREATE_MAP =
             "CREATE TABLE "+ DATABASE_TABLE_MAP+" ("
                     + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -85,8 +56,6 @@ public class TrackDBhelper{
                     + KEY_COORDINATE_X+" REAL,"
                     + KEY_COORDINATE_Y+" REAL"+ ");";
 
-    private HashMap hp;
-    private ArrayList<TrackConstans>tracklist;
     private ArrayList<TrackPoint>trackPoints;
     private final Context mCtx;
 
@@ -97,16 +66,11 @@ public class TrackDBhelper{
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            //Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
-            //        + ", which will destroy all old data");
-            //db.execSQL("DROP TABLE IF EXISTS lists");
-            //onCreate(db);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DATABASE_CREATE);
-            //db.execSQL(DATABASE_CREATE_END);
             db.execSQL(DATABASE_CREATE_MAP);
         }
     }
@@ -123,33 +87,13 @@ public class TrackDBhelper{
     public void close() {
         mDbHelper.close();
     }
-    //종료할 때 출발 시간,시간 저장
+
+    //종료할 때 출발 주소<>시간, 도착 주소<>시간, 평속, 칼로리, 거리, 온도, 습도 저장
     public long trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, String calroie, String distance, String temp, String wet){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_START_ADDR, startAddr);
         contentValues.put(KEY_END_ADDR, endAddr);
         contentValues.put(KEY_START_TIME, startTime);
-        contentValues.put(KEY_END_TIME, endTime);
-        contentValues.put(KEY_AVG_SPEED, avgSpeed);
-        contentValues.put(KEY_CALORIE, calroie);
-        contentValues.put(KEY_DISTANCE, distance);
-        contentValues.put(KEY_TEMP, temp);
-        contentValues.put(KEY_WET, wet);
-        return mDb.insert(DATABASE_TABLE, null, contentValues);
-    }
-
-    //시작할 때 주소, 시간 저장
-    public long trackDBstartFetch(String startAddr, String startTime){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_START_ADDR, startAddr);
-        contentValues.put(KEY_START_TIME, startTime);
-        Log.w("TRACKDBHELPER: ", KEY_ROWID);
-        return mDb.insert(DATABASE_TABLE, null, contentValues);
-    }
-    //종료할 때 저장 주소, 시간, 평속, 칼로리, 거리, 온도, 습도 저장
-    public long trackDBendFetch(String endAddr,String endTime, String avgSpeed, String calroie, String distance, String temp, String wet){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_END_ADDR, endAddr);
         contentValues.put(KEY_END_TIME, endTime);
         contentValues.put(KEY_AVG_SPEED, avgSpeed);
         contentValues.put(KEY_CALORIE, calroie);
@@ -183,54 +127,27 @@ public class TrackDBhelper{
         contentValues.put(KEY_COORDINATE_Y, lng);
         return mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
-    //id로 값 가져오기
-    public Cursor getData(int id){
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getReadableDatabase();
-        Cursor res =  mDb.rawQuery( "select * from "+ DATABASE_TABLE +" where id="+id+"", null );
-        return res;
-    }
-
-    public int numberOfRows(){
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(mDb, DATABASE_TABLE);
-        return numRows;
-    }
 
     //출발 시간 between 도착 시간 사이에 있는 값 다가져오기
     public ArrayList<TrackPoint> fetchBetweenTime(String start, String end){
         trackPoints = new ArrayList<>();
         mDbHelper = new DatabaseHelper(mCtx);
         mDb =  mDbHelper.getReadableDatabase();
-        Cursor res = mDb.rawQuery("select * from " + DATABASE_TABLE_MAP+" where "+ KEY_RUNNING_TIME +" between "+start+" and "+end, null);
+        Cursor res = mDb.rawQuery("select * from " + DATABASE_TABLE_MAP+" where "+ KEY_RUNNING_TIME +" between "+"'"+start+"'"+" and "+"'"+end+"'", null);
         res.moveToFirst();
         while (!res.isAfterLast()) {
-            String lat = res.getString(res.getColumnIndex(KEY_COORDINATE_X));
-            String lng = res.getString(res.getColumnIndex(KEY_COORDINATE_Y));
-            trackPoints.add(new TrackPoint(Double.parseDouble(lat), Double.parseDouble(lng)));
+            double lat = res.getDouble(res.getColumnIndex(KEY_COORDINATE_X));
+            double lng = res.getDouble(res.getColumnIndex(KEY_COORDINATE_Y));
+            trackPoints.add(new TrackPoint(lat, lng));
             res.moveToNext();
+        }
+        if (res.getCount()==0){
+            return null;
         }
         res.close();
         return trackPoints;
     }
-    //출발 마커용 좌표 가져오기
-    public ArrayList<TrackPoint> fetchMarker(String start){
-        trackPoints = new ArrayList<>();
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getReadableDatabase();
-        Cursor res = mDb.rawQuery("select " + KEY_COORDINATE_X + ", " + KEY_COORDINATE_Y + " from " + DATABASE_TABLE_MAP + " wehre " + KEY_START_TIME + "=" + start, null);
-        String startPoint = res.getString(res.getColumnIndex(KEY_COORDINATE_X));
-        String endPoint = res.getString(res.getColumnIndex(KEY_COORDINATE_Y));
-        trackPoints.add(new TrackPoint(Double.parseDouble(startPoint),Double.parseDouble(endPoint)));
-        return  trackPoints;
-    }
-    //모든 값 가져오기
-    public Cursor fetchAllList() {
-        return mDb.query(DATABASE_TABLE,
-                new String[]{KEY_ROWID, KEY_START_ADDR, KEY_END_ADDR, KEY_START_TIME, KEY_END_TIME, KEY_AVG_SPEED, KEY_CALORIE, KEY_DISTANCE, KEY_TEMP, KEY_WET},
-                null, null, null, null,null);
-    }
+
     //_id로 내림차순 정렬하여 모두 가져오기 3, 2, 1- - -.
     public Cursor fetchAllListOrderBYDec() {
         mDbHelper = new DatabaseHelper(mCtx);
@@ -239,20 +156,12 @@ public class TrackDBhelper{
         return res;
 }
 
+//_id로 값 삭제하기
     public int removeList(int id){
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
         return mDb.delete(DATABASE_TABLE, "_id = ?",new String[]{String.valueOf(id)});
         //Toast.makeText(getApplicationContext(),"번호가 삭제되었습니다.",Toast.LENGTH_SHORT).show();
     }
-    //id로 값 가져오기
-    public Cursor fetchByID(int id){
-        Cursor cursor = mDb.query(true, DATABASE_TABLE, new String[]{
-                KEY_ROWID, KEY_START_ADDR, KEY_END_ADDR, KEY_START_TIME, KEY_END_TIME, KEY_AVG_SPEED, KEY_CALORIE, KEY_DISTANCE
-        },id +"= '" + KEY_ROWID+"' ", null,null,null,null,null);
-        if(cursor!=null){
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
+
 }

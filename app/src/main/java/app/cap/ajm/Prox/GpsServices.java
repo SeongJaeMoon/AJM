@@ -61,10 +61,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     private Query query;
     @Override
     public void onCreate() {
-        //mProgressDialog = new ProgressDialog(this);
-        //mProgressDialog.setTitle("준비중..");
-        //mProgressDialog.setMessage("로딩 준비 중...");
-        //mProgressDialog.setCancelable(false);
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
         Intent checkTTSIntent = new Intent();
@@ -83,10 +79,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
 
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&& ActivityCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED) {
-            //if (mLocationManager!=null){
-            //    mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            //    Log.w("GPS", "LastKnown "+String.valueOf(mLocationManager));
-            //}
+
             gpsValue = sharedPreferences.getString("gps_level", "default");
             switch (gpsValue) {
                 case "default":
@@ -106,10 +99,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
         }else if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&&
                 mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)&&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-            //if (mLocationManager!=null){
-            //    mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            //    Log.w("Network", "LastKnown "+String.valueOf(mLocationManager));
-            //}
+
             gpsValue = sharedPreferences.getString("gps_level", "default");
             switch (gpsValue) {
                 case "default":
@@ -132,16 +122,14 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
-            Log.v("Timetask", "onInit");
             int result = mTTS.setLanguage(Locale.KOREA);
             if (result == TextToSpeech.LANG_NOT_SUPPORTED ||
                     result == TextToSpeech.LANG_MISSING_DATA) {
-                Log.v("onInit", "언어를 지원하지 않는다!!");
             } else if (mTTS.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE) {
                 mTTS.setLanguage(Locale.KOREA);
             }
         } else if (status == TextToSpeech.ERROR) {
-            Toast.makeText(GpsServices.this, "TTS를 사용할 수 없습니다...", Toast.LENGTH_LONG).show();
+            Toast.makeText(GpsServices.this, "TTS기능을 사용할 수 없습니다...", Toast.LENGTH_LONG).show();
             Intent installTTSIntent = new Intent();
             installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
             startActivity(installTTSIntent);
@@ -193,7 +181,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
             if (sharedPreferences.getBoolean("route", false)){
                 try {
                     trackDBhelper.trackDBlocationRunning(getCurrentSec(),lastLat, lastLon);
-                    Log.w(TAG, "RunningTime&lat,lng: " + getCurrentSec() + ", "+ lastLat+", "+ lastLon);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -223,7 +210,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Log.w(TAG, "START_STICKY");
         context = getApplicationContext();
         return START_STICKY;
     }
@@ -255,7 +241,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                 e.printStackTrace();
             }
         }
-        //stopSelf();
     }
 
     @Override
@@ -318,9 +303,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                                  String content = dataSnapshot.getValue(String.class);
                                                  if (!mTTS.isSpeaking())
                                                  speakword("전방에 "+content+ "입니다. 주의하세요.");
-                                                 //Toast.makeText(getApplicationContext(), content + " 에 접근중입니다. 주의하세요.", Toast.LENGTH_SHORT).show();
-                                                 Log.w(TAG,"content: "+ String.valueOf(content));
-
                                              }catch (Exception e){
                                                  e.printStackTrace();
                                              }
@@ -335,51 +317,14 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
 
                              @Override
                              public void onKeyExited(String key) {
-                                    query = ref.child("location").child(key).child("name");
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                     @Override
-                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                         if (dataSnapshot.exists()){
-                                             try {
-                                                 //Firebase에서 위치 정보 가져오기
-                                                 String content = dataSnapshot.getValue(String.class);
-                                                 Toast.makeText(getApplicationContext(), content + "에서 벗어납니다.", Toast.LENGTH_SHORT).show();
-                                                 Log.w(TAG,"content: "+ String.valueOf(content));
-
-                                             }catch (Exception e){
-                                                 e.printStackTrace();
-                                             }
-                                         }
-                                     }
-                                     @Override
-                                     public void onCancelled(DatabaseError databaseError) {
-                                         System.out.println("DatabaseError: " + databaseError);
-                                     }
-                                 });
+                                speakword(getString(R.string.left_alert));
+                                Toast.makeText(getApplicationContext(), getString(R.string.left_alert), Toast.LENGTH_SHORT).show();
                              }
 
                              @Override
                              public void onKeyMoved(String key, GeoLocation location){
-                                 query = ref.child("location").child(key).child("name");
-                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                     @Override
-                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                         if (dataSnapshot.exists()){
-                                             try {
-                                                 //Firebase에서 위치 정보 가져오기
-                                                 String content = dataSnapshot.getValue(String.class);
-                                                 Toast.makeText(getApplicationContext(), content + "에 진입하였습니다.", Toast.LENGTH_SHORT).show();
-                                                 Log.w(TAG,"content: "+ String.valueOf(content));
-                                             }catch (Exception e){
-                                                 e.printStackTrace();
-                                             }
-                                         }
-                                     }
-                                     @Override
-                                     public void onCancelled(DatabaseError databaseError) {
-                                         System.out.println("DatabaseError: " + databaseError);
-                                     }
-                                 });
+                                 //speakword(getString(R.string.moved_alert));
+                                 Toast.makeText(getApplicationContext(), getString(R.string.moved_alert), Toast.LENGTH_SHORT).show();
                              }
 
                              @Override

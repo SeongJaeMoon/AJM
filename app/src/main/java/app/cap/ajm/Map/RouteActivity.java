@@ -422,7 +422,6 @@ public class RouteActivity extends FragmentActivity implements
         if (locationManager!=null){
             locationManager.removeUpdates(locationListener);
         }
-        //mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapView.setShowCurrentLocationMarker(false);
     }
     @Override

@@ -62,11 +62,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.setProgress(25);
-                if (!isConnected) {
-                    Toast.makeText(getApplicationContext(),
-                            "인터넷 연결이 되지않았습니다.\n일부 기능을 이용할 수 없습니다."
-                            , Toast.LENGTH_LONG).show();
-                }
+                if (!isConnected) {Toast.makeText(getApplicationContext(), getString(R.string.no_internet_conection), Toast.LENGTH_LONG).show();}
+                /*Firebase 데이터 삭제*/
                 //ref = FirebaseDatabase.getInstance().getReference();
                 //ref.child("geofire").removeValue();
                 //ref.child("location").removeValue();
