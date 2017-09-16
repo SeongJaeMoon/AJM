@@ -112,4 +112,6 @@
     <string name="stop_detect">안전 서비스 중지</string>
     <string name="remove_all_num">등록 번호 전체 삭제</string>
     <string name="list">리스트:</string>
+    <string name="over_speed">과속 운행</string>
+    <string name="over_speed_alert">속도를 줄여주세요</string>
     </resources>

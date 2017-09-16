@@ -582,8 +582,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             currentSpeed.setText(s);
 
             if (25 <= location.getSpeed() * 3.6 && !tts.isSpeaking() && data.isRunning()) {
-                showNotification("과속운행", "속도를 줄여주세요");
-                speakWords("속도를 줄여주세요");
+                showNotification(getString(R.string.over_speed), getString(R.string.over_speed_alert));
+                speakWords(getString(R.string.over_speed_alert));
                 try {
                     runOnUiThread(new Runnable() {
                         @Override
