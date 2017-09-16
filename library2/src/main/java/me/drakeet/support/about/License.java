@@ -11,7 +11,9 @@ public class License {
     public static final String APACHE_2 = "Apache Software License 2.0";
     public static final String GPL_V3 = "GNU general public license Version 3";
     public static final String GPL_V2 = "GNU general public license Version 2";
-
+    public static final String KAKAO = "Copyright kakao Corp";
+    public static final String GOOGLE = "Copyright 2015 Google, inc";
+    public static final String CCL = "CC-BY-SA";
     public String name;
     public String author;
     public String type;

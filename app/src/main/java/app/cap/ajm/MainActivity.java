@@ -616,14 +616,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 holder.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_black_24dp));
                 ishold = true;
             }
-            double distance = lastlocation.distanceTo(location);
-            if (distance > 0 && distance > 30) {
+            //double distance = lastlocation.distanceTo(location);
+            double tree = data.returnDistance();
+            if (tree > 1000 && tree < 2000) {
                 trees = 1;
-            } else if (distance > 50) {
+            } else if (tree > 5000) {
                 trees = 2;
-            } else if (distance == 0 || distance < 30) {
+            } else if (tree == 0 || tree < 1000) {
                 trees = 0;
-            } else if (distance > 100) {
+            } else if (tree > 10000) {
                 trees = 3;
             }
         }
@@ -907,7 +908,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 }
         }catch (IOException e){
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "시작 주소 취득 실패"
+            Toast.makeText(getApplicationContext(), "주소 취득 실패"
                     , Toast.LENGTH_LONG).show();
         }
         return address;

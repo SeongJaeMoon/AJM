@@ -69,7 +69,6 @@ dependencies {
     compile 'com.github.Abhi347:NoobCameraFlash:0.0.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'github.vatsal.easyweather:library:1.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
