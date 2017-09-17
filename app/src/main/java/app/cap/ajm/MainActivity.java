@@ -192,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         }catch (Exception e){
                             e.printStackTrace();
                         }
+                    }else{
+                        Toast.makeText(getApplicationContext(), getString(R.string.start_location_detect),Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -343,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
         });
    }
-
+    //주행 시작
     public void onFabClick(View v) {
         if (!data.isRunning()) {
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_pause));
@@ -360,16 +362,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     AJMapp ajMapp = (AJMapp) getApplicationContext();
                     ajMapp.setStartAddr(getGeocode(lat, lng));
                     ajMapp.setStartTime(getCurrentSec());
-                    TrackDBhelper trackDBhelper = new TrackDBhelper(this);
-                    trackDBhelper.open();
-                    trackDBhelper.trackDBlocationStart(getCurrentSec(), lat, lng);
-                    trackDBhelper.close();
+                    //시작 시간, 위치 저장
+                    if (ajMapp.getStartAddr()!=null&&ajMapp.getStartTime()!=null){
+                        TrackDBhelper trackDBhelper = new TrackDBhelper(this);
+                        trackDBhelper.open();
+                        trackDBhelper.trackDBlocationStart(getCurrentSec(), lat, lng);
+                        trackDBhelper.close();
+                    }else{
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_route) ,Toast.LENGTH_SHORT).show();
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), R.string.route_not_setup ,Toast.LENGTH_SHORT).show();
                 }
             }
-
+          //주행 일시 정지
         } else {
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_play));
             data.setRunning(false);
@@ -378,18 +385,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             refresh.setVisibility(View.VISIBLE);
         }
     }
-
+    //주행 종료
     public void onRefreshClick(View v) {
         if (sharedPreferences.getBoolean("route", false)){
             try {
                 TrackDBhelper trackDBhelper = new TrackDBhelper(this);
                 trackDBhelper.open();
                 AJMapp ajMapp = (AJMapp) getApplicationContext();
-                //출발주소, 도착주소, 출발시간, 도착시간, 평균속도, 칼로리, 거리, 온도, 습도
-                trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), getGeocode(lat, lng), ajMapp.getStartTime(), getCurrentSec(),
-                        data.getAverageSpeed().toString(), data.getCalorieMeter().toString(), data.getDistance().toString(), weather5.getText().toString(), weather2.getText().toString());
-                trackDBhelper.trackDBlocationStop(getCurrentSec(), lat, lng);
-                trackDBhelper.close();
+                if(ajMapp.getStartAddr()!=null&&getGeocode(lat, lng)!=null) {
+                    //출발주소, 도착주소, 출발시간, 도착시간, 평균속도, 칼로리, 거리, 온도, 습도 저장
+                    trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), getGeocode(lat, lng), ajMapp.getStartTime(), getCurrentSec(),
+                            data.getAverageSpeed().toString(), data.getCalorieMeter().toString(), data.getDistance().toString(), weather5.getText().toString(), weather2.getText().toString());
+                    trackDBhelper.trackDBlocationStop(getCurrentSec(), lat, lng); //종료 시간, 위치 저장
+                    trackDBhelper.close();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_route),Toast.LENGTH_SHORT).show();
+                }
+                ajMapp.setStartAddr("");
+                ajMapp.setStartTime("");
             }catch (Exception e){
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), getString(R.string.route_not_setup), Toast.LENGTH_SHORT).show();
@@ -553,9 +567,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         lng = location.getLongitude();
         if (location.hasAccuracy()) {
             SpannableString s = new SpannableString(String.format(Locale.KOREA, "%.0f", location.getAccuracy()) + "m");
-            //if (location.getAccuracy() > 30) {
-            //    Toast.makeText(MainActivity.this, "위치 오차가 큽니다. (실내에선 위치 측정이 어려울 수 있습니다.)", Toast.LENGTH_LONG).show();
-            //}
             s.setSpan(new RelativeSizeSpan(0.75f), s.length() - 1, s.length(), 0);
             accuracy.setText(s);
 
@@ -695,11 +706,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
     @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-    }
+    public void onStatusChanged(String s, int i, Bundle bundle) {}
     @Override
     public void onProviderEnabled(String s) {
     }
+
     @Override
     public void onProviderDisabled(String s) {
     }
@@ -749,8 +760,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         notificationManager.notify(1, notification);
     }
 
-
-
     private void speakWords(String speech) {
         tts.speak(speech, TextToSpeech.LANG_COUNTRY_AVAILABLE, null,null);
     }
@@ -767,6 +776,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         startActivity(installTTSIntent);
         }
     }
+
     @Override
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
@@ -872,8 +882,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 }
         }catch (IOException e){
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "주소 취득 실패"
-                    , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
         }
         return address;
     }

@@ -29,10 +29,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-
-import net.daum.mf.map.api.CameraPosition;
-import net.daum.mf.map.api.CameraUpdateFactory;
-import net.daum.mf.map.api.CancelableCallback;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -83,7 +79,7 @@ public class RouteActivity extends FragmentActivity implements
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                Toast.makeText(getApplicationContext(),"구글 API 요청이 제한 되었습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.google_api_error),Toast.LENGTH_SHORT).show();
             }
         }).build();
                 mGoogleApiClient.connect();
@@ -110,11 +106,11 @@ public class RouteActivity extends FragmentActivity implements
                 String eped1 = epEditext.getText().toString();
                 if (sped1 == null || sped1.length() == 0)
                 {
-                    Toast.makeText(getApplicationContext(), "출발지를 입력하세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.input_start), Toast.LENGTH_SHORT).show();
                     return;
                 } else if (eped1 == null || eped1.length() == 0)
                 {
-                    Toast.makeText(getApplicationContext(), "도착지를 입력하세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.input_end), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else
@@ -132,7 +128,7 @@ public class RouteActivity extends FragmentActivity implements
                     {
                         if (list.size() == 0 || list1.size() == 0)
                         {
-                            Toast.makeText(getApplicationContext(), "일치하는 주소가 없습니다. 확인해주세요!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
                         }
                         else
                             {
@@ -161,12 +157,10 @@ public class RouteActivity extends FragmentActivity implements
                                     {
                                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.locnall.KimGiSa"));
                                         startActivity(intent);
-                                        Toast.makeText(getApplicationContext(), "길찾기 기능을 이용하기 위해선 카카오내비를 다운로드 해야합니다." +
-                                                                                "모바일 데이터 환경에선 데이터 사용료가 발생할 수 있습니다.",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.navi_install),Toast.LENGTH_LONG).show();
                                     }
                                 }catch (Exception e){
                                     e.printStackTrace();
-                                    Toast.makeText(getApplicationContext(),e.toString()+"알 수 없는 오류 발생",Toast.LENGTH_LONG).show();
                                 }
                         }
                     }
@@ -215,15 +209,15 @@ public class RouteActivity extends FragmentActivity implements
                 list = geocoder.getFromLocation(latitude, longitude, 10);
                 if (list != null) {
                     if (list.size() == 0)
-                        Toast.makeText(getApplicationContext(), "위치 갱신에 오류가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(getApplicationContext(), "현재 위치를 출발지로 설정합니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.set_current_loc), Toast.LENGTH_SHORT).show();
                     spEditext.setText(list.get(0).getAddressLine(0));
                 }
             }
             }catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(),e.toString()+"현재 위치를 갱신할 수 없습니다.\n알 수 없는 오류 발생",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),e.toString()+getString(R.string.error_route),Toast.LENGTH_SHORT).show();
             }
          }
          });
@@ -236,10 +230,10 @@ public class RouteActivity extends FragmentActivity implements
                      mapsSelection = true;
                      mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
                      mapView.setShowCurrentLocationMarker(false);
-                     Toast.makeText(getApplicationContext(), "원하는 도착지를 지도에서 길게 눌러주세요.", Toast.LENGTH_LONG).show();
+                     Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
                  }
                  else {
-                     Toast.makeText(getApplicationContext(), "지도에서 도착지 선택을 취소합니다.",Toast.LENGTH_SHORT).show();
+                     Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc),Toast.LENGTH_SHORT).show();
                      mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
                      mapsSelection=false;
                  }
@@ -259,7 +253,7 @@ public class RouteActivity extends FragmentActivity implements
                     } catch (GooglePlayServicesRepairableException e) {
                         e.printStackTrace();
                     } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getApplicationContext(), "구글 플레이 서비스를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -278,7 +272,7 @@ public class RouteActivity extends FragmentActivity implements
                     } catch (GooglePlayServicesRepairableException e) {
                         e.printStackTrace();
                     } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getApplicationContext(), "구글 플레이 서비스를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -304,7 +298,7 @@ public class RouteActivity extends FragmentActivity implements
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
                 Log.i(LOG_TAG, status.getStatusMessage());
-                Toast.makeText(getApplicationContext(), "구글 위치 정보 요청에 문제가 있습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_LONG).show();
 
             }
         }
@@ -316,7 +310,7 @@ public class RouteActivity extends FragmentActivity implements
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
                 Log.i(LOG_TAG, status.getStatusMessage());
-                Toast.makeText(getApplicationContext(), "구글 위치 정보 요청에 문제가 있습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -344,14 +338,14 @@ public class RouteActivity extends FragmentActivity implements
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
         if(mapsSelection){
-            Toast.makeText(getApplication(),"지도를 길게 눌러주세요.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
         if(mapsSelection){
-            Toast.makeText(getApplication(),"지도를 길게 눌러주세요.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -365,16 +359,16 @@ public class RouteActivity extends FragmentActivity implements
             list = geocoder.getFromLocation(mapPointGeo.latitude, mapPointGeo.longitude, 10);
             if (list != null) {
                 if (list.size() == 0)
-                    Toast.makeText(getApplicationContext(), "위치 갱신에 오류가 있습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(getApplicationContext(), "선택한 위치를 도착지로 설정합니다", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc_ok), Toast.LENGTH_LONG).show();
                 epEditext.setText(list.get(0).getAddressLine(0));
                 mapsSelection=false;
             }
         }
         catch(Exception e){
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.toString()+"알 수 없는 오류 발생",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
         }
     }
     }

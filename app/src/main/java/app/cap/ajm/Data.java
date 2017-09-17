@@ -95,9 +95,6 @@ public class Data {
         {
             s = new SpannableString(String.format(Locale.KOREA,"%.0f", average) + "km/h");
         }
-        /*else if (Double.isNaN(average)){
-            s = new SpannableString(0 + "km/h");
-        }*/
         else
             {
             s = new SpannableString(0 + "km/h");
@@ -208,6 +205,10 @@ public class Data {
 
     public void addCalorie(double cal){
         calorie = calorie + cal;
+        if (cal>10000||Double.isNaN(cal)||Double.isInfinite(cal)){
+            cal = 0;
+            calorie = cal;
+        }
         calorieK = calorie / 1000f;
     }
 }

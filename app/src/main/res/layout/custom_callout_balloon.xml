@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
 
-                android:text="Custom Marker"
+                android:text=""
                 android:textColor="#ff000000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
 
-                android:text="custom marker desc."
+                android:text=""
                 android:textColor="#ff7f7f7f"
                 android:textSize="14sp" />
         </LinearLayout>

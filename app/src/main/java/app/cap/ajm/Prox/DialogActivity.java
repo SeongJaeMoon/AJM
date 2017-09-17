@@ -95,8 +95,8 @@ public class DialogActivity extends AppCompatActivity {
                         prevNumber = phoneNum;
                     }
                 }
-                Toast.makeText(getApplicationContext(),"메세지 전송을 완료했습니다.",Toast.LENGTH_LONG).show();
-                speakWords("메세지를 전송했습니다.");
+                Toast.makeText(getApplicationContext(),getString(R.string.send_message),Toast.LENGTH_LONG).show();
+                speakWords(getString(R.string.send_message));
                 handler.removeCallbacksAndMessages(null);
                 finish();
             }
@@ -122,7 +122,7 @@ public class DialogActivity extends AppCompatActivity {
                         }
                         else if (status == TextToSpeech.ERROR)
                         {
-                            Toast.makeText(getApplicationContext(), "음성 안내를 사용할 수 없습니다... 개발자에게 메일로 문의하세요.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

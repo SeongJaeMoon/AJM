@@ -18,7 +18,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:text="안전모에서 권한을 요청합니다."/>
+        android:text="@string/permission"/>
 
     <Button
         android:id="@+id/buttons"
@@ -32,5 +32,5 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_centerInParent="true"
-        android:text="안전모 시작"/>
+        android:text="@string/start_app"/>
 </RelativeLayout>

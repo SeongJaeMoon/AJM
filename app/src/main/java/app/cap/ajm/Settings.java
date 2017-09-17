@@ -10,14 +10,15 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.Map;
 
 public class Settings extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     SharedPreferences sharedPreferences;
-    SwitchPreference switchPreference, switchPreference1;
+    public static final String KEY_GPS_VALUE = "gps_level";
+    public static final String KEY_WEIGHT_VALUE="weight_value";
+    public static final String KEY_TRANSLATE = "translate";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,31 +48,27 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
     @Override
     protected void onResume() {
         super.onResume();
-
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        Map<String, ?> preferencesMap = sharedPreferences.getAll();
-        //** iterate through the preference entries and update their summary if they are an instance of EditTextPreference**//
-        for (Map.Entry<String, ?> preferenceEntry : preferencesMap.entrySet()) {
-            if (preferenceEntry instanceof EditTextPreference) {
-                updateSummary((EditTextPreference) preferenceEntry);
-            }
-        }
+        //Map<String, ?> preferencesMap = sharedPreferences.getAll();
+        //for (Map.Entry<String, ?> preferenceEntry : preferencesMap.entrySet()) {
+            //if (preferenceEntry instanceof EditTextPreference) {
+            //    updateSummary((EditTextPreference) preferenceEntry);
+            //}
+        //}
     }
     @Override
     public void onPause() {
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         //Map<String, ?> preferencesMap = sharedPreferences.getAll();
-        //**iterate through the preference entries and update their summary if they are an instance of EditTextPreference**//
         //for (Map.Entry<String, ?> preferenceEntry : preferencesMap.entrySet())
         //{
         //if (preferenceEntry instanceof EditTextPreference ) {
-
         //updateSummary((EditTextPreference) preferenceEntry);
         //}
         //}
@@ -82,6 +79,8 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
             for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); ++i) {
                 Preference preference = getPreferenceScreen().getPreference(i);
                 if (preference instanceof PreferenceGroup) {
@@ -93,32 +92,51 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
                     updatePreference(preference);
                 }
             }
-            final Preference editPref = findPreference("weight_value");
+            final EditTextPreference editPref = (EditTextPreference)findPreference(KEY_WEIGHT_VALUE);
             editPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    EditTextPreference editTextPreference = (EditTextPreference) preference;
                     String news = newValue.toString();
                     if (!news.equals("")) {
-                        Log.i("Setting", "!news.equals");
                         int to = Integer.parseInt(news);
-                        if (to < 40 || to > 100 || !isString(news))
+                        if (to < 30 || to > 120 || !isString(news))
                         {
-                            Toast.makeText(getActivity(), "몸무게는 40kg~100kg 사이로 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.weight_val), Toast.LENGTH_SHORT).show();
                             return false;
                         }
                         else
                         {
-                            editTextPreference.setSummary(editTextPreference.getText());
+                            editPref.setSummary(String.valueOf(to));
                             return true;
                         }
                     }
-
                     return true;
                 }
             });
+            final ListPreference listPref = (ListPreference)findPreference(KEY_GPS_VALUE);
+            listPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String value = newValue.toString();
+                    if (!value.equals("")){
+                        switch (value){
+                            case "high": listPref.setSummary("높은 GPS 수신강도");
+                                break;
+                            case "middle": listPref.setSummary("중간 GPS 수신강도");
+                                break;
+                            case "low": listPref.setSummary("낮은 GPS 수신강도");
+                                break;
+                            case "default": listPref.setSummary("기본 GPS 수신강도");
+                                break;
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
-        private void updatePreference(Preference preference) {
+
+        private void updatePreference(Preference preference)  {
             if (preference == null) {
                 return;
             }
@@ -132,9 +150,6 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
                 editTextPreference.setSummary(editTextPreference.getText());
             }
         }
-    }
-    private void updateSummary(EditTextPreference preference) {
-        preference.setSummary(preference.getText());
     }
     public static boolean isString(String s)
     {

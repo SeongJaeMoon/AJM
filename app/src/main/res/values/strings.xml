@@ -3,7 +3,9 @@
     <string name="open">열기</string>
     <string name="close">닫기</string>
     <string name="mobile_data">이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.</string>
-    <string name="route_data">길게 누르면 목록 삭제 및 지도를 볼 수 있습니다.</string>
+    <string name="route_data">목록을 길게 누르면 해당 목록의 삭제 및 지도를 볼 수 있습니다.</string>
+    <string name="error_route">위치 초기화에 실패하였습니다.</string>
+    <string name="error_address">주소 취득 실패</string>
     <string name="nav_title_direction">경로 찾기</string>
     <string name="nav_title_route">주행 기록</string>
     <string name="nav_title_weather">오늘 날씨</string>
@@ -11,6 +13,7 @@
     <string name="nav_title_timetask">넘어짐 감지 관리</string>
     <string name="nav_title_ajm">안전모 도움말</string>
     <string name="ajm_support">처음 오셨군요, 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :)</string>
+    <string name="start_location_detect">위치를 찾고 있습니다. \n잠시만 기다려주세요.</string>
     <string name="max_speed">최고속도:</string>
     <string name="average_speed">평균속도:</string>
     <string name="distance">주행거리:</string>
@@ -102,7 +105,7 @@
     <string name="action_call">걸기</string>
     <string name="call_alert">전화를 거시겠습니까? 장난 전화는 금물입니다!</string>
     <string name="sorry_not_settup">죄송합니다. 이 기능을 사용할 수 없습니다.</string>
-    <string name="route_not_setup">정상적으로 경로 저장이 실행되지 않았습니다.</string>
+    <string name="route_not_setup">정상적으로 경로 저장이 실행되지 않았습니다.\n다시 시도 해주세요.</string>
     <string name="fall_detect">넘어짐을 감지했습니다.</string>
     <string name="be_careful">갑작스러운 움직임이 감지되었습니다, 안전한 라이딩 하세요!</string>
     <string name="be_careful_tts">안전한 라이딩 부탁드려요</string>
@@ -114,4 +117,25 @@
     <string name="list">리스트:</string>
     <string name="over_speed">과속 운행</string>
     <string name="over_speed_alert">속도를 줄여주세요</string>
+    <string name="send_message">메세지 전송을 완료했습니다.</string>
+    <string name="google_api_error">구글 API 요청이 제한 되었습니다.</string>
+    <string name="input_start">출발지를 입력하세요.</string>
+    <string name="input_end">도착지를 입력하세요.</string>
+    <string name="navi_install">길찾기 기능을 이용하기 위해선 카카오내비를 다운로드 해야합니다. \n모바일 데이터 환경에선 데이터 사용료가 발생할 수 있습니다.</string>
+    <string name="error_default">알 수 없는 오류 발생.</string>
+    <string name="set_current_loc">현재 위치를 출발지로 설정합니다</string>
+    <string name="set_map_loc">원하는 도착지를 지도에서 길게 눌러주세요.</string>
+    <string name="exit_map_loc">지도에서 도착지 선택을 취소합니다.</string>
+    <string name="set_map_loc_ok">선택한 위치를 도착지로 설정합니다</string>
+    <string name="long_press">지도를 길게 눌러주세요.</string>
+    <string name="weight_val">몸무게는 30kg~120kg 사이로 입력해주세요.</string>
+    <string name="permission">안전모에서 권한을 요청합니다.</string>
+    <string name="start_app">안전모 시작</string>
+    <string name="are_u_ok">괜찮습니까? \n (터치하세요.)</string>
+    <string name="find">검색</string>
+    <string name="start_edit">출발지 입력</string>
+    <string name="end_edit">도착지 입력</string>
+    <string name="direction">경로 찾기</string>
+    <string name="my_loc">현재 위치를 출발지로 설정</string>
+    <string name="set_map">도착지를 지도에서 설정</string>
     </resources>

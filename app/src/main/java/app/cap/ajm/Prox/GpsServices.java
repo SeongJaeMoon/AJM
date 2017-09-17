@@ -129,7 +129,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                 mTTS.setLanguage(Locale.KOREA);
             }
         } else if (status == TextToSpeech.ERROR) {
-            Toast.makeText(GpsServices.this, "TTS기능을 사용할 수 없습니다...", Toast.LENGTH_LONG).show();
+            Toast.makeText(GpsServices.this, getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
             Intent installTTSIntent = new Intent();
             installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
             startActivity(installTTSIntent);
@@ -323,7 +323,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
 
                              @Override
                              public void onKeyMoved(String key, GeoLocation location){
-                                 //speakword(getString(R.string.moved_alert));
                                  Toast.makeText(getApplicationContext(), getString(R.string.moved_alert), Toast.LENGTH_SHORT).show();
                              }
 

@@ -132,7 +132,7 @@ public class Weathers extends AppCompatActivity {
                 condition.setText("안개");
                 break;
             case "Clouds":
-                condition.setText("구름낀");
+                condition.setText("구름 낀 하늘");
                 break;
             case "Clear":
                 condition.setText("맑음");

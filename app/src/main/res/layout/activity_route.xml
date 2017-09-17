@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etOrigin"
-        android:hint="출발지 입력" />
+        android:hint="@string/start_edit" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="도착지 입력"
+        android:hint="@string/end_edit"
         android:id="@+id/etDestination"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
@@ -29,26 +29,26 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33"
+            android:layout_weight="0.2"
             android:background="@color/red"
             android:textColor="@color/white"
-            android:text="길찾기"
+            android:text="@string/direction"
             android:id="@+id/btnFindPath"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33"
+            android:layout_weight="0.5"
             android:background="@color/red_dark"
             android:textColor="@color/white"
-            android:text="현재 위치로 출발지 설정"
+            android:text="@string/my_loc"
             android:id="@+id/myFindPath"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33"
+            android:layout_weight="0.5"
             android:background="@color/red"
             android:textColor="@color/white"
-            android:text="지도에서 선택"
+            android:text="@string/set_map"
             android:id="@+id/myMapPath"/>
     </LinearLayout>
 <FrameLayout
