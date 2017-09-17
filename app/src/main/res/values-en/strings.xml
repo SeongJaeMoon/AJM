@@ -78,12 +78,12 @@
     <string name=	"not_connected">GoogleApiClient has not yet been connected. If you choose not to re-terminate the automatic storage paths.	</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
     <string name=	"translate_title">Language Setting</string>
-    <string name=	"alert_title">	Would you like to receive information service?</string>
+    <string name=	"alert_title">	Receive information service?</string>
     <string name=	"translate">If you want to translate to English, turn on it.</string>
     <string name=	"alertsetting"	>If you cancel the selection does not appear that the risk zone descriptions.</string>
     <string name=	"autosaving">If you cancel the selection is not an automatic path to save.	</string>
-    <string name=	"autocancle_title">The app automatically shut down at the end of the service</string>
-    <string name=	"autocancel">If you cancel your choices in GPS and fall detection will continue even if the app is on the screen.</string>
+    <string name=	"autocancle_title">Automatically shut down at the service</string>
+    <string name=	"autocancel">If you cancel your choices in GPS and fall detection will continue even if the app is not on the screen.</string>
     <string name=	"bike">bicycle</string>
     <string name=	"introduce">Introduce</string>
     <string name=	"wrong_data">The record has been stored incorrectly.</string>
