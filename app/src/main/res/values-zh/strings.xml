@@ -143,4 +143,16 @@
     <string name="reset">请重新输入</string>
     <string name="emergency_add">紧急号码增加。</string>
     <string name="remove_all">所有号码已删除。</string>
+    <string-array name="gps_values">
+        <item>high</item>
+        <item>middle</item>
+        <item>low</item>
+        <item>default</item>
+    </string-array>
+    <string-array name="gps_weight">
+        <item>GPS灵敏度高</item>
+        <item>中间GPS灵敏度</item>
+        <item>GPS灵敏度低</item>
+        <item>默认GPS灵敏度</item>
+    </string-array>
 </resources>

@@ -143,4 +143,16 @@
     <string name="reset">Please re-enter.</string>
     <string name="emergency_add">Emergency number added.</string>
     <string name="remove_all">All number deleted.</string>
+    <string-array name="gps_values">
+        <item>high</item>
+        <item>middle</item>
+        <item>low</item>
+        <item>default</item>
+    </string-array>
+    <string-array name="gps_weight">
+        <item>High GPS sensitivity</item>
+        <item>Middle GPS sensitivity</item>
+        <item>low GPS sensitivity</item>
+        <item>default GPS sensitivity</item>
+    </string-array>
 </resources>
