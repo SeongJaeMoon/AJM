@@ -13,6 +13,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -122,51 +125,55 @@ public class Weathers extends AppCompatActivity {
         tvPressure.setText(response.getMain().getPressure() + " hPa");
         tvWind.setText(response.getWind().getSpeed() + "m/s");
         tvWindDeg.setText(response.getWind().getDeg() + "°");
-        if(response.getName().equals("Seoul")){
+        if(response.getName().equals("Seoul")&& Locale.getDefault().getLanguage().equals("ko")){
            location.setText("서울");
         }else{
             location.setText(response.getName());
         }
-        switch (weather[0].getMain()){
-            case "Mist":
-                condition.setText("안개");
-                break;
-            case "Clouds":
-                condition.setText("구름 낀 하늘");
-                break;
-            case "Clear":
-                condition.setText("맑음");
-                break;
-            case "Haze":
-                condition.setText("연무");
-                break;
-            case "Windy":
-                condition.setText("바람부는");
-                break;
-            case"Shower drizzle":
-                condition.setText("소나기");
-                break;
-            case "Heavy intensity rain":
-                condition.setText("강한 비");
-                break;
-            case "Very heavy rain":
-                condition.setText("매우 강한 비");
-                break;
-            case "Snow":
-                condition.setText("눈");
-                break;
-            case "Light snow":
-                condition.setText("가벼운 눈");
-                break;
-            case"Heavy snow":
-                condition.setText("강한 눈");
-                break;
-            case "Sand":
-                condition.setText("모래 먼지");
-                break;
-            default:
-                condition.setText(weather[0].getMain());
-                break;
+        if (Locale.getDefault().getLanguage().equals("ko")) {
+            switch (weather[0].getMain()) {
+                case "Mist":
+                    condition.setText("안개");
+                    break;
+                case "Clouds":
+                    condition.setText("구름 낀 하늘");
+                    break;
+                case "Clear":
+                    condition.setText("맑음");
+                    break;
+                case "Haze":
+                    condition.setText("연무");
+                    break;
+                case "Windy":
+                    condition.setText("바람부는");
+                    break;
+                case "Shower drizzle":
+                    condition.setText("소나기");
+                    break;
+                case "Heavy intensity rain":
+                    condition.setText("강한 비");
+                    break;
+                case "Very heavy rain":
+                    condition.setText("매우 강한 비");
+                    break;
+                case "Snow":
+                    condition.setText("눈");
+                    break;
+                case "Light snow":
+                    condition.setText("가벼운 눈");
+                    break;
+                case "Heavy snow":
+                    condition.setText("강한 눈");
+                    break;
+                case "Sand":
+                    condition.setText("모래 먼지");
+                    break;
+                default:
+                    condition.setText(weather[0].getMain());
+                    break;
+            }
+        }else {
+            condition.setText(weather[0].getMain());
         }
         String link = weather[0].getIconLink();
         Picasso.with(this).load(link).into(weatherIcon);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">안전모</string>
+    <string name="app_name" translatable="false">안전모</string>
     <string name="open">열기</string>
     <string name="close">닫기</string>
     <string name="mobile_data">이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.</string>
@@ -14,6 +14,7 @@
     <string name="nav_title_ajm">안전모 도움말</string>
     <string name="ajm_support">처음 오셨군요, 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :)</string>
     <string name="start_location_detect">위치를 찾고 있습니다. \n잠시만 기다려주세요.</string>
+    <string name="wear_helmet">헬멧 착용하셨나요?</string>
     <string name="max_speed">최고속도:</string>
     <string name="average_speed">평균속도:</string>
     <string name="distance">주행거리:</string>
@@ -128,7 +129,7 @@
     <string name="exit_map_loc">지도에서 도착지 선택을 취소합니다.</string>
     <string name="set_map_loc_ok">선택한 위치를 도착지로 설정합니다</string>
     <string name="long_press">지도를 길게 눌러주세요.</string>
-    <string name="weight_val">몸무게는 30kg~120kg 사이로 입력해주세요.</string>
+    <string name="weight_val">몸무게는 10kg~120kg 사이로 입력해주세요.</string>
     <string name="permission">안전모에서 권한을 요청합니다.</string>
     <string name="start_app">안전모 시작</string>
     <string name="are_u_ok">괜찮습니까? \n (터치하세요.)</string>
@@ -138,4 +139,20 @@
     <string name="direction">경로 찾기</string>
     <string name="my_loc">현재 위치를 출발지로 설정</string>
     <string name="set_map">도착지를 지도에서 설정</string>
+    <string name="weather">날씨</string>
+    <string name="weather_humidity">습도:</string>
+    <string name="weather_pressure">기압:</string>
+    <string name="wind_speed">풍속:</string>
+    <string name="wind_angle">풍향:</string>
+    <string name="run_lock">화면 잠금 실행</string>
+    <string name="un_lock">화면 잠금 해제</string>
+    <string name="save_how_many">저장된 기록 총 :</string>
+    <string name="donot_save">저장된 기록이 없습니다.</string>
+    <string name="accident">사고 발생:</string>
+    <string name="sms_alert">이 서비스는 SMS 발신 요금이 발생할 수 있습니다.</string>
+    <string name="start_service_safe">안전모 기능을 실행합니다.</string>
+    <string name="stop_service_safe">안전모 기능을 종료합니다.</string>
+    <string name="reset">다시 입력해주세요.</string>
+    <string name="emergency_add">긴급 번호가 추가되었습니다.</string>
+    <string name="remove_all">전체 번호가 삭제되었습니다.</string>
     </resources>

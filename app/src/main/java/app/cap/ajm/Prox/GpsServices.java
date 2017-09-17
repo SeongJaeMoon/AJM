@@ -56,7 +56,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     Context context;
     private DatabaseReference ref;
     private GeoFire geoFire;
-    public static TextToSpeech mTTS;
+    public static TextToSpeech tts;
     private TrackDBhelper trackDBhelper;
     private Query query;
     @Override
@@ -68,8 +68,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
         trackDBhelper.open();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mTTS = new TextToSpeech(this, this);
-        onInit(mTTS.setLanguage(Locale.KOREA));
+        tts = new TextToSpeech(this, this);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -120,24 +119,27 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     }
 
     @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
-            int result = mTTS.setLanguage(Locale.KOREA);
-            if (result == TextToSpeech.LANG_NOT_SUPPORTED ||
-                    result == TextToSpeech.LANG_MISSING_DATA) {
-            } else if (mTTS.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE) {
-                mTTS.setLanguage(Locale.KOREA);
+    public void onInit(int initStatus) {
+        if (initStatus == TextToSpeech.SUCCESS) {
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREA);
+            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.ENGLISH);
             }
-        } else if (status == TextToSpeech.ERROR) {
-            Toast.makeText(GpsServices.this, getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-            Intent installTTSIntent = new Intent();
-            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-            startActivity(installTTSIntent);
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPAN);
+            }
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINA);
+            }
+        }
+        else if (initStatus == TextToSpeech.ERROR) {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
 
     private void speakword(String str) {
-        mTTS.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
+        tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
     }
 
     @Override
@@ -228,19 +230,18 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     public void onDestroy() {
         super.onDestroy();
         mLocationManager.removeUpdates(this);
-        if (mTTS != null) {
-            mTTS.stop();
-            mTTS.shutdown();
-            mTTS = null;
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
         }
-        if (sharedPreferences.getBoolean("route", false)) {
-            try {
-                trackDBhelper.trackDBlocationStop(getCurrentDateTime(), lastLat, lastLon);
-                trackDBhelper.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        //if (sharedPreferences.getBoolean("route", false)) {
+        //    try {
+        //        trackDBhelper.trackDBlocationStop(getCurrentDateTime(), lastLat, lastLon);
+        //        trackDBhelper.close();
+        //    } catch (Exception e) {
+        //        e.printStackTrace();
+        //    }
+        //}
     }
 
     @Override
@@ -301,8 +302,46 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                              try {
                                                  //Firebase에서 위치 정보 가져오기
                                                  String content = dataSnapshot.getValue(String.class);
-                                                 if (!mTTS.isSpeaking())
-                                                 speakword("전방에 "+content+ "입니다. 주의하세요.");
+                                                 if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ko")){
+                                                     speakword("전방에 "+content+ "입니다. 주의하세요.");
+                                                 }
+                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("en")){
+                                                     switch (content){
+                                                         case "직각교차로": speakword("Be careful at the intersection point ahead.");
+                                                             break;
+                                                         case "보행자도로": speakword("Be careful at the pedestrian road ahead");
+                                                             break;
+                                                         case "어린이보호구역": speakword("Be careful at the child protection area");
+                                                             break;
+                                                         case "사고다발지역" : speakword("Be careful at the frequent accidents area");
+                                                             break;
+                                                         default: speakword("Be careful at the test");
+                                                             break;
+                                                     }
+                                                 }
+                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ja")){
+                                                        switch (content){
+                                                            case "직각교차로":speakword("前方に交差点です注意してください");
+                                                                break;
+                                                            case "보행자도로": speakword("前方に歩行者道路に注意してください");
+                                                                break;
+                                                            case "어린이보호구역": speakword("前方に子供の保護区域に注意してください");
+                                                                break;
+                                                            case "사고다발지역" :speakword("前方に事故多発地域に注意してください");
+                                                                break;
+                                                        }
+                                                 }else if(!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
+                                                     switch (content){
+                                                         case "직각교차로":speakword("小心前方的路口");
+                                                             break;
+                                                         case "보행자도로":speakword("小心行人专用道路");
+                                                             break;
+                                                         case "어린이보호구역":speakword("注意前面的儿童保护区");
+                                                             break;
+                                                         case "사고다발지역" : speakword("在你面前要小心很多事故");
+                                                             break;
+                                                     }
+                                                 }
                                              }catch (Exception e){
                                                  e.printStackTrace();
                                              }

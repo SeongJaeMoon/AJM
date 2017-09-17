@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name=	"about_pageSHARE">シェア</string>
+    <string name=	"about_page">ねえ、\「会議\「ヘルメット安全に自転車に乗る。私たちのアプリは、ソウルのサイクリストを対象少しより安全な自転車文化を作成するためのオープンソースライセンスに基づいて開発されたアプリを開発しました。ロケーションベースのオーディオガイドの目的を。。5077の地域でのサービスは、共有するためにたくさん:)してください、私たちは、あなたの興味とのより良いアプリを作る助けと助言し、独自の解析交差点は、情報および安全なライディングポジションを気に必要な - ヘルメットの開発 - 	</string>
+    <string name=	"about_pageHi"	>紹介します</string>
+    <string name=	"about_pageHelp">助けて</string>
+    <string name=	"about_pageCS"	>自転車ナレッジマネジメント	</string>
+    <string name=	"about_pageLicense">オープンソースライセンス</string>
+    <string name=	"about_pagePL"	>公共のデータソース	</string>
+    <string name=	"about_pageAlert"	>注意事項</string>
+    <string name=	"about_pageHow_gps">どのようにGPS測定していますか？	</string>
+    <string name=	"about_pageGPS">GPS測定は、スマートフォンに組み込まれたGPS測定装置を介して行われます。高いGPS感度は、バッテリの使用量が増加します。マップを使用する能力は、あなたがバッテリーの消費を増やすことができます。	</string>
+    <string name=	"about_pageHow_Direct">どのように経路探索機能していますか？	</string>
+    <string name=	"about_pageDirect">方向は、ココアはアプリが自動二輪車の行き方働くナビゲートするために作られた実行します。 （参考のために使用してください！）また、ナビアプリにインストールされていないときカカオのインストール画面に行くために。	</string>
+    <string name=	"about_pageHow_Route"	>どのように機能を節約へのパスしていますか？	</string>
+    <string name=	"about_pageRoute"	>ルートが保存され、設定が完了し、[開始]をクリックし、スタートボタンを押して保存し、最新の情報に更新。あなたは、走行経路や旅行マップに関連する情報を見つけることができます。	</string>
+    <string name=	"about_pageHow_Save">	どのようなセキュリティサービス機能していますか？	</string>
+    <string name=	"about_pageSave">セキュリティサービスは、センサーがあなたの落下を検出するために、スマートフォンに組み込まれた機能であり、落下検出時のユーザーのために応答がない場合、ユーザーはSMSで位置登録番号に送信され、応答、および一定量のを必要とします時間。	</string>
+    <string name=	"about_pageHow_TTS">	どのように音声ガイダンス機能していますか？	</string>
+    <string name=	"about_pageTTS">音声ガイダンス機能がスマートフォンに組み込まれたTTS音声合成技術（スピーチへのテキスト）のために利用可能で、幅広い支持がスマートフォンの機種によっては異なる場合があります。あなたが出ていない場合は、[設定]ウィンドウで音声ガイダンスをオンに振動や音をミュートしてください。来る音声ガイダンスでアプリを再実行し続けてください！	</string>
+    <string name=	"about_pageHow_Alert"	>危険ゾーンガイダンスは、それが動作します何ですか？	</string>
+    <string name=	"about_pageAlerts">リスク情報サービス・セグメントは、スマートフォンに組み込まれたGPS対応デバイスで構成されていますが、スタートボタンを押すと、それが実行されます。この機能は、バッテリの使用量を増やすことができます。 （あなたは、通知が時々による位置決め誤差に、正常に動作し危険を冒すことはできません。）基本的なスピードメーターの表示を高速の上に25キロでそれは指導を発生する音声ガイダンスや画面遷移を走行中の速度と過速度運転を測定するには。また、タッチスクリーンをクリックの速度は不可能であり、ボリュームをアップ使用を停止ボタン（声を上げる）とき以上20キロ画面のロックを解除喜ばせるために。</string>
+    <string name=	"about_pageAJM">チームのヘルメット	</string>
+    <string name=	"about_pageAJM_Alert"	>このアプリは、ユーザーのサイクリングの安全性を高めるために開発されたアプリです。アプリ過度の使用を避ける、と私は常に安全な乗り心地を頼みますよ！ :)	</string>
+    <string name=	"about_pageWhere"	>ソース	</string>
+    <string name=	"about_pageWhere_is">	天気-  OpenWeatherMapソウル、データ\nは交差点情報 -  ITS標準ノードリンクシステム\nは歩行者 - ソウル広場オープンデータ\n個の事故多発エリア - ソウル広場のオープンデータ\nの児童保護区 - 公共データポータル</string>
+    <string name=	"about_pageBike">	バイク管理そう！	</string>
+    <string name=	"about_pageBikeis">	1.タイヤはあまりにもdaljiテストされていない場合。 \n2を\。一目でブレーキ。 \n3を\。サスペンションフォークボルトを確認してください。 \n4を\。チェーンスプロケットをチェックし、ユンHwalyu。 \n5を\。ベアリンググリースに再注入。 \n最後の週に一度、問題を抱えた中に自転車にバイクを拭きます！私たちは、安全で楽しい乗り心地をhasigilなります:)</string>
+</resources>

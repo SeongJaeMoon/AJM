@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name=	"about_pageSHARE"	>分享</string>
+    <string name=	"about_page">嘿，\一个“会议\骑自行车安全“头盔。我们的应用程序是基于开放源代码的许可创建针对首尔骑自行车的人一点点的安全骑自行车文化发达已经开发的应用程序。基于位置的音频文件的目的在5077领域的服务都需要自己分析交叉口关心信息安全的骑行姿势帮助我们做出更好的应用与您的利益，建议请:)很多共享。 - 头盔开发商 - 	</string>
+    <string name=	"about_pageHi"	>介绍</string>
+    <string name=	"about_pageHelp">	帮帮我</string>
+    <string name=	"about_pageCS"	>自行车知识管理</string>
+    <string name=	"about_pageLicense">开源许可证</string>
+    <string name=	"about_pagePL"	>公共数据源	</string>
+    <string name=	"about_pageAlert"	>注意事项</string>
+    <string name=	"about_pageHow_gps">GPS如何测量？</string>
+    <string name=	"about_pageGPS">GPS测量将通过内置于智能手机GPS测量设备来完成。越高GPS灵敏度会增加电池的使用。使用地图的能力，可以增加电池消耗。</string>
+    <string name=	"about_pageHow_Direct">如何寻路功能？	</string>
+    <string name=	"about_pageDirect">双向运行的可可制成导航应用工程方向的摩托车。同时，（请使用，仅供参考！），如果没有安装导航应用去可可安装屏幕。</string>
+    <string name=	"about_pageHow_Route"	>如何路径保存功能？	</string>
+    <string name=	"about_pageRoute">保存路径将被保存，您完成后，单击开始，然后按下启动按钮，刷新。你可以找到相关的旅游路线和旅游地图信息。	</string>
+    <string name=	"about_pageHow_Save">	如何安全服务功能？	</string>
+    <string name=	"about_pageSave">安全服务是传感器内置于智能手机检测到您的跌倒的特征，并且用户通过SMS如果存在用于跌倒检测期间用户没有响应发送到位置登记数需要一个响应，和一定量的时间。	</string>
+    <string name=	"about_pageHow_TTS">如何进行语音提示功能？	</string>
+    <string name=	"about_pageTTS">语音提示功能可用于语音合成技术（文本到语音）TTS内置到智能手机，有广泛的支持可以根据智能手机型号而异。如果你不出来，请打开语音导航在设置窗口中，振动或静音。请继续重新运行语音导航应用程序会来的！	</string>
+    <string name=	"about_pageHow_Alert"	>什么是危险区的指导是否行得通？	</string>
+    <string name=	"about_pageAlerts">风险信息服务板块包括嵌入在智能手机GPS感知设备，当你按下启动按钮它就会被执行。此功能可以提高电池的使用。 （你不能冒险通知正常工作，有时因定位误差。）的基本速度表显示在以上的速度测量行驶时的速度和超速运转距25km语音提示和屏幕切换它发生的指导。此外，点击触摸屏的速度是不可能的，停止使用量提高（提高声音）按钮时，20km以上，以取悦解锁屏幕。	</string>
+    <string name=	"about_pageAJM">团队头盔</string>
+    <string name=	"about_pageAJM_Alert"	>这个程序是开发增加用户的单车安全的应用程序。避免过度使用的应用程序，我会一直问一个安全的旅程！ :)	</string>
+    <string name=	"about_pageWhere"	>资源</string>
+    <string name=	"about_pageWhere_is">天气 -  OpenWeatherMap首尔，数据\ n交叉口信息 - 其标准节点链路系统\ n行人 - 首尔广场的开放数据\ n事故多发地区 - 首尔广场的开放数据\ n个子保护区 - 公共数据门户网站	</string>
+    <string name=	"about_pageBike">自行车管理如此！</string>
+    <string name=	"about_pageBikeis">1.如果轮胎是不是太dalji测试。 \n2。刹车一目了然。 \n3。检查悬架螺栓。 \n4。检查和云Hwalyu链轮。 \n5。重新注入轴承润滑脂。 \n最后，每周一次，擦掉你的自行车为困扰的自行车！ 我希望你安全快乐地骑:)</string>
+
+</resources>

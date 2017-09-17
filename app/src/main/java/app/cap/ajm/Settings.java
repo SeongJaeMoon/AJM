@@ -8,11 +8,12 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
-import java.util.Map;
+
+import java.util.Locale;
+
 
 public class Settings extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     SharedPreferences sharedPreferences;
@@ -79,7 +80,6 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); ++i) {
                 Preference preference = getPreferenceScreen().getPreference(i);
@@ -99,7 +99,7 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
                     String news = newValue.toString();
                     if (!news.equals("")) {
                         int to = Integer.parseInt(news);
-                        if (to < 30 || to > 120 || !isString(news))
+                        if (to < 10 || to > 120 || !isString(news))
                         {
                             Toast.makeText(getActivity(), getString(R.string.weight_val), Toast.LENGTH_SHORT).show();
                             return false;
@@ -119,15 +119,19 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
                     if (!value.equals("")){
-                        switch (value){
-                            case "high": listPref.setSummary("높은 GPS 수신강도");
-                                break;
-                            case "middle": listPref.setSummary("중간 GPS 수신강도");
-                                break;
-                            case "low": listPref.setSummary("낮은 GPS 수신강도");
-                                break;
-                            case "default": listPref.setSummary("기본 GPS 수신강도");
-                                break;
+                        if (Locale.getDefault().getLanguage().equals("ko")) {
+                            switch (value){
+                                case "high": listPref.setSummary("높은 GPS 수신감도");
+                                    break;
+                                case "middle": listPref.setSummary("중간 GPS 수신감도");
+                                    break;
+                                case "low": listPref.setSummary("낮은 GPS 수신감도");
+                                    break;
+                                case "default": listPref.setSummary("기본 GPS 수신감도");
+                            }
+                        }
+                        else {
+                            listPref.setSummary(value);
                         }
                         return true;
                     }

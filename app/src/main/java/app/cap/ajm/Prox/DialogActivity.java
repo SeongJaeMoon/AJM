@@ -25,7 +25,7 @@ import java.util.Locale;
 import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.R;
 
-public class DialogActivity extends AppCompatActivity {
+public class DialogActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
     private Handler handler;
     final Context context = this;
     String phoneNum = "";
@@ -42,6 +42,7 @@ public class DialogActivity extends AppCompatActivity {
         SMSDBhelper dpHelper = new SMSDBhelper(this);
         sqls = dpHelper.getReadableDatabase();
         handler = new Handler();
+
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
@@ -84,7 +85,7 @@ public class DialogActivity extends AppCompatActivity {
                             android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED &&
                             ContextCompat.checkSelfPermission(getApplicationContext(),
                                     android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_DENIED) {
-                        textMsg = "사고 발생:" + "http://maps.google.com/?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude);
+                        textMsg = getString(R.string.accident) + "http://maps.google.com/?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude);
                         try {
                             SmsManager sms = SmsManager.getDefault();
                             sms.sendTextMessage(phoneNum, null, textMsg, null, null);
@@ -110,28 +111,33 @@ public class DialogActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MY_DATA_CHECK_CODE) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-
-                tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS)
-                        {
-                            if (tts.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE)
-                                tts.setLanguage(Locale.KOREA);
-                        }
-                        else if (status == TextToSpeech.ERROR)
-                        {
-                            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
+                tts = new TextToSpeech(this,this);
             }
-            else {
-                Intent installTTSIntent = new Intent();
-                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTSIntent);
+        }
+        else {
+            Intent installTTSIntent = new Intent();
+            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+            startActivity(installTTSIntent);
+        }
+    }
+    @Override
+    public void onInit(int initStatus) {
+        if (initStatus == TextToSpeech.SUCCESS) {
+            if(tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREA);
+            else if (tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.ENGLISH);
             }
+            else if (tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPAN);
+            }
+            else if(tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINA);
+            }
+        }
+        else if (initStatus == TextToSpeech.ERROR) {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
 

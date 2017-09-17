@@ -29,9 +29,7 @@ import android.support.v4.content.ContextCompat;
 
 import app.cap.ajm.R;
 
-public class TimeTask extends Service implements
-        TextToSpeech.OnInitListener,
-        SensorEventListener {
+public class TimeTask extends Service implements SensorEventListener, TextToSpeech.OnInitListener {
     private SharedPreferences sharedPreferences;
     double latitude, longitude;
     LocationManager locationManager;
@@ -94,7 +92,7 @@ public class TimeTask extends Service implements
 
     }
 
-    public static TextToSpeech mTTS;
+    public static TextToSpeech tts;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -107,17 +105,16 @@ public class TimeTask extends Service implements
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mTTS = new TextToSpeech(this, this);
-        onInit(mTTS.setLanguage(Locale.KOREA));
+        tts = new TextToSpeech(this, this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if (mTTS != null) {
-            mTTS.stop();
-            mTTS.shutdown();
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
         }
         mPeriodicEventHandler.removeCallbacks(doPeriodicTask);
         senSensorManager.unregisterListener(this);
@@ -125,25 +122,22 @@ public class TimeTask extends Service implements
         locationManager.removeUpdates(locationListener);
     }
     @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS)
-        {
-            int result = mTTS.setLanguage(Locale.KOREA);
-            if (result == TextToSpeech.LANG_NOT_SUPPORTED||
-                    result==TextToSpeech.LANG_MISSING_DATA)
-            {
+    public void onInit(int initStatus) {
+        if (initStatus == TextToSpeech.SUCCESS) {
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREA);
+            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.ENGLISH);
             }
-            else if(mTTS.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE)
-            {
-                mTTS.setLanguage(Locale.KOREA);
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPAN);
+            }
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINA);
             }
         }
-        else if (status == TextToSpeech.ERROR)
-        {
-            Toast.makeText(TimeTask.this, getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-            Intent installTTSIntent = new Intent();
-            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-            startActivity(installTTSIntent);
+        else if (initStatus == TextToSpeech.ERROR) {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -460,7 +454,7 @@ public class TimeTask extends Service implements
     }
 
     private void speekword(String str){
-        mTTS.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
+        tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
     }
 }
 

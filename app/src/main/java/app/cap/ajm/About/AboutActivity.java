@@ -25,7 +25,7 @@ public class AboutActivity extends AbsAboutActivity {
     @Override @SuppressLint("SetTextI18n")
     protected void onCreateHeader(ImageView icon, TextView slogan, TextView version) {
         icon.setImageResource(R.drawable.mainlogo2);
-        slogan.setText("안전모");
+        slogan.setText(getString(R.string.about_pageApp));
         version.setText("v" + BuildConfig.VERSION_NAME);
     }
 
@@ -34,20 +34,18 @@ public class AboutActivity extends AbsAboutActivity {
     protected void onItemsCreated(@NonNull Items items) {
         /* @formatter:off */
         items.add(new Category(getString(R.string.about_pageHi)));
-        items.add(new Card(getString(R.string.about_page).replace(" ", "\u00A0"), "공유"));
+        items.add(new Card(getString(R.string.about_page).replace(" ", "\u00A0"), getString(R.string.about_pageSHARE)));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageHelp)));
-        items.add(new Contributor(R.drawable.ic_my_location_black_48dp,"GPS측정은 어떻게 이루어지나요?", "GPS 측정은 스마트폰에 내장된 GPS 측정 장치를 통해 이루어지게 됩니다. GPS 감도를 높일수록 배터리 사용량이 증가하게 됩니다. 지도를 사용하는 기능은 배터리 소모량을 증가시킬 수 있습니다.".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_directions_bike_black_48dp ,"길 찾기 기능은 어떻게 이루어지나요?",
-                "길 찾기는 카카오내비 앱을 연동하여 이루어지며 카카오내비 앱의 미 설치시 설치 화면으로 넘어갑니다.".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_trending_up_black_48dp,"경로 저장 기능은 어떻게 이루어지나요?", "경로 저장은 시작버튼을 누르면 시작되며, 새로고침을 클릭하면 저장이 완료됩니다. 주행에 관련된 정보와 경로를 확인 할 수 있습니다.".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_sms_black_48dp,"안전 서비스 기능은 어떻게 이루어지나요?", "안전 서비스는 스마트폰에 내장된 센서로 사용자의 넘어짐을 감지하며 넘어짐 감지시 사용자에게 응답을 요구하고, 일정 시간 동안 응답이 없을 경우에 사용자가 등록한 번호로 위치를 SMS로 전송하는 기능입니다.".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_keyboard_voice_black_48dp,"음성 안내 기능은 어떻게 이루어지나요?",
-                "음성 안내 기능은 스마트폰에 내장된 TTS(Text to Speech) 음성합성기술을 이용하며, 스마트폰 기종에 따라 지원 폭이 상이할 수 있습니다. 음성 안내가 나오지 않을 경우 설정 창에서 진동이나 무음을 소리로 바꿔주세요. 지속적으로 음성 안내가 나오지 않을 경우 앱을 재실행 해주세요!".replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_warning_black_48dp,"위험구간 안내 기능은 어떻게 이루어지나요?",
-                "위험 구간 안내 서비스는 스마트폰에 내장된 GPS인식 장치로 이루어지며, 시작 버튼을 누르게 되면 실행됩니다. 이 기능은 배터리 사용량을 증가 시킬 수 있습니다.(위치 오차로 인해 간혹 위험 알림이 제대로 작동하지 않을 수 있습니다.) 기본 속도계 화면에선 속도를 측정하여 25km 이상의 속도로 운행시 과속운행 주의 음성 안내와 화면 전환 안내가 발생합니다. 또한, 속도가 20km이상이 되면 화면 터치가 불가능 하며 정지하여 볼륨업(소리 키우기)버튼을 클릭하여 화면 잠금을 해제해주세요.".replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_my_location_black_48dp,getString(R.string.about_pageHow_gps), getString(R.string.about_pageGPS).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_directions_bike_black_48dp ,getString(R.string.about_pageHow_Direct),getString(R.string.about_pageDirect).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_trending_up_black_48dp,getString(R.string.about_pageHow_Route), getString(R.string.about_pageRoute).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_sms_black_48dp,getString(R.string.about_pageHow_Save), getString(R.string.about_pageSave).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_keyboard_voice_black_48dp,getString(R.string.about_pageHow_TTS),
+                getString(R.string.about_pageTTS).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.ic_warning_black_48dp,getString(R.string.about_pageHow_Alert), getString(R.string.about_pageAlerts).replace(" ","\u00A0")));
         items.add(new Category(getString(R.string.about_pageAlert)));
-        items.add(new Contributor(R.drawable.mainlogo2, "안전모팀", "이 앱은 사용자들의 자전거 이용의 안전성을 높이기 위해 개발된 앱입니다. 무리한 앱 사용을 지양하고 항상 안전한 라이딩 부탁드릴게요! :)".replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.mainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageLicense)));
         items.add(new License("MultiType", "drakeet",License.APACHE_2,"https://github.com/drakeet/MultiType"));
@@ -74,19 +72,12 @@ public class AboutActivity extends AbsAboutActivity {
 
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pagePL)));
-        items.add(new Contributor(R.drawable.ic_android_black_48dp,"출처",
-                        " 날씨 정보 - OpenWeatherMap 서울시 데이터\n 교차로정보 - ITS표준노드링크시스템\n " +
-                        "보행자전용도로 - 서울시 열린데이터 광장\n 사고다발지역 - 서울시 열린데이터 광장\n 어린이 보호구역 - 공공데이터 포털"));
+        items.add(new Contributor(R.drawable.ic_android_black_48dp,getString(R.string.about_pageWhere), getString(R.string.about_pageWhere_is)));
 
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageCS)));
-        items.add(new Contributor(R.drawable.ic_star_black_48dp,"자전거 관리는 이렇게!",
-                "1.타이어가 너무 닳지 않았는지 검사.\n2.브레이크 살펴보기.\n3.서스펜션 포크 볼트 확인.\n4.체인과 스프라켓의 윤활유 확인하기.\n5.베어링에 그리스 재주입. " +
-                        "\n마지막으로 일주일에 한번은 고생한 자전거를 위해 자전거를 닦아주세요! 안전하고 간지나는 라이딩 하시길 바라겠습니다 :)"));
-
+        items.add(new Contributor(R.drawable.ic_star_black_48dp,getString(R.string.about_pageBike), getString(R.string.about_pageBikeis)));
     }
-
-
     @Override
     protected void onActionClick(View action) {
         onClickShare();

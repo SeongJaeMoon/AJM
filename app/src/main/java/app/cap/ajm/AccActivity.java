@@ -27,7 +27,7 @@ import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.Prox.SMSContact;
 import app.cap.ajm.Prox.TimeTask;
 
-public class AccActivity extends AppCompatActivity {
+public class AccActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
     private Button start,stop,addContacts,removes;
     ListView lv;
@@ -65,20 +65,19 @@ public class AccActivity extends AppCompatActivity {
         final Cursor cursor = getAllContacts();
         final ArrayAdapter<String> arrayAdapter;
 
-        Toast.makeText(getApplicationContext(),"이 서비스는 SMS 발신 요금이 발생할 수 있습니다.",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),getString(R.string.sms_alert),Toast.LENGTH_LONG).show();
 
         start.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            Log.d("Start Button", "Pressed");
             String count = "SELECT count(*) FROM "+SMSContact.TABLE_NAME;
             Cursor mcursor = sql.rawQuery(count, null);
             mcursor.moveToFirst();
             int icount = mcursor.getInt(0);
             if(icount>0)
             {
-                Toast.makeText(getApplicationContext(),"안전모 기능을 실행합니다.",Toast.LENGTH_SHORT).show();
-                speakWords("안전모 기능을 실행합니다.");
+                Toast.makeText(getApplicationContext(),getString(R.string.start_service_safe),Toast.LENGTH_SHORT).show();
+                speakWords(getString(R.string.start_service_safe));
                 Intent intent= new Intent(getApplicationContext(), TimeTask.class);
                 startService(intent);
 
@@ -93,8 +92,8 @@ public class AccActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            speakWords("안전모 기능을 종료합니다.");
-            Toast.makeText(getApplication(),"안전모 기능을 종료합니다.",Toast.LENGTH_LONG).show();
+            speakWords(getString(R.string.stop_service_safe));
+            Toast.makeText(getApplication(),getString(R.string.stop_service_safe),Toast.LENGTH_LONG).show();
             Intent intent= new Intent(getApplicationContext(), TimeTask.class);
             stopService(intent);
         }
@@ -111,12 +110,12 @@ public class AccActivity extends AppCompatActivity {
                     || edit.getText().toString().equals("119")
                     ||!isString(edit.getText().toString()))
             {
-                Toast.makeText(getApplicationContext(),"다시 입력해주세요.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.reset),Toast.LENGTH_SHORT).show();
             }
             else
                 {
                 addNewContact(edit.getText().toString());
-                Toast.makeText(getApplicationContext(),"긴급 번호가 추가되었습니다."+"\n"+edit.getText().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.emergency_add)+"\n"+edit.getText().toString(),Toast.LENGTH_SHORT).show();
                 Cursor cursor = getAllContacts();
                 if (cursor.moveToFirst())
                 {
@@ -170,7 +169,7 @@ public class AccActivity extends AppCompatActivity {
             }cursor.close();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.simplerow);
             lv.setAdapter(arrayAdapter);
-            Toast.makeText(getApplicationContext(),"전체 번호가 삭제되었습니다.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.remove_all),Toast.LENGTH_SHORT).show();
             Intent intent= new Intent(getApplicationContext(), TimeTask.class);
             stopService(intent);
         }
@@ -200,43 +199,45 @@ public class AccActivity extends AppCompatActivity {
 
     private void speakWords(String speech) {
         tts.speak(speech, TextToSpeech.LANG_COUNTRY_AVAILABLE, null,null);
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MY_DATA_CHECK_CODE) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-
-                tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS)
-                        {
-                            if (tts.isLanguageAvailable(Locale.KOREA) == TextToSpeech.LANG_AVAILABLE)
-                                tts.setLanguage(Locale.KOREA);
-                        }
-                        else if (status == TextToSpeech.ERROR)
-                        {
-                            Toast.makeText(getApplicationContext(), "음성 안내를 사용할 수 없습니다... 개발자에게 메일로 문의하세요.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-            else {
-                Intent installTTSIntent = new Intent();
-                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTSIntent);
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
+                tts = new TextToSpeech(this,this);
             }
         }
+        else {
+            Intent installTTSIntent = new Intent();
+            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+            startActivity(installTTSIntent);
+        }
     }
-
+    @Override
+    public void onInit(int initStatus) {
+        if (initStatus == TextToSpeech.SUCCESS) {
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREA);
+            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.ENGLISH);
+            }
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPAN);
+            }
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINA);
+            }
+        }
+        else if (initStatus == TextToSpeech.ERROR) {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (tts != null) {
             tts.stop();
             tts.shutdown();
-            tts=null;
         }
     }
 

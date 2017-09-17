@@ -284,14 +284,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         Log.w("MAIN:", "ActionDown");
                         try {
                             rawsound = R.raw.bikebell;
-                            /*//rawsound = R.raw.siren;
-                            Log.w("MAIN: ", "Sound "+String.valueOf(rawsound));
                             if (!isSound&&!ishold){
-                                Log.w("Main: ", " !isSound");
-                            soundPool.load(MainActivity.this, rawsound, 1);
-                            isSound = true;
+                                soundPool.load(MainActivity.this, rawsound, 1);
+                                isSound=true;
                             }
-                            else*/ if(isSound&&!ishold){
+                            else if(isSound&&!ishold){
                                 soundPool.play(rawsound, 1f, 1f, 0, 0, 1f);
                                 Log.w("Main: ", "soundPlay");
                             }
@@ -353,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             time.setBase(SystemClock.elapsedRealtime() - data.getTime());
             time.start();
             data.setFirstTime(true);
-            speakWords("헬멧 착용하셨나요?");
+            speakWords(getString(R.string.wear_helmet));
             Intent intent = new Intent(getApplicationContext(), GpsServices.class);
             startService(intent);
             refresh.setVisibility(View.INVISIBLE);
@@ -503,7 +500,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         if (tts != null) {
             tts.stop();
             tts.shutdown();
-            tts = null;
         }
         if (sharedPreferences.getBoolean("autoservice", false)){
             Intent stop1 = new Intent(getApplicationContext(), TimeTask.class);
@@ -724,7 +720,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 holder.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_black_24dp));
                 ishold = true;
-                Toast.makeText(getApplicationContext(),"화면 잠금 실행",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.run_lock),Toast.LENGTH_SHORT).show();
                 return true;
             }
             else if(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP&&ishold)
@@ -732,7 +728,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 holder.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_open_black_24dp));
                 ishold = false;
-                Toast.makeText(getApplicationContext(),"화면 잠금 해제",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.un_lock),Toast.LENGTH_SHORT).show();
                 return true;
             }
         }
@@ -780,8 +776,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            if(tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
                 tts.setLanguage(Locale.KOREA);
+            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.ENGLISH);
+            }
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPAN);
+            }
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINA);
+            }
         }
         else if (initStatus == TextToSpeech.ERROR) {
             Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
@@ -842,8 +847,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     protected void onStop() {
         super.onStop();
-        soundPool.release();
-        soundPool = null;
+        if(soundPool!=null) {
+            soundPool.release();
+        }
     }
 
     private void getAppKeyHash() {

@@ -24,7 +24,7 @@ public class TrackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("동기화중...");
+        progressDialog.setMessage(getString(R.string.running));
         progressDialog.show();
         progressDialog.setCancelable(false);
         setContentView(R.layout.activity_track);
@@ -34,7 +34,7 @@ public class TrackActivity extends AppCompatActivity {
         trackDBhelper.open();
         Cursor cursor = trackDBhelper.fetchAllListOrderBYDec();
         if (cursor.getCount()==0){
-            textView.setText("저장 된 기록이 없습니다.");
+            textView.setText(getString(R.string.donot_save));
             progressDialog.cancel();
             trackDBhelper.close();
         }
@@ -47,7 +47,7 @@ public class TrackActivity extends AppCompatActivity {
                     i++;
                     cursor.moveToNext();
                 }
-                textView.setText("저장된 기록 : 총 "+ i +" 개" );
+                textView.setText(getString(R.string.save_how_many)+" "+ i);
                 trackDBhelper.close();
             }catch (IllegalStateException e){
                 e.printStackTrace();
@@ -75,7 +75,7 @@ public class TrackActivity extends AppCompatActivity {
                             listView.setAdapter(trackAdapter);
                             trackDBhelper1.close();
                             i--;
-                            textView.setText("저장된 기록 : 총 "+ i +" 개" );
+                            textView.setText(getString(R.string.save_how_many)+" "+ i);
                             Toast.makeText(getApplicationContext(),getString(R.string.remove_category),Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             e.printStackTrace();

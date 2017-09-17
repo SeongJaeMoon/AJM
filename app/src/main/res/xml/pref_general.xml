@@ -23,12 +23,6 @@
             android:summary="@string/alertsetting" />
 
         <SwitchPreference
-            android:key="translate"
-            android:title="@string/translate_title"
-            android:summary="@string/translate"
-            />
-
-        <SwitchPreference
             android:key="autoservice"
             android:title="@string/autocancle_title"
             android:summary="@string/autocancel"/>
@@ -45,7 +39,7 @@
             android:key = "weight_value"
             android:inputType="number"
             android:title ="@string/weight_value"
-            android:summary="몸무게는 40키로부터 100키로까지 입력해주세요."
+            android:summary="@string/weight_val"
             android:dialogIcon="@drawable/ic_add_alert_black_48dp"
             android:maxLines="1"
             android:singleLine="true"
