@@ -18,7 +18,7 @@
     <string name=	"wear_helmet">Dou you wear a helmet?</string>
     <string name=	"max_speed">Top speed:	</string>
     <string name=	"average_speed">Average speed:	</string>
-    <string name=	"distance"	>distance driven:</string>
+    <string name=	"distance"	>Distance driven:</string>
     <string name=	"time">Driving time:</string>
     <string name=	"accuracy"	>Position error:</string>
     <string name=	"startAddr">Departure Address:</string>
