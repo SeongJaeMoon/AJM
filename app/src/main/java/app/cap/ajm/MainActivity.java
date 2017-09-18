@@ -509,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             resetData();
             mLocationManager.removeUpdates(this);
         }
-        showNotification(getString(R.string.app_name), "자전거 이용으로 " + trees + "그루의 낙엽송을 심었습니다:)");
+        showNotification(getString(R.string.app_name), String.format(getString(R.string.thk_you),trees));
     }
 
     @Override
@@ -588,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
             currentSpeed.setText(s);
 
-            if (25 <= location.getSpeed() * 3.6 && !tts.isSpeaking() && data.isRunning()) {
+            if (30 <= location.getSpeed() * 3.6 && !tts.isSpeaking() && data.isRunning()) {
                 showNotification(getString(R.string.over_speed), getString(R.string.over_speed_alert));
                 speakWords(getString(R.string.over_speed_alert));
                 try {
@@ -776,19 +776,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREA);
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREAN);
             else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
                 tts.setLanguage(Locale.ENGLISH);
             }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPAN);
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPANESE)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPANESE);
             }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINA);
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINESE)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINESE);
             }
         }
-        else if (initStatus == TextToSpeech.ERROR) {
+        else if (initStatus == TextToSpeech.ERROR||initStatus==TextToSpeech.LANG_NOT_SUPPORTED){
             Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
@@ -818,7 +818,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     private void populateWeather(WeatherResponseModel response) {
         weather2.setText(response.getMain().getHumidity()+ "%");
-        weather5.setText(TempUnitConverter.convertToCelsius(response.getMain().getTemp()).intValue() + " °C");
+        weather5.setText(TempUnitConverter.convertToCelsius(response.getMain().getTemp()).intValue() + "°C");
     }
 
     @Override

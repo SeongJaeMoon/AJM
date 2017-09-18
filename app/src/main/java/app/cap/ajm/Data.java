@@ -62,7 +62,7 @@ public class Data {
         }
         else
             {
-            s = new SpannableString(String.format(Locale.KOREA,"%.3f", distanceKm) + "Km");
+            s = new SpannableString(String.format(Locale.KOREA,"%.3f", distanceKm) + "km");
             s.setSpan(new RelativeSizeSpan(0.5f), s.length()-2, s.length(), 0);
         }
         return s;
@@ -168,34 +168,34 @@ public class Data {
         double averageSpeed = ((distanceM / (time / 1000)) * 3.6);
         Log.w("Data : ", "DistanceM&&K: "+String.valueOf(distanceM)+", "+ String.valueOf(distanceKm)+" averageSpeed: " + averageSpeed);
         if (distanceM>10 && averageSpeed > 5 && averageSpeed < 13){
-            calorie = weight * 0.0430 * averageSpeed;
-        }
-        else if (distanceM >10 && averageSpeed >= 13 && averageSpeed <= 15) {
             calorie = weight * 0.0650 * averageSpeed;
+        }
+        else if (distanceM >10 && averageSpeed > 13 && averageSpeed <= 15) {
+            calorie = weight * 0.0783 * averageSpeed;
         }
         else if (distanceM >10 && averageSpeed >= 16 && averageSpeed <= 18)
         {
-            calorie = weight * 0.0783 * averageSpeed;
+            calorie = weight * 0.0939 * averageSpeed;
         }
         else if(distanceM >10 && averageSpeed >= 19 && averageSpeed <=21 )
         {
-            calorie = weight * 0.0939 * averageSpeed;
+            calorie = weight * 0.113 * averageSpeed;
         }
         else if(distanceM >10 && averageSpeed >= 22 && averageSpeed <=23 )
         {
-            calorie = weight * 0.113 * averageSpeed;
+            calorie = weight * 0.124 * averageSpeed;
         }
         else if(distanceM >10 && averageSpeed >= 24 && averageSpeed <=25 )
         {
-            calorie = weight * 0.124 * averageSpeed;
+            calorie = weight * 0.136 * averageSpeed;
         }
         else if(distanceM >10 && averageSpeed >= 26 && averageSpeed <= 28 )
         {
-            calorie = weight * 0.136 * averageSpeed;
+            calorie = weight * 0.149 * averageSpeed;
         }
         else if(distanceM >10 && averageSpeed >= 29 && averageSpeed <=31 )
         {
-            calorie = weight * 0.179 * averageSpeed;
+            calorie = weight * 0.163 * averageSpeed;
         }
         else if(distanceM > 10 && averageSpeed >32)
         {
@@ -204,11 +204,10 @@ public class Data {
     }
 
     public void addCalorie(double cal){
-        calorie = calorie + cal;
         if (cal>10000||Double.isNaN(cal)||Double.isInfinite(cal)){
             cal = 0;
-            calorie = cal;
         }
+        calorie = calorie + cal;
         calorieK = calorie / 1000f;
     }
 }

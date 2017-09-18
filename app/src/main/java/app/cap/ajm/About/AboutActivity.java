@@ -48,6 +48,7 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new Contributor(R.drawable.mainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageLicense)));
+
         items.add(new License("MultiType", "drakeet",License.APACHE_2,"https://github.com/drakeet/MultiType"));
         items.add(new License("about-page", "drakeet", License.APACHE_2, "https://github.com/drakeet/about-page"));
         items.add(new License("EasyWeather","code-crusher",License.APACHE_2, "https://github.com/code-crusher/EasyWeather"));
@@ -57,16 +58,17 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new License("okhttp","square", License.APACHE_2,"https://github.com/square/okhttp"));
         items.add(new License("volley","google", License.APACHE_2, "https://github.com/google/volley"));
         items.add(new License("butternife","JakeWharton",License.APACHE_2,"https://github.com/JakeWharton/butterknife"));
-        items.add(new License("NoobCameraFlash","abhi347",License.GPL_V3, "com.github.Abhi347:NoobCameraFlash:0.0.1"));
+        items.add(new License("NoobCameraFlash","abhi347",License.GPL_V3, "https://github.com/Abhi347/NoobCameraFlash"));
         items.add(new License("parcler","johncarl81",License.APACHE_2,"https://github.com/johncarl81/parceler"));
         items.add(new License("FloatingActionButton","makovkastar",License.MIT,"https://github.com/makovkastar/FloatingActionButton"));
         items.add(new License("AndroidSwipeLayout","daimajia",License.MIT,"https://github.com/daimajia/AndroidSwipeLayout"));
         items.add(new License("geofire-java","firebase",License.MIT,"https://github.com/firebase/geofire-java"));
         items.add(new License("CicleImageView","hdodenhof",License.APACHE_2,"https://github.com/hdodenhof/CircleImageView"));
         items.add(new License("commons-lang3","Apache",License.APACHE_2,"https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.3.2"));
-        items.add(new License("commons-math3","Apache",License.APACHE_2,"org.apache.commons:commons-math3:3.6.1"));
+        items.add(new License("commons-math3","Apache",License.APACHE_2,"https://mvnrepository.com/artifact/org.apache.commons:commons-math3:3.6.1"));
         items.add(new License("gson","google",License.APACHE_2,"https://github.com/google/gson"));
         items.add(new License("Google Play Services API",License.GOOGLE, License.APACHE_2, "https://developers.google.com/android/reference"));
+        items.add(new License("material-design-icons","google",License.APACHE_2,"https://github.com/google/material-design-icons"));
         items.add(new License("Kakao Open SDK",License.KAKAO,License.APACHE_2,"https://developers.kakao.com/docs/sdk"));
         items.add(new License("AJM","안전모",License.APACHE_2+", (CCL) "+License.CCL,"https://github.com/SeongJaeMoon/AJM"));
 

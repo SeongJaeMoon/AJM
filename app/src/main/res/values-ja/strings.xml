@@ -143,6 +143,7 @@
     <string name="reset">再入力してください。</string>
     <string name="emergency_add">緊急番号が追加されました。</string>
     <string name="remove_all">削除された総数。</string>
+    <string name="at_least_number">%1$dつ以上の番号が必要です。</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

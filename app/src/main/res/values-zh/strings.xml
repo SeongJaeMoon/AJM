@@ -143,6 +143,8 @@
     <string name="reset">请重新输入</string>
     <string name="emergency_add">紧急号码增加。</string>
     <string name="remove_all">所有号码已删除。</string>
+    <string name="at_least_number">需要一个或多个数字。</string>
+    <string name="thk_you">您的自行车具有种植 %1$d 棵树的效果。:)</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

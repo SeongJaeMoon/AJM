@@ -1,64 +1,34 @@
 package app.cap.ajm.GPSTraker;
 
-import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import net.daum.mf.map.api.CameraPosition;
 import net.daum.mf.map.api.CameraUpdateFactory;
-import net.daum.mf.map.api.CancelableCallback;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
-import com.kakao.kakaonavi.options.RpOption;
-import com.kakao.kakaonavi.options.VehicleType;
-import com.melnykov.fab.FloatingActionButton;
-import java.io.IOException;
-import java.util.List;
 import app.cap.ajm.R;
-
 import android.util.Log;
-import android.view.MotionEvent;
-import com.kakao.kakaonavi.Location;
-import com.kakao.kakaonavi.Destination;
-import com.kakao.kakaonavi.KakaoNaviParams;
-import com.kakao.kakaonavi.KakaoNaviService;
-import com.kakao.kakaonavi.NaviOptions;
-import com.kakao.kakaonavi.options.CoordType;
 import android.widget.Toast;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.concurrent.TimeUnit;
-
-import app.cap.ajm.R;
-
-import static net.daum.mf.map.api.MapPoint.mapPointWithCONGCoord;
 import static net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord;
 
 public class MapActivity extends FragmentActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener{
     private ArrayList<TrackPoint> trackPointList;
-    private double lat, lng;
     private TrackDBhelper trackDBhelper;
     private MapView mapView;
     private SharedPreferences sharedPreferences;
     private MapPOIItem mapPOIItem, mapPOIItem1;
     private MapPolyline mapPolyline;
     private int i = 0;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +38,10 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mapView.setMapViewEventListener(this);
         mapView.setPOIItemEventListener(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        progressDialog = new ProgressDialog(MapActivity.this);
+        progressDialog.setMessage(getString(R.string.running));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
         trackDBhelper = new TrackDBhelper(getApplicationContext());
         trackDBhelper.open();
         trackPointList = new ArrayList<>();
@@ -77,6 +51,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         final String ends = intent.getStringExtra("endTime");
         trackPointList = trackDBhelper.fetchBetweenTime(starts, ends);
         if (trackPointList!=null) {
+
             TrackPoint trackPoint = trackPointList.get(0);
             double startLat = trackPoint.getLat();
             double startLng = trackPoint.getLng();
@@ -101,6 +76,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                         if (trackPointList != null && trackPointList.size() > 0) {
                             for (i = 0; i < trackPointList.size(); i++) {
                                 TrackPoint obj = trackPointList.get(i);
+                                progressDialog.setProgress(i);
                                 mapPolyline.setLineColor(Color.argb(128, 50, 0, 255));
                                 mapPolyline.addPoint(MapPoint.mapPointWithGeoCoord(obj.getLat(), obj.getLng()));
                                 mapView.addPolyline(mapPolyline);
@@ -132,10 +108,13 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             trackDBhelper.close();
             MapPointBounds bounds = new MapPointBounds(startMarkerPoint, endMarkerPoint);
             mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(bounds, 20, 0f, 12f));
+            progressDialog.dismiss();
         }else {
+            progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), getString(R.string.wrong_data),Toast.LENGTH_SHORT).show();
             }
         } else {
+            progressDialog.dismiss();
             Toast.makeText(getApplication(), getString(R.string.wrong_map), Toast.LENGTH_SHORT).show();
         }
     }

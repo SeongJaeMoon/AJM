@@ -121,16 +121,16 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     @Override
     public void onInit(int initStatus) {
         if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREA);
+            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.KOREAN);
             else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
                 tts.setLanguage(Locale.ENGLISH);
             }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPAN);
+            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPANESE)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.JAPANESE);
             }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINA);
+            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINESE)==TextToSpeech.LANG_AVAILABLE){
+                tts.setLanguage(Locale.CHINESE);
             }
         }
         else if (initStatus == TextToSpeech.ERROR) {

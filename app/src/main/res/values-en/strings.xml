@@ -13,7 +13,7 @@
     <string name=	"nav_title_com">Search Facility</string>
     <string name=	"nav_title_timetask">	Fall Detection Management</string>
     <string name=	"nav_title_ajm">Help</string>
-    <string name=	"ajm_support"	>First Kirchberg, please read the help window in the helmet before using the app! :)</string>
+    <string name=	"ajm_support"	>First time! please read the help window in the navigation view before using the app! :)</string>
     <string name=	"start_location_detect">Looking for a location. \n Wait.</string>
     <string name=	"wear_helmet">Dou you wear a helmet?</string>
     <string name=	"max_speed">Top speed:	</string>
@@ -46,13 +46,13 @@
     <string name=	"select_place"	>Please select from the list.</string>
     <string name=	"no_internet_conection">It did not have an Internet connection. \n Some features are not available.</string>
     <string name=	"no_way">Can not find your destination.</string>
-    <string name=	"weight_value"	>Enter your weight for calorie calculation.</string>
+    <string name=	"weight_value"	>Input your weight for calorie calculation.</string>
     <string name=	"action_settings">Set</string>
     <string name=	"menu">menu</string>
     <string name=	"source_code_summary"	>Access to the source code.</string>
     <string name=	"version">안전모 version</string>
-    <string name=	"alert"	>run the switch the alarm?</string>
-    <string name=	"route_saver">run the auto-save path?</string>
+    <string name=	"alert"	>Run the switch the alarm?</string>
+    <string name=	"route_saver">Run the auto-save path?</string>
     <string name=	"gps_level">Set the GPS reception.	</string>
     <string name=	"title_activity_test"	>Map</string>
     <string name=	"permission_error_title"	>Position error permissions	</string>
@@ -140,9 +140,11 @@
     <string name="sms_alert">This service may incur an SMS transmission fee.</string>
     <string name="start_service_safe">Fall detection was enabled.</string>
     <string name="stop_service_safe">Fall detection was disabled.</string>
-    <string name="reset">Please re-enter.</string>
+    <string name="reset">Please re-input.</string>
     <string name="emergency_add">Emergency number added.</string>
     <string name="remove_all">All number deleted.</string>
+    <string name="at_least_number">One or more numbers are required.</string>
+    <string name="thk_you">Your bike has the effect of planting %1$d tree. :)</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>
