@@ -38,10 +38,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mapView.setMapViewEventListener(this);
         mapView.setPOIItemEventListener(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        progressDialog = new ProgressDialog(MapActivity.this);
-        progressDialog.setMessage(getString(R.string.running));
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
         trackDBhelper = new TrackDBhelper(getApplicationContext());
         trackDBhelper.open();
         trackPointList = new ArrayList<>();
@@ -51,11 +47,9 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         final String ends = intent.getStringExtra("endTime");
         trackPointList = trackDBhelper.fetchBetweenTime(starts, ends);
         if (trackPointList!=null) {
-
             TrackPoint trackPoint = trackPointList.get(0);
             double startLat = trackPoint.getLat();
             double startLng = trackPoint.getLng();
-            Log.w("onMapReady: ", String.valueOf(startLat) + ", " + String.valueOf(startLng));
             String startTitle = getString(R.string.start_positon);
             MapPoint startMarkerPoint = mapPointWithGeoCoord(startLat, startLng);
             mapPOIItem = new MapPOIItem();
@@ -76,11 +70,9 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                         if (trackPointList != null && trackPointList.size() > 0) {
                             for (i = 0; i < trackPointList.size(); i++) {
                                 TrackPoint obj = trackPointList.get(i);
-                                progressDialog.setProgress(i);
                                 mapPolyline.setLineColor(Color.argb(128, 50, 0, 255));
                                 mapPolyline.addPoint(MapPoint.mapPointWithGeoCoord(obj.getLat(), obj.getLng()));
                                 mapView.addPolyline(mapPolyline);
-                                Log.w("item: ",String.valueOf(i));
                             }
                         }
                     }
@@ -93,7 +85,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             TrackPoint trackPoint1 = trackPointList.get(i);
             double endLat = trackPoint1.getLat();
             double endLng = trackPoint1.getLng();
-            Log.w("onMapReady: ", String.valueOf(endLat) + ", " + String.valueOf(endLng));
             String endTitle = getString(R.string.arrive_position);
             MapPoint endMarkerPoint = mapPointWithGeoCoord(endLat, endLng);
             mapPOIItem1 = new MapPOIItem();
@@ -108,13 +99,11 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             trackDBhelper.close();
             MapPointBounds bounds = new MapPointBounds(startMarkerPoint, endMarkerPoint);
             mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(bounds, 20, 0f, 12f));
-            progressDialog.dismiss();
+
         }else {
-            progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), getString(R.string.wrong_data),Toast.LENGTH_SHORT).show();
             }
         } else {
-            progressDialog.dismiss();
             Toast.makeText(getApplication(), getString(R.string.wrong_map), Toast.LENGTH_SHORT).show();
         }
     }
