@@ -27,9 +27,11 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
+import app.cap.ajm.AJMapp;
 import app.cap.ajm.R;
+import app.cap.ajm.Speech;
 
-public class TimeTask extends Service implements SensorEventListener, TextToSpeech.OnInitListener {
+public class TimeTask extends Service implements SensorEventListener{
     private SharedPreferences sharedPreferences;
     double latitude, longitude;
     LocationManager locationManager;
@@ -75,13 +77,13 @@ public class TimeTask extends Service implements SensorEventListener, TextToSpee
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float timestamp;
     private boolean initState = true;
-
+    private AJMapp ajMapp;
     //센서변수:
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
     private Sensor senProximity;
     private SensorEvent mSensorEvent;
-
+    private Speech speech;
     private Runnable doPeriodicTask = new Runnable() {
         public void run() {
             sentRecently = 'N';
@@ -102,45 +104,27 @@ public class TimeTask extends Service implements SensorEventListener, TextToSpee
     @Override
     public void onCreate() {
         super.onCreate();
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        //Intent checkTTSIntent = new Intent();
+        //checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        //tts = new TextToSpeech(this, this);
+        ajMapp = (AJMapp)getApplicationContext();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        tts = new TextToSpeech(this, this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        speech = new Speech();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        if (speech.getTTS() != null) {
+            speech.getTTS().shutdown();
         }
         mPeriodicEventHandler.removeCallbacks(doPeriodicTask);
         senSensorManager.unregisterListener(this);
         sendCount = 0;
         locationManager.removeUpdates(locationListener);
     }
-    @Override
-    public void onInit(int initStatus) {
-        if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREAN);
-            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.ENGLISH);
-            }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPANESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPANESE);
-            }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINESE);
-            }
-        }
-        else if (initStatus == TextToSpeech.ERROR) {
-            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-        }
-    }
-
+    
     @Override
     public int onStartCommand(Intent intent, int flag, int startId) {
 
@@ -424,7 +408,7 @@ public class TimeTask extends Service implements SensorEventListener, TextToSpee
                     if (degreeFloat > 30 || degreeFloat2 > 30) {
                         Log.d("Degree1:", "" + degreeFloat);
                         Log.d("Degree2:", "" + degreeFloat2);
-                        speekword(getString(R.string.fall_detect));
+                        speech.Talk(getString(R.string.fall_detect));
 
                         Intent intent = new Intent(TimeTask.this, DialogActivity.class);
                         intent.putExtra("lastlat",latitude);
@@ -438,7 +422,7 @@ public class TimeTask extends Service implements SensorEventListener, TextToSpee
                             @Override
                             public void run() {
                                 Toast.makeText(TimeTask.this.getApplicationContext(), getString(R.string.be_careful), Toast.LENGTH_LONG).show();
-                                speekword(getString(R.string.be_careful_tts));
+                                speech.Talk(getString(R.string.be_careful_tts));
                                 Log.d("Send!", "센서 값 변화!!!!! " + sendCount);
                             }
                         });
@@ -452,10 +436,7 @@ public class TimeTask extends Service implements SensorEventListener, TextToSpee
             System.arraycopy(fusedOrientation, 0, gyroOrientation, 0, 3);
         }
     }
-
-    private void speekword(String str){
-        tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
-    }
+    //private void speekword(String str){tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);}
 }
 
 

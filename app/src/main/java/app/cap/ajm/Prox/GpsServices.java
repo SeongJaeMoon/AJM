@@ -33,12 +33,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import app.cap.ajm.AJMapp;
 import app.cap.ajm.Data;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 import app.cap.ajm.MainActivity;
 import app.cap.ajm.R;
+import app.cap.ajm.Speech;
 
-public class GpsServices extends Service implements LocationListener, TextToSpeech.OnInitListener {
+public class GpsServices extends Service implements LocationListener{
 
     private static String TAG = GpsServices.class.getSimpleName();
     private LocationManager mLocationManager;
@@ -59,16 +61,20 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     public static TextToSpeech tts;
     private TrackDBhelper trackDBhelper;
     private Query query;
+    private AJMapp ajMapp;
+    private Speech speech;
     @Override
     public void onCreate() {
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        Intent checkTTSIntent = new Intent();
+        //Intent checkTTSIntent = new Intent();
+        //checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        ajMapp =(AJMapp)getApplicationContext();
+        speech = new Speech();
         trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        tts = new TextToSpeech(this, this);
+        //tts = new TextToSpeech(this, this);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -117,31 +123,6 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
             }
         }
     }
-
-    @Override
-    public void onInit(int initStatus) {
-        if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREAN);
-            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.ENGLISH);
-            }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPANESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPANESE);
-            }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINESE);
-            }
-        }
-        else if (initStatus == TextToSpeech.ERROR) {
-            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void speakword(String str) {
-        tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);
-    }
-
     @Override
     public void onLocationChanged(Location location) {
         Log.w(TAG, "onLocationChanged");
@@ -230,9 +211,8 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
     public void onDestroy() {
         super.onDestroy();
         mLocationManager.removeUpdates(this);
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        if (speech.getTTS() != null) {
+            speech.getTTS().shutdown();
         }
         //if (sharedPreferences.getBoolean("route", false)) {
         //    try {
@@ -302,43 +282,43 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                              try {
                                                  //Firebase에서 위치 정보 가져오기
                                                  String content = dataSnapshot.getValue(String.class);
-                                                 if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ko")){
-                                                     speakword("전방에 "+content+ "입니다. 주의하세요.");
+                                                 if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("ko")){
+                                                     speech.Talk("전방에 "+content+ "입니다. 주의하세요.");
                                                  }
-                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("en")){
+                                                 else if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("en")){
                                                      switch (content){
-                                                         case "직각교차로": speakword("Be careful at the intersection point ahead.");
+                                                         case "직각교차로": speech.Talk("Be careful at the intersection point ahead.");
                                                              break;
-                                                         case "보행자도로": speakword("Be careful at the pedestrian road ahead");
+                                                         case "보행자도로": speech.Talk("Be careful at the pedestrian road ahead");
                                                              break;
-                                                         case "어린이보호구역": speakword("Be careful at the child protection area");
+                                                         case "어린이보호구역": speech.Talk("Be careful at the child protection area");
                                                              break;
-                                                         case "사고다발지역" : speakword("Be careful at the accident prone area");
+                                                         case "사고다발지역" : speech.Talk("Be careful at the accident prone area");
                                                              break;
-                                                         default: speakword("Be careful at the test");
+                                                         default: speech.Talk("Be careful at the test");
                                                              break;
                                                      }
                                                  }
-                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ja")){
+                                                 else if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("ja")){
                                                         switch (content){
-                                                            case "직각교차로":speakword("前方に交差点です注意してください");
+                                                            case "직각교차로":speech.Talk("前方に交差点です注意してください");
                                                                 break;
-                                                            case "보행자도로": speakword("前方に歩行者道路に注意してください");
+                                                            case "보행자도로": speech.Talk("前方に歩行者道路に注意してください");
                                                                 break;
-                                                            case "어린이보호구역": speakword("前方に子供の保護区域に注意してください");
+                                                            case "어린이보호구역": speech.Talk("前方に子供の保護区域に注意してください");
                                                                 break;
-                                                            case "사고다발지역" :speakword("前方に事故多発地域に注意してください");
+                                                            case "사고다발지역" :speech.Talk("前方に事故多発地域に注意してください");
                                                                 break;
                                                         }
-                                                 }else if(!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
+                                                 }else if(!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
                                                      switch (content){
-                                                         case "직각교차로":speakword("小心前方的路口");
+                                                         case "직각교차로":speech.Talk("小心前方的路口");
                                                              break;
-                                                         case "보행자도로":speakword("小心行人专用道路");
+                                                         case "보행자도로":speech.Talk("小心行人专用道路");
                                                              break;
-                                                         case "어린이보호구역":speakword("注意前面的儿童保护区");
+                                                         case "어린이보호구역":speech.Talk("注意前面的儿童保护区");
                                                              break;
-                                                         case "사고다발지역" : speakword("在你面前要小心很多事故");
+                                                         case "사고다발지역" :speech.Talk("在你面前要小心很多事故");
                                                              break;
                                                      }
                                                  }
@@ -356,7 +336,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
 
                              @Override
                              public void onKeyExited(String key) {
-                                speakword(getString(R.string.left_alert));
+                                 speech.Talk(getString(R.string.left_alert));
                                 Toast.makeText(getApplicationContext(), getString(R.string.left_alert), Toast.LENGTH_SHORT).show();
                              }
 

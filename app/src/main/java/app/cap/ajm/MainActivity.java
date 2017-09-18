@@ -2,6 +2,7 @@ package app.cap.ajm;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -80,7 +81,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 
-public class MainActivity extends AppCompatActivity implements LocationListener, TextToSpeech.OnInitListener {
+public class MainActivity extends AppCompatActivity implements LocationListener{
     public final String weather_id = BuildConfig.OWM_API_KEY;
     private final String weather_city = "seoul";
     private BackPressCloseHandler backPressCloseHandler;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private Chronometer time;
     private Data.onGpsServiceUpdate onGpsServiceUpdate;
     private boolean firstfix;
-    private TextToSpeech tts;
+    //private TextToSpeech tts;
     private boolean hasFlash;
     private boolean turnFlash;
     private String gpsValue;
@@ -123,7 +124,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Bind(R.id.weather5)
     TextView weather5;
     private int MY_DATA_CHECK_CODE = 0;
-
+    private AJMapp ajMapp;
+    private Speech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
+        ajMapp = (AJMapp)getApplicationContext();
+        speech = new Speech();
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
@@ -350,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             time.setBase(SystemClock.elapsedRealtime() - data.getTime());
             time.start();
             data.setFirstTime(true);
-            speakWords(getString(R.string.wear_helmet));
+            speech.Talk(getString(R.string.wear_helmet));
             Intent intent = new Intent(getApplicationContext(), GpsServices.class);
             startService(intent);
             refresh.setVisibility(View.INVISIBLE);
@@ -497,9 +500,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onDestroy() {
         super.onDestroy();
         //mLocationManager.removeUpdates(this);
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        if (speech.getTTS() != null) {
+            speech.getTTS().stop();
+            speech.getTTS().shutdown();
         }
         if (sharedPreferences.getBoolean("autoservice", false)){
             Intent stop1 = new Intent(getApplicationContext(), TimeTask.class);
@@ -588,9 +591,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
             currentSpeed.setText(s);
 
-            if (30 <= location.getSpeed() * 3.6 && !tts.isSpeaking() && data.isRunning()) {
+            if (30 <= location.getSpeed() * 3.6 && !speech.getTTS().isSpeaking() && data.isRunning()) {
                 showNotification(getString(R.string.over_speed), getString(R.string.over_speed_alert));
-                speakWords(getString(R.string.over_speed_alert));
+                speech.Talk(getString(R.string.over_speed_alert));
                 try {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -756,45 +759,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         notificationManager.notify(1, notification);
     }
 
-    private void speakWords(String speech) {
-        tts.speak(speech, TextToSpeech.LANG_COUNTRY_AVAILABLE, null,null);
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == MY_DATA_CHECK_CODE) {
-        if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
-            tts = new TextToSpeech(this,this);
-        }
-    }
-    else {
-        Intent installTTSIntent = new Intent();
-        installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-        startActivity(installTTSIntent);
-        }
-    }
-
-    @Override
-    public void onInit(int initStatus) {
-        if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE) {
-                tts.setLanguage(Locale.KOREAN);
-                Log.w("TTS: ", "ko" + Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
+        if(requestCode == MY_DATA_CHECK_CODE){
+            if (resultCode!=TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
             }
-            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.ENGLISH);
-                Log.w("TTS: ", "us" + Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
-            }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPANESE);
-                Log.w("TTS: ", "ja" + Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
-            }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINA);
-                Log.w("TTS: ", "zh" + Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
-            }
-        }
-        else if (initStatus == TextToSpeech.ERROR||initStatus==TextToSpeech.LANG_NOT_SUPPORTED){
-            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -855,6 +826,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         if(soundPool!=null) {
             soundPool.release();
         }
+        if (speech.getTTS()!= null) {
+                speech.getTTS().stop();
+            }
     }
 
     private void getAppKeyHash() {

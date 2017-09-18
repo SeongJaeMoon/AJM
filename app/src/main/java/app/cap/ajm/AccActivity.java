@@ -27,7 +27,7 @@ import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.Prox.SMSContact;
 import app.cap.ajm.Prox.TimeTask;
 
-public class AccActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
+public class AccActivity extends AppCompatActivity{
 
     private Button start,stop,addContacts,removes;
     ListView lv;
@@ -36,6 +36,8 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
     String provider;
     private static final String _ID = "id";
     private TextToSpeech tts;
+    private AJMapp ajMapp;
+    private Speech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +51,6 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             }
         }
-
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
-
         start = (Button) findViewById(R.id.start);
         stop = (Button) findViewById(R.id.stop);
         lv = (ListView) findViewById(R.id.contacts);
@@ -64,9 +61,9 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
         sql = smsdBhelper.getWritableDatabase();
         final Cursor cursor = getAllContacts();
         final ArrayAdapter<String> arrayAdapter;
-
         Toast.makeText(getApplicationContext(),getString(R.string.sms_alert),Toast.LENGTH_LONG).show();
-
+        ajMapp = (AJMapp)getApplicationContext();
+        speech = new Speech();
         start.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
@@ -77,7 +74,7 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
             if(icount>0)
             {
                 Toast.makeText(getApplicationContext(),getString(R.string.start_service_safe),Toast.LENGTH_SHORT).show();
-                speakWords(getString(R.string.start_service_safe));
+                speech.Talk(getString(R.string.start_service_safe));
                 Intent intent= new Intent(getApplicationContext(), TimeTask.class);
                 startService(intent);
 
@@ -92,7 +89,7 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
         stop.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            speakWords(getString(R.string.stop_service_safe));
+            speech.Talk(getString(R.string.stop_service_safe));
             Toast.makeText(getApplication(),getString(R.string.stop_service_safe),Toast.LENGTH_LONG).show();
             Intent intent= new Intent(getApplicationContext(), TimeTask.class);
             stopService(intent);
@@ -194,50 +191,18 @@ public class AccActivity extends AppCompatActivity implements TextToSpeech.OnIni
     public Cursor getAllContacts(){
         return sql.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
     }
-
-    private int MY_DATA_CHECK_CODE = 1;
-
-    private void speakWords(String speech) {
-        tts.speak(speech, TextToSpeech.LANG_COUNTRY_AVAILABLE, null,null);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MY_DATA_CHECK_CODE) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
-                tts = new TextToSpeech(this,this);
-            }
-        }
-        else {
-            Intent installTTSIntent = new Intent();
-            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-            startActivity(installTTSIntent);
-        }
-    }
     @Override
-    public void onInit(int initStatus) {
-        if (initStatus == TextToSpeech.SUCCESS) {
-            if(Locale.getDefault().getLanguage().equals("ko")&&tts.isLanguageAvailable(Locale.KOREAN)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREAN);
-            else if (Locale.getDefault().getLanguage().equals("en")&&tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.ENGLISH);
-            }
-            else if (Locale.getDefault().getLanguage().equals("ja")&&tts.isLanguageAvailable(Locale.JAPANESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPANESE);
-            }
-            else if(Locale.getDefault().getLanguage().equals("zh")&&tts.isLanguageAvailable(Locale.CHINESE)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINESE);
-            }
-        }
-        else if (initStatus == TextToSpeech.ERROR) {
-            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
+    public void onStop(){
+        super.onStop();
+        if (speech.getTTS()!= null) {
+            speech.getTTS().stop();
         }
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        if (speech.getTTS()!= null) {
+            speech.getTTS().shutdown();
         }
     }
 

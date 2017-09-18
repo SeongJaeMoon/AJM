@@ -22,10 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import app.cap.ajm.AJMapp;
 import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.R;
+import app.cap.ajm.Speech;
 
-public class DialogActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
+public class DialogActivity extends AppCompatActivity{
     private Handler handler;
     final Context context = this;
     String phoneNum = "";
@@ -33,7 +35,8 @@ public class DialogActivity extends AppCompatActivity implements TextToSpeech.On
     private String prevNumber;
     private SQLiteDatabase sqls;
     TextToSpeech tts;
-
+    private AJMapp ajMapp;
+    private Speech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,12 +45,9 @@ public class DialogActivity extends AppCompatActivity implements TextToSpeech.On
         SMSDBhelper dpHelper = new SMSDBhelper(this);
         sqls = dpHelper.getReadableDatabase();
         handler = new Handler();
-
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
-
+        ajMapp = (AJMapp)getApplicationContext();
         final Dialog dialog = new Dialog(context);
+        speech = new Speech();
         dialog.setContentView(R.layout.custom_dialog);
         Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
         dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -97,60 +97,27 @@ public class DialogActivity extends AppCompatActivity implements TextToSpeech.On
                     }
                 }
                 Toast.makeText(getApplicationContext(),getString(R.string.send_message),Toast.LENGTH_LONG).show();
-                speakWords(getString(R.string.send_message));
+                speech.Talk(getString(R.string.send_message));
                 handler.removeCallbacksAndMessages(null);
                 finish();
             }
         }, 7000);
     }
-    private int MY_DATA_CHECK_CODE = 0;
-
-    private void speakWords(String speech) {
-        tts.speak(speech, TextToSpeech.LANG_COUNTRY_AVAILABLE, null,null);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MY_DATA_CHECK_CODE) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
-                tts = new TextToSpeech(this,this);
-            }
-        }
-        else {
-            Intent installTTSIntent = new Intent();
-            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-            startActivity(installTTSIntent);
-        }
-    }
-    @Override
-    public void onInit(int initStatus) {
-        if (initStatus == TextToSpeech.SUCCESS) {
-            if(tts.isLanguageAvailable(Locale.KOREA)==TextToSpeech.LANG_AVAILABLE)
-                tts.setLanguage(Locale.KOREA);
-            else if (tts.isLanguageAvailable(Locale.ENGLISH)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.ENGLISH);
-            }
-            else if (tts.isLanguageAvailable(Locale.JAPAN)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.JAPAN);
-            }
-            else if(tts.isLanguageAvailable(Locale.CHINA)==TextToSpeech.LANG_AVAILABLE){
-                tts.setLanguage(Locale.CHINA);
-            }
-        }
-        else if (initStatus == TextToSpeech.ERROR) {
-            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
-        }
-    }
-
     public Cursor getAllContacts(){
         return sqls.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
     }
     @Override
+    public void onStop(){
+        super.onStop();
+        if (speech.getTTS()!= null) {
+            speech.getTTS().stop();
+        }
+    }
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (tts != null) {
-            tts.shutdown();
-            tts.stop();
-            tts=null;
+        if (speech.getTTS()!= null) {
+            speech.getTTS().shutdown();
         }
     }
 }
