@@ -178,7 +178,7 @@ public class SearchActivity extends FragmentActivity implements
 			Item item = itemList.get(i);
 
 			MapPOIItem poiItem = new MapPOIItem();
-			poiItem.setItemName(item.title);
+			poiItem.setItemName(item.title+", "+item.distance);
 			poiItem.setTag(i);
 			MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude);
 			poiItem.setMapPoint(mapPoint);
@@ -224,19 +224,6 @@ public class SearchActivity extends FragmentActivity implements
 	@Override
 	public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
 		Item item = mTagItemMap.get(mapPOIItem.getTag());
-		//StringBuilder sb = new StringBuilder();
-		//sb.append("title=").append(item.title).append("\n");
-		//sb.append("imageUrl=").append(item.imageUrl).append("\n");
-		//sb.append("address=").append(item.address).append("\n");
-		//sb.append("newAddress=").append(item.newAddress).append("\n");
-		//sb.append("zipcode=").append(item.zipcode).append("\n");
-		//sb.append("phone=").append(item.phone).append("\n");
-		//sb.append("category=").append(item.category).append("\n");
-		//sb.append("longitude=").append(item.longitude).append("\n");
-		//sb.append("latitude=").append(item.latitude).append("\n");
-		//sb.append("distance=").append(item.distance).append("\n");
-		//sb.append("direction=").append(item.direction).append("\n");
-		//Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
 	NavigationDialog(item.newAddress, item.latitude, item.longitude);
 	}
 	
@@ -287,9 +274,9 @@ public class SearchActivity extends FragmentActivity implements
     }
 	public void NavigationDialog(final String des, final Double lat, final Double lon){
 		android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(SearchActivity.this);
-		alertDialog.setTitle("길 찾기");
-		alertDialog.setMessage("해당 위치로 길찾기를 실행하시겠습니까? ");
-		alertDialog.setPositiveButton("시작", new DialogInterface.OnClickListener() {
+		alertDialog.setTitle(getString(R.string.direction));
+		alertDialog.setMessage(getString(R.string.set_map_loc_ok));
+		alertDialog.setPositiveButton(getString(R.string.start), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
 				try {
 				if(KakaoNaviService.isKakaoNaviInstalled(getApplicationContext())) {
@@ -306,17 +293,16 @@ public class SearchActivity extends FragmentActivity implements
 				{
 					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.locnall.KimGiSa"));
 					startActivity(intent);
-					Toast.makeText(getApplicationContext(), "길찾기 기능을 이용하기 위해선 카카오내비를 다운로드 해야합니다." +
-							"모바일 데이터 환경에선 데이터 사용료가 발생할 수 있습니다.",Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), getString(R.string.navi_install),Toast.LENGTH_LONG).show();
 				}
 			}catch (Exception e){
 				e.printStackTrace();
-				Toast.makeText(getApplicationContext(),e.toString()+"알 수 없는 오류 발생",Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
 			}
 
 		}
 		});
-		alertDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+		alertDialog.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
