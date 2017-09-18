@@ -6,7 +6,7 @@
     <string name=	"about_pageHelp">Help</string>
     <string name=	"about_pageCS"	>Bicycle knowledge management</string>
     <string name=	"about_pageLicense">Open source licenses</string>
-    <string name=	"about_pagePL"	>Public data sources</string>
+    <string name=	"about_pagePL"	>Public data authorship</string>
     <string name=	"about_pageAlert">Precautions</string>
     <string name=	"about_pageHow_gps">How does GPS measurements?</string>
     <string name=	"about_pageGPS">GPS measurements will be done through a GPS measuring device built into the smartphone. The higher the GPS sensitivity will increase battery usage. The ability to use the map, you can increase the battery consumption.	</string>
@@ -17,13 +17,13 @@
     <string name=	"about_pageHow_Save">	How does the security service function?	</string>
     <string name=	"about_pageSave">Security Service is a feature that the sensor built into the smartphone to detect your fall, and the user is sent to the location registration number by SMS if there is no response for the user during a fall detection requires a response, and a certain amount of time.	</string>
     <string name=	"about_pageHow_TTS">How does the voice guidance feature?	</string>
-    <string name=	"about_pageTTS">Voice guidance feature is available for speech synthesis technology (Text to Speech) TTS built into smart phones, there is wide support may differ depending on the smartphone model. If you do not come out please turn voice guidance in the Settings window, vibration or mute the sound. Please continue to re-run the app with voice guidance will come!	</string>
+    <string name=	"about_pageTTS">Voice guidance feature is available for speech synthesis technology (Text to Speech) TTS built into smart phones, there is wide support may differ depending on the smartphone model. If the voice guidance does not appear, please switch to the Google TTS engine in the setup window. If you still can not hear the voice, please re-run the app!</string>
     <string name=	"about_pageHow_Alert"	>What is the risk zone guidance Does it work?	</string>
     <string name=	"about_pageAlerts">Risk Information Services segment consists of GPS-aware devices embedded in smartphones, it will be executed when you press the start button. This feature can increase the battery usage. (You can not risk notifications work properly, sometimes due to positioning errors.) The basic speedometer display In measuring the speed and overspeed operation during travel at 30km over the speed the voice guidance and screen transitions It occurs guidance. In addition, the speed of clicking the touch screen is not possible and stop using volume up (raising voice) button when more than 20km to please unlock the screen.	</string>
     <string name=	"about_pageAJM">Team Helmet	</string>
     <string name=	"about_pageAJM_Alert"	>This app is an app developed to increase the safety of cycling of users. Avoiding excessive use an app, and I\'ll always ask a safe ride! :)	</string>
-    <string name=	"about_pageWhere"	>source	</string>
-    <string name=	"about_pageWhere_is"	>WEATHER - OpenWeatherMap Seoul, the data \n intersections information - ITS standard node-link system \n pedestrian - Seoul plaza open data \n accident-prone areas - Seoul plaza open data \n Child protection areas - public data portal	</string>
+    <string name=	"about_pageWhere"	>authorship</string>
+    <string name=	"about_pageWhere_is"	>Weather - OpenWeatherMap, Seoul \nintersections information - ITSstandard node-link system \npedestrian areas - Seoul public data place \nAccident-prone areas - Seoul open data place \nChild protection areas - public data portal</string>
     <string name=	"about_pageBike">Bike management so!	</string>
-    <string name=	"about_pageBikeis">1. if the tires are not too dalji test. \n2. Brakes at a glance. \n3. Check suspension fork bolts. \n4. Checking and Yun Hwalyu the chain sprocket. \n5. Reinjected into the bearing grease. \nlast week once wipe the bike to the bike in the troubled! We will look hasigil safe and fun ride :)	</string>
+    <string name=	"about_pageBikeis">1. Check your bicycle tire. \n2. Check brake status. \n3. Check suspension fork bolts. \n4. Check lube oil condition of chain sprocket. \n5. Reinjected into the bearing grease. \nlastly, Clean your bicycle once a week. Thank you for your safe ride! :)</string>
 </resources>

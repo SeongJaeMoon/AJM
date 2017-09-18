@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/are_u_ok"
-        android:textSize="50sp"
+        android:textSize="40sp"
         android:textColor="@color/red_dark"
         style="@style/Widget.AppCompat.Button.Colored"
         tools:ignore="RtlHardcoded,RtlSymmetry" />

@@ -17,7 +17,7 @@
     <string name=	"about_pageHow_Save">	如何安全服务功能？	</string>
     <string name=	"about_pageSave">安全服务是传感器内置于智能手机检测到您的跌倒的特征，并且用户通过SMS如果存在用于跌倒检测期间用户没有响应发送到位置登记数需要一个响应，和一定量的时间。	</string>
     <string name=	"about_pageHow_TTS">如何进行语音提示功能？	</string>
-    <string name=	"about_pageTTS">语音提示功能可用于语音合成技术（文本到语音）TTS内置到智能手机，有广泛的支持可以根据智能手机型号而异。如果你不出来，请打开语音导航在设置窗口中，振动或静音。请继续重新运行语音导航应用程序会来的！	</string>
+    <string name=	"about_pageTTS">声音引导功能可用于语音合成技术（文字到语音）内置智能手机的TTS，根据智能手机型号的广泛支持可能会有所不同。 如果没有出现语音指导，请在设置窗口中切换到Google TTS引擎。 如果仍然听不到声音，请重新运行应用程序！</string>
     <string name=	"about_pageHow_Alert"	>什么是危险区的指导是否行得通？	</string>
     <string name=	"about_pageAlerts">风险信息服务板块包括嵌入在智能手机GPS感知设备，当你按下启动按钮它就会被执行。此功能可以提高电池的使用。 （你不能冒险通知正常工作，有时因定位误差。）的基本速度表显示在以上的速度测量行驶时的速度和超速运转距30km语音提示和屏幕切换它发生的指导。此外，点击触摸屏的速度是不可能的，停止使用量提高（提高声音）按钮时，20km以上，以取悦解锁屏幕。	</string>
     <string name=	"about_pageAJM">团队头盔</string>

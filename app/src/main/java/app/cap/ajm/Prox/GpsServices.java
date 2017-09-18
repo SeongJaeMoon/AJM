@@ -313,7 +313,7 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                                                              break;
                                                          case "어린이보호구역": speakword("Be careful at the child protection area");
                                                              break;
-                                                         case "사고다발지역" : speakword("Be careful at the frequent accidents area");
+                                                         case "사고다발지역" : speakword("Be careful at the accident prone area");
                                                              break;
                                                          default: speakword("Be careful at the test");
                                                              break;
