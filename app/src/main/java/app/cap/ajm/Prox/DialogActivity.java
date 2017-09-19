@@ -34,8 +34,6 @@ public class DialogActivity extends AppCompatActivity{
     String textMsg;
     private String prevNumber;
     private SQLiteDatabase sqls;
-    TextToSpeech tts;
-    private AJMapp ajMapp;
     private Speech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,6 @@ public class DialogActivity extends AppCompatActivity{
         SMSDBhelper dpHelper = new SMSDBhelper(this);
         sqls = dpHelper.getReadableDatabase();
         handler = new Handler();
-        ajMapp = (AJMapp)getApplicationContext();
         final Dialog dialog = new Dialog(context);
         speech = new Speech();
         dialog.setContentView(R.layout.custom_dialog);
@@ -106,13 +103,7 @@ public class DialogActivity extends AppCompatActivity{
     public Cursor getAllContacts(){
         return sqls.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
     }
-    @Override
-    public void onStop(){
-        super.onStop();
-        if (speech.getTTS()!= null) {
-            speech.getTTS().stop();
-        }
-    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

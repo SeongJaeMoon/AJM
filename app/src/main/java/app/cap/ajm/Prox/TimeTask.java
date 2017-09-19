@@ -77,7 +77,6 @@ public class TimeTask extends Service implements SensorEventListener{
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float timestamp;
     private boolean initState = true;
-    private AJMapp ajMapp;
     //센서변수:
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -107,7 +106,6 @@ public class TimeTask extends Service implements SensorEventListener{
         //Intent checkTTSIntent = new Intent();
         //checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         //tts = new TextToSpeech(this, this);
-        ajMapp = (AJMapp)getApplicationContext();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         speech = new Speech();
@@ -115,10 +113,7 @@ public class TimeTask extends Service implements SensorEventListener{
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        if (speech.getTTS() != null) {
-            speech.getTTS().shutdown();
-        }
+
         mPeriodicEventHandler.removeCallbacks(doPeriodicTask);
         senSensorManager.unregisterListener(this);
         sendCount = 0;

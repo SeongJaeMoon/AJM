@@ -67,14 +67,11 @@ public class GpsServices extends Service implements LocationListener{
     public void onCreate() {
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        //Intent checkTTSIntent = new Intent();
-        //checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         ajMapp =(AJMapp)getApplicationContext();
         speech = new Speech();
         trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //tts = new TextToSpeech(this, this);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -214,14 +211,6 @@ public class GpsServices extends Service implements LocationListener{
         if (speech.getTTS() != null) {
             speech.getTTS().shutdown();
         }
-        //if (sharedPreferences.getBoolean("route", false)) {
-        //    try {
-        //        trackDBhelper.trackDBlocationStop(getCurrentDateTime(), lastLat, lastLon);
-        //        trackDBhelper.close();
-        //    } catch (Exception e) {
-        //        e.printStackTrace();
-        //    }
-        //}
     }
 
     @Override
