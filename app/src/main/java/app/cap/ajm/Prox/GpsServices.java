@@ -208,9 +208,9 @@ public class GpsServices extends Service implements LocationListener{
     public void onDestroy() {
         super.onDestroy();
         mLocationManager.removeUpdates(this);
-        if (speech.getTTS() != null) {
+        /*if (speech.getTTS() != null) {
             speech.getTTS().shutdown();
-        }
+        }*/
     }
 
     @Override

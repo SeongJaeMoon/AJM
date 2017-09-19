@@ -431,7 +431,6 @@ public class TimeTask extends Service implements SensorEventListener{
             System.arraycopy(fusedOrientation, 0, gyroOrientation, 0, 3);
         }
     }
-    //private void speekword(String str){tts.speak(str, TextToSpeech.LANG_COUNTRY_AVAILABLE, null, null);}
 }
 
 

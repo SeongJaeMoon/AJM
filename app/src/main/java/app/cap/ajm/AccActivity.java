@@ -194,16 +194,16 @@ public class AccActivity extends AppCompatActivity{
     @Override
     public void onStop(){
         super.onStop();
-        if (speech.getTTS()!= null) {
+        /*if (speech.getTTS()!= null) {
             speech.getTTS().stop();
-        }
+        }*/
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (speech.getTTS()!= null) {
+        /*if (speech.getTTS()!= null) {
             speech.getTTS().shutdown();
-        }
+        }*/
     }
 
     public static boolean isString(String s)
