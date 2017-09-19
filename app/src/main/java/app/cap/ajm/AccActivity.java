@@ -89,8 +89,8 @@ public class AccActivity extends AppCompatActivity{
         stop.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            speech.Talk(getString(R.string.stop_service_safe));
             Toast.makeText(getApplication(),getString(R.string.stop_service_safe),Toast.LENGTH_LONG).show();
+            speech.Talk(getString(R.string.stop_service_safe));
             Intent intent= new Intent(getApplicationContext(), TimeTask.class);
             stopService(intent);
         }

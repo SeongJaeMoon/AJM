@@ -501,7 +501,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         super.onDestroy();
         //mLocationManager.removeUpdates(this);
         if (speech.getTTS() != null) {
-            speech.getTTS().stop();
             speech.getTTS().shutdown();
         }
         if (sharedPreferences.getBoolean("autoservice", false)){

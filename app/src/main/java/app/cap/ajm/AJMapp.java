@@ -9,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class AJMapp extends MultiDexApplication{
     public String startAddr;
     public String startTime;
-    private static Context mContext;
+    public static Context mContext;
     @Override
     public void onCreate() {
         super.onCreate();
