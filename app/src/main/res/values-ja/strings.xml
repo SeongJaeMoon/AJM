@@ -17,9 +17,9 @@
     <string name=	"ajm_support">	まずキルヒベルク、アプリを使用する前に、ヘルメットのヘルプウィンドウを読んでください！ :)</string>
     <string name=	"start_location_detect">場所を探しています。 \ N、待って</string>
     <string name=	"wear_helmet">あなたはヘルメットを着用していましたか？</string>
-    <string name=	"max_speed">トップスピード：</string>
+    <string name=	"max_speed">最高速度：</string>
     <string name=	"average_speed">平均速度：</string>
-    <string name=	"distance">距離は、駆動します：</string>
+    <string name=	"distance">走行距離：</string>
     <string name=	"time">	駆動時間：</string>
     <string name=	"accuracy"	>位置誤差：</string>
     <string name=	"startAddr">出発住所：</string>
