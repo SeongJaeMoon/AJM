@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">안전모</string>
     <string name="open">열기</string>
     <string name="close">닫기</string>
+    <string name="tts_isOK">음성 안내 사용 가능</string>
     <string name="mobile_data">이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.</string>
     <string name="route_data">목록을 길게 누르면 해당 목록의 삭제 및 지도를 볼 수 있습니다.</string>
     <string name="error_route">위치 초기화에 실패하였습니다.</string>

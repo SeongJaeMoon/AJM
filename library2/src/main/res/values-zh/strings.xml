@@ -19,12 +19,11 @@
     <string name=	"about_pageHow_TTS">如何进行语音提示功能？	</string>
     <string name=	"about_pageTTS">声音引导功能可用于语音合成技术（文字到语音）内置智能手机的TTS，根据智能手机型号的广泛支持可能会有所不同。 如果没有出现语音指导，请在设置窗口中切换到Google TTS引擎。 如果仍然听不到声音，请重新运行应用程序！</string>
     <string name=	"about_pageHow_Alert"	>什么是危险区的指导是否行得通？	</string>
-    <string name=	"about_pageAlerts">风险信息服务板块包括嵌入在智能手机GPS感知设备，当你按下启动按钮它就会被执行。此功能可以提高电池的使用。 （你不能冒险通知正常工作，有时因定位误差。）的基本速度表显示在以上的速度测量行驶时的速度和超速运转距30km语音提示和屏幕切换它发生的指导。此外，点击触摸屏的速度是不可能的，停止使用量提高（提高声音）按钮时，20km以上，以取悦解锁屏幕。	</string>
+    <string name=	"about_pageAlerts">风险信息服务板块包括嵌入在智能手机GPS感知设备，当你按下启动按钮它就会被执行。此功能可以提高电池的使用。你不能冒险通知正常工作，有时因定位误差。）的基本速度表显示在以上的速度测量行驶时的速度和超速运转距30km语音提示和屏幕切换它发生的指导。此外，点击触摸屏的速度是不可能的，停止使用量提高（提高声音）按钮时，20km以上，以取悦解锁屏幕。</string>
     <string name=	"about_pageAJM">团队头盔</string>
-    <string name=	"about_pageAJM_Alert"	>这个程序是开发增加用户的单车安全的应用程序。避免过度使用的应用程序，我会一直问一个安全的旅程！ :)	</string>
+    <string name=	"about_pageAJM_Alert"	>这个程序是开发增加用户的单车安全的应用程序。避免过度使用的应用程序，我会一直问一个安全的旅程！ :)</string>
     <string name=	"about_pageWhere"	>资源</string>
-    <string name=	"about_pageWhere_is">天气 -  OpenWeatherMap首尔，数据\ n交叉口信息 - 其标准节点链路系统\ n行人 - 首尔广场的开放数据\ n事故多发地区 - 首尔广场的开放数据\ n个子保护区 - 公共数据门户网站	</string>
+    <string name=	"about_pageWhere_is">天气 -  OpenWeatherMap首尔，数据\ n交叉口信息 - 其标准节点链路系统\ n行人 - 首尔广场的开放数据\ n事故多发地区 - 首尔广场的开放数据\ n个子保护区 - 公共数据门户网站</string>
     <string name=	"about_pageBike">自行车管理如此！</string>
     <string name=	"about_pageBikeis">1.如果轮胎是不是太dalji测试。 \n2。刹车一目了然。 \n3。检查悬架螺栓。 \n4。检查和云Hwalyu链轮。 \n5。重新注入轴承润滑脂。 \n最后，每周一次，擦掉你的自行车为困扰的自行车！ 我希望你安全快乐地骑:)</string>
-
 </resources>

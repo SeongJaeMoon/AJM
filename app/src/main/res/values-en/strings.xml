@@ -3,6 +3,7 @@
     <string name=	"name" translatable="false">	안전모</string>
     <string name=	"open">	open</string>
     <string name=	"close"	>close</string>
+    <string name="tts_isOK">tts set-up</string>
     <string name=	"mobile_data">	This feature can be charged using mobile data.</string>
     <string name=	"route_data">	Hold down the list, you can view and delete the guidance of the list.</string>
     <string name=	"error_route">	Failed to initialize position.</string>

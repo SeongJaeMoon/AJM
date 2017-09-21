@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private int MY_DATA_CHECK_CODE = 0;
     private AJMapp ajMapp;
     private Speech speech;
+    private boolean tts_isOK = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +187,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
+        if (tts_isOK){
+            toolbar.setTitle(getString(R.string.tts_isOK));
+        }
         Log.w("onCreate " ,Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
@@ -760,10 +764,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == MY_DATA_CHECK_CODE){
-            if (resultCode!=TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                Intent installTTSIntent = new Intent();
-                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTSIntent);
+            if (resultCode==TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                tts_isOK = true;
+            }
+            else{
+                Intent installTTS = new Intent();
+                installTTS.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTS);
             }
         }
     }
