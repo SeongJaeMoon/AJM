@@ -113,7 +113,7 @@
     <string name=	"input_end">Please enter your destination.	</string>
     <string name=	"navi_install"	>In order to use the Directions feature, you must download the cacao navigate. \ N There are data charges may occur In mobile data experience.</string>
     <string name=	"error_default">Unknown error.	</string>
-    <string name=	"set_current_loc">Set your current location as a starting point</string>
+    <string name=	"set_current_loc">Set current location as a starting point</string>
     <string name=	"set_map_loc">Press and hold the desired destination on the map.</string>
     <string name=	"exit_map_loc"	>Cancel the selected destination on the map.</string>
     <string name=	"set_map_loc_ok">Sets the selected location as destination</string>

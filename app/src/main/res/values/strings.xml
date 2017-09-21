@@ -38,22 +38,26 @@
     <string name="previsions">예보</string>
     <string name="settings">설정</string>
     <string name="app_info">도움말</string>
-    <string name="pref_auto_average">자동으로 정지 시간을 감지</string>
     <string name="pref_auto_average_summary">정지 시간은 평균 속도에 포함되지 않습니다.</string>
-    <string name="pref_miles_per_hour">시간당 마일 사용</string>
     <string name="pref_miles_per_hour_summary">속도를 km/h 대신에 mi/h로 표시합니다.</string>
     <string name="accept">확인</string>
     <string name="select_place">리스트에서 선택해주십시오.</string>
     <string name="no_internet_conection">인터넷 연결이 되지않았습니다. \n일부 기능을 이용할 수 없습니다.</string>
     <string name="no_way">목적지를 찾을 수 없습니다.</string>
-    <string name="weight_value">칼로리 계산을 위해 몸무게를 입력해주세요.</string>
     <string name="action_settings">설정</string>
     <string name="menu">메뉴</string>
     <string name="source_code_summary">소스 코드에 대한 액세스.</string>
+    <!--설정창-->
     <string name="version">안전모 버전</string>
     <string name="alert">화면 전환 알람을 받으시겠습니까?</string>
     <string name="route_saver">자동 경로 저장을 실행하시겠습니까?</string>
     <string name="gps_level">GPS수신 감도를 설정합니다.</string>
+    <string name="weight_value">칼로리 계산을 위해 몸무게를 입력해주세요.</string>
+    <string name="pref_auto_average">자동으로 정지 시간을 감지</string>
+    <string name="pref_miles_per_hour">시간당 마일 사용</string>
+    <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
+    <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
+    <!--설정창-->
     <string name="noti_id" translatable="false">안전모</string>
     <string name="title_activity_test">Map</string>
     <string name="permission_error_title">위치 권한 에러</string>
@@ -91,11 +95,8 @@
     <string name="not_connected">GoogleApiClient가 아직 연결되지 않았습니다. 다시 선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
     <string name="kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
     <string name="translate_title">Language Setting</string>
-    <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
-    <string name="translate">If you want to translate to English, turn on it.</string>
     <string name="alertsetting">선택을 해지하면 위험 구간 안내가 나오지 않습니다.</string>
     <string name="autosaving">선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
-    <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
     <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>
     <string name="bike">자전거</string>
     <string name="introduce">소개</string>

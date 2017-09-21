@@ -39,9 +39,9 @@
     <string name=	"previsions">見通し</string>
     <string name=	"settings"	>セット</string>
     <string name=	"app_info"	>助けて</string>
-    <string name=	"pref_auto_average">自動的に停止時間を検出し、</string>
+    <string name=	"pref_auto_average">自動的に停止時間を検出する</string>
     <string name=	"pref_auto_average_summary">	ダウンタイムは平均レートに含まれていません。</string>
-    <string name=	"pref_miles_per_hour"	>時速マイルを使います</string>
+    <string name=	"pref_miles_per_hour"	>マイルを使用</string>
     <string name=	"pref_miles_per_hour_summary">これは、マイル/ hの代わりにキロ/ hの中に速度を表示します。	</string>
     <string name=	"accept">確かめます</string>
     <string name=	"select_place"	>リストから選択してください。</string>
@@ -52,8 +52,8 @@
     <string name=	"menu">	メニュー</string>
     <string name=	"source_code_summary"	>ソースコードへのアクセス。</string>
     <string name=	"version">안전모バージョン</string>
-    <string name=	"alert"	>あなたは、アラーム画面を切り替えますか？</string>
-    <string name=	"route_saver"	>あなたは、自動保存のパスを実行しますか？</string>
+    <string name=	"alert"	>画面の切り替え案内を受けますか？</string>
+    <string name=	"route_saver"	>自動パス保存を実行しますか？</string>
     <string name=	"gps_level">GPS受信を設定してください。</string>
     <string name=	"title_activity_test"	>地図</string>
     <string name=	"permission_error_title"	>位置誤差の権限	</string>
@@ -83,7 +83,7 @@
     <string name=	"translate">あなたは英語に翻訳したい場合は、それをオンにします。</string>
     <string name=	"alertsetting"	>	あなたが選択をキャンセルした場合の危険ゾーンの説明ということは表示されません。</string>
     <string name=	"autosaving">	あなたが選択をキャンセルした場合、保存するための自動パスではありません。</string>
-    <string name=	"autocancle_title">アプリは自動的にサービスの終了時にシャットダウン</string>
+    <string name=	"autocancle_title">システム終了時に自動的にサービス終了</string>
     <string name=	"autocancel">あなたがGPSで自分の選択をキャンセルし、落ちる場合の検出は、アプリが画面に表示されている場合でも継続されます。	</string>
     <string name=	"bike">自転車</string>
     <string name=	"introduce">紹介します	</string>
