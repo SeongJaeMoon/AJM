@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
         if (tts_isOK){
-            toolbar.setTitle(getString(R.string.tts_isOK));
+            toolbar.setSubtitle(getString(R.string.tts_isOK));
         }
         Log.w("onCreate " ,Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
         //getAppKeyHash();

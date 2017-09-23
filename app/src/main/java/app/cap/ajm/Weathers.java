@@ -132,6 +132,51 @@ public class Weathers extends AppCompatActivity {
         }
         if (Locale.getDefault().getLanguage().equals("ko")) {
             switch (weather[0].getMain()) {
+                case "Thunderstorm with light rain":
+                    condition.setText("약한 비를 동반한 천둥");
+                    break;
+                case "Thunderstorm with rain":
+                    condition.setText("비를 동반한 천둥");
+                    break;
+                case "Thunderstorm with heavy rain":
+                    condition.setText("폭우를 동반한 천둥");
+                    break;
+                case "Light thunderstorm":
+                    condition.setText("약한 천둥");
+                    break;
+                case "Heavy thunderstorm":
+                    condition.setText("강한 천둥");
+                    break;
+                case "Ragged thunderstorm":
+                    condition.setText("불규칙한 천둥");
+                    break;
+                case "Drizzle":
+                    condition.setText("안개비");
+                    break;
+                case "Extreme rain":
+                    condition.setText("극심한 비");
+                    break;
+                case "Fresh breeze":
+                    condition.setText("선선한 바람");
+                    break;
+                case "Strong breeze":
+                    condition.setText("센 바람");
+                    break;
+                case "High win":
+                    condition.setText("매우 센 바람");
+                    break;
+                case "Gale":
+                    condition.setText("돌풍");
+                    break;
+                case "Strom":
+                    condition.setText("폭풍");
+                    break;
+                case "Cold":
+                    condition.setText("추운");
+                    break;
+                case "Hot":
+                    condition.setText("고온");
+                    break;
                 case "Mist":
                     condition.setText("안개");
                     break;
