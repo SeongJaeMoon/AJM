@@ -76,6 +76,7 @@ import github.vatsal.easyweather.Helper.TempUnitConverter;
 import github.vatsal.easyweather.Helper.WeatherCallback;
 import github.vatsal.easyweather.WeatherMap;
 import github.vatsal.easyweather.retrofit.models.ForecastResponseModel;
+import github.vatsal.easyweather.retrofit.models.Main;
 import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
                         try {
-                            Toast.makeText(getApplicationContext(),getString(R.string.ajm_support), Toast.LENGTH_LONG).show();
+                            showGuide();
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -644,6 +645,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         alertDialog.setPositiveButton(getString(R.string.action_settings), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void showGuide(){
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle(getString(R.string.nav_title_ajm));
+        alertDialog.setMessage(getString(R.string.ajm_support));
+        alertDialog.setPositiveButton(getString(R.string.open), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
         });
