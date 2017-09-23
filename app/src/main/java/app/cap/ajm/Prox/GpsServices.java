@@ -53,21 +53,17 @@ public class GpsServices extends Service implements LocationListener{
     double lastLon = 0;
     double lastLat = 0;
     private String weight;
-    private String isOn;
     PendingIntent contentIntent;
     Context context;
     private DatabaseReference ref;
     private GeoFire geoFire;
-    public static TextToSpeech tts;
     private TrackDBhelper trackDBhelper;
     private Query query;
-    private AJMapp ajMapp;
     private Speech speech;
     @Override
     public void onCreate() {
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        ajMapp =(AJMapp)getApplicationContext();
         speech = new Speech();
         trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
@@ -86,7 +82,6 @@ public class GpsServices extends Service implements LocationListener{
             switch (gpsValue) {
                 case "default":
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-                    Log.w("GPS", "default" + "****");
                     break;
                 case "high":
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, this);
@@ -101,12 +96,10 @@ public class GpsServices extends Service implements LocationListener{
         }else if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&&
                 mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)&&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-
             gpsValue = sharedPreferences.getString("gps_level", "default");
             switch (gpsValue) {
                 case "default":
                     mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                    Log.w("NETWORK", "default" + "****");
                     break;
                 case "high":
                     mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, this);
@@ -122,7 +115,6 @@ public class GpsServices extends Service implements LocationListener{
     }
     @Override
     public void onLocationChanged(Location location) {
-        Log.w(TAG, "onLocationChanged");
         data = MainActivity.getData();
         if (data.isRunning()) {
             currentLat = location.getLatitude();
@@ -154,10 +146,9 @@ public class GpsServices extends Service implements LocationListener{
             weight = sharedPreferences.getString("weight_value", "0");
             int to = Integer.parseInt(weight);
             if (to != 0){
-                data.setCalorie(to);
-                data.addCalorie(data.getCalorie());
+                data.addCalorie(data.setCalorie(to));
             }
-            Log.w(TAG, "addCalorie: "+ data.getCalorie());
+            Log.w(TAG, "addCalorie: "+ data.setCalorie(to));
             if (sharedPreferences.getBoolean("route", false)){
                 try {
                     trackDBhelper.trackDBlocationRunning(getCurrentSec(),lastLat, lastLon);
@@ -208,9 +199,6 @@ public class GpsServices extends Service implements LocationListener{
     public void onDestroy() {
         super.onDestroy();
         mLocationManager.removeUpdates(this);
-        /*if (speech.getTTS() != null) {
-            speech.getTTS().shutdown();
-        }*/
     }
 
     @Override
@@ -348,15 +336,6 @@ public class GpsServices extends Service implements LocationListener{
              e.printStackTrace();
          }
      }
-
-    public String getCurrentDateTime() {
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-        String getTime = sdf.format(date);
-        return getTime;
-    }
-
     public String getCurrentSec(){
         long now = System.currentTimeMillis();
         Date date = new Date(now);

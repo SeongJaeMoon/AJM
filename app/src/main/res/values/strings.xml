@@ -13,7 +13,7 @@
     <string name="nav_title_com">시설 검색</string>
     <string name="nav_title_timetask">넘어짐 감지 관리</string>
     <string name="nav_title_ajm">안전모 도움말</string>
-    <string name="ajm_support">처음 오셨군요, 앱을 사용하기 전에 안전모 창에서 도움말을 읽어주세요! :)</string>
+    <string name="ajm_support">처음 오셨군요, 앱을 사용하기 전에 도움말 창에서 도움말을 읽어주세요! :)</string>
     <string name="start_location_detect">위치를 찾고 있습니다. \n잠시만 기다려주세요.</string>
     <string name="wear_helmet">헬멧 착용하셨나요?</string>
     <string name="max_speed">최고속도:</string>

@@ -48,7 +48,6 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new Contributor(R.drawable.mainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageLicense)));
-
         items.add(new License("MultiType", "drakeet",License.APACHE_2,"https://github.com/drakeet/MultiType"));
         items.add(new License("about-page", "drakeet", License.APACHE_2, "https://github.com/drakeet/about-page"));
         items.add(new License("EasyWeather","code-crusher",License.APACHE_2, "https://github.com/code-crusher/EasyWeather"));

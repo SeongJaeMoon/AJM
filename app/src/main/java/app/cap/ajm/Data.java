@@ -164,9 +164,8 @@ public class Data {
 
     public double getCalorie(){return calorie;}
     /*칼로리 계산 몸무게x 칼로리소비계수x 평균속도km/h */
-    public void setCalorie(int weight) {
+    public double setCalorie(int weight) {
         double averageSpeed = ((distanceM / (time / 1000)) * 3.6);
-        Log.w("Data : ", "DistanceM&&K: "+String.valueOf(distanceM)+", "+ String.valueOf(distanceKm)+" averageSpeed: " + averageSpeed);
         if (distanceM>10 && averageSpeed > 5 && averageSpeed < 13){
             calorie = weight * 0.0650 * averageSpeed;
         }
@@ -201,6 +200,7 @@ public class Data {
         {
             calorie = weight * 0.196 * averageSpeed;
         }
+        return calorie;
     }
 
     public void addCalorie(double cal){
