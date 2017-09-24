@@ -47,6 +47,13 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new Category(getString(R.string.about_pageAlert)));
         items.add(new Contributor(R.drawable.mainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
         items.add(new Line());
+        items.add(new Line());
+        items.add(new Category(getString(R.string.about_pagePL)));
+        items.add(new Contributor(R.drawable.ic_android_black_48dp,getString(R.string.about_pageWhere), getString(R.string.about_pageWhere_is)));
+        items.add(new Line());
+        items.add(new Category(getString(R.string.about_pageCS)));
+        items.add(new Contributor(R.drawable.ic_star_black_48dp,getString(R.string.about_pageBike), getString(R.string.about_pageBikeis)));
+        items.add(new Line());
         items.add(new Category(getString(R.string.about_pageLicense)));
         items.add(new License("MultiType", "drakeet",License.APACHE_2,"https://github.com/drakeet/MultiType"));
         items.add(new License("about-page", "drakeet", License.APACHE_2, "https://github.com/drakeet/about-page"));
@@ -70,14 +77,6 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new License("material-design-icons","google",License.APACHE_2,"https://github.com/google/material-design-icons"));
         items.add(new License("Kakao Open SDK",License.KAKAO,License.APACHE_2,"https://developers.kakao.com/docs/sdk"));
         items.add(new License("AJM","안전모",License.APACHE_2+", (CCL) "+License.CCL,"https://github.com/SeongJaeMoon/AJM"));
-
-        items.add(new Line());
-        items.add(new Category(getString(R.string.about_pagePL)));
-        items.add(new Contributor(R.drawable.ic_android_black_48dp,getString(R.string.about_pageWhere), getString(R.string.about_pageWhere_is)));
-
-        items.add(new Line());
-        items.add(new Category(getString(R.string.about_pageCS)));
-        items.add(new Contributor(R.drawable.ic_star_black_48dp,getString(R.string.about_pageBike), getString(R.string.about_pageBikeis)));
         items.add(new Line());
         items.add(new Category("Apache License\n" +
                 "\n" +
