@@ -114,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private boolean turnFlash;
     private String gpsValue;
     private boolean ishold;
-    private SoundPool soundPool;
-    private boolean isSound = false;
     double lat, lng;
     @Bind(R.id.weather2)
     TextView weather2;
@@ -123,16 +121,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     TextView weather5;
     private int MY_DATA_CHECK_CODE = 0;
     private Speech speech;
-    private boolean tts_isOK = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //!!혹시 재 사용 할지도 모르는 코드들 바로 여기에 모아두기!!
-        //updateNotification(false);
-        //soundIds = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-        //final MediaPlayer mp = MediaPlayer.create(this, R.raw.bikebell);
+        //권한 한번 더 확인.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(
                     this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
@@ -184,25 +178,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build();
-            soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(1).build();
-            Log.w("Main: ", "onStart SoundPool");
-        }else{
-            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC ,0);
-        }
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                sampleId = soundPool.load(getApplicationContext(), R.raw.bikebell, 1);
-                soundPool.play(sampleId, 1f, 1f, 0, 0, 1f);
-                Log.w("Main: ", "SoundPool Load Complete!");
-            }
-        });
-        Log.w("onCreate " ,Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
@@ -291,32 +266,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     }
                 }
 
-            }
-        });
-
-        currentSpeed.setOnTouchListener(new View.OnTouchListener() {
-            int rawsound = 0;
-            @Override
-            public boolean onTouch(View v, MotionEvent event){
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Log.w("MAIN:", "ActionDown");
-                        try {
-                            rawsound = R.raw.bikebell;
-                            if (!isSound&&!ishold){
-                                soundPool.load(MainActivity.this, rawsound, 1);
-                                isSound=true;
-                            }
-                            else if(isSound&&!ishold){
-                                soundPool.play(rawsound, 1f, 1f, 0, 0, 1f);
-                                Log.w("Main: ", "soundPlay");
-                            }
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                        return false;
-                }
-                return false;
             }
         });
 
@@ -795,7 +744,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == MY_DATA_CHECK_CODE){
             if (resultCode==TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                tts_isOK = true;
+                Toast.makeText(getApplicationContext(), getString(R.string.tts_isOK),Toast.LENGTH_SHORT).show();
             }
             else{
                 Intent installTTS = new Intent();
@@ -841,9 +790,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onStop() {
         super.onStop();
-        if(soundPool!=null) {
-            soundPool.release();
-        }
         if (speech.getTTS()!= null) {
                 speech.getTTS().stop();
             }
