@@ -19,9 +19,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -44,7 +41,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -74,7 +70,6 @@ import github.vatsal.easyweather.Helper.TempUnitConverter;
 import github.vatsal.easyweather.Helper.WeatherCallback;
 import github.vatsal.easyweather.WeatherMap;
 import github.vatsal.easyweather.retrofit.models.ForecastResponseModel;
-import github.vatsal.easyweather.retrofit.models.Main;
 import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -109,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private Chronometer time;
     private Data.onGpsServiceUpdate onGpsServiceUpdate;
     private boolean firstfix;
-    //private TextToSpeech tts;
     private boolean hasFlash;
     private boolean turnFlash;
     private String gpsValue;
@@ -119,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     TextView weather2;
     @Bind(R.id.weather5)
     TextView weather5;
-    private int MY_DATA_CHECK_CODE = 0;
     private Speech speech;
 
     @Override
@@ -174,9 +167,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speech = new Speech();
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
 
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
@@ -739,19 +729,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         notification.when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == MY_DATA_CHECK_CODE){
-            if (resultCode==TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                Toast.makeText(getApplicationContext(), getString(R.string.tts_isOK),Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Intent installTTS = new Intent();
-                installTTS.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTS);
-            }
-        }
     }
 
     public void loadWeather(String city) {

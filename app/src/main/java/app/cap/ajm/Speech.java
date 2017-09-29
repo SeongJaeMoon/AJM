@@ -1,8 +1,6 @@
 package app.cap.ajm;
 
-import android.speech.tts.SynthesisCallback;
 import android.speech.tts.TextToSpeech;
-
 import java.util.Locale;
 
 public class Speech {
