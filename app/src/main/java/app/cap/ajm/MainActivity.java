@@ -2,7 +2,6 @@ package app.cap.ajm;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -58,7 +57,6 @@ import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.noob.noobcameraflash.managers.NoobCameraManager;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -95,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private RecyclerView mainRecyclerView;
     private Boolean fboolean = true;
     private View views;
-    Location lastlocation = new Location("last");
     private FloatingActionButton fab;
     private FloatingActionButton refresh;
     private FloatingActionButton holder;
@@ -125,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Bind(R.id.weather5)
     TextView weather5;
     private int MY_DATA_CHECK_CODE = 0;
-    private AJMapp ajMapp;
     private Speech speech;
     private boolean tts_isOK = false;
     @Override
@@ -183,14 +179,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        ajMapp = (AJMapp)getApplicationContext();
         speech = new Speech();
         Intent checkTTSIntent = new Intent();
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
-        if (tts_isOK){
-            toolbar.setSubtitle(getString(R.string.tts_isOK));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+            soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(1).build();
+            Log.w("Main: ", "onStart SoundPool");
+        }else{
+            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC ,0);
         }
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                sampleId = soundPool.load(getApplicationContext(), R.raw.bikebell, 1);
+                soundPool.play(sampleId, 1f, 1f, 0, 0, 1f);
+                Log.w("Main: ", "SoundPool Load Complete!");
+            }
+        });
         Log.w("onCreate " ,Locale.getDefault().getLanguage() +", "+Locale.getDefault().getCountry()+", "+ Locale.getDefault());
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
@@ -825,24 +836,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onStart(){
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build();
-            soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(1).build();
-            Log.w("Main: ", "onStart SoundPool");
-        }else{
-            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC ,0);
-        }
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                sampleId = soundPool.load(getApplicationContext(), R.raw.bikebell, 1);
-                soundPool.play(sampleId, 1f, 1f, 0, 0, 1f);
-                Log.w("Main: ", "SoundPool Load Complete!");
-            }
-        });
     }
 
     @Override
