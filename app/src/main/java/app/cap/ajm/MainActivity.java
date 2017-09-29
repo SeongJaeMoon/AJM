@@ -866,8 +866,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 String something = new String(Base64.encode(md.digest(), 0));
                 Log.d("Hash key:", "*****"+something+"*****");
             }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
+        } catch (Exception e){
             Log.e("name not found", e.toString());
         }
     }
