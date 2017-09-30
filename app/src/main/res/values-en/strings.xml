@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name=	"name" translatable="false">	안전모</string>
     <string name=	"open">	open</string>
     <string name=	"close"	>close</string>
     <string name="tts_isOK">tts set-up</string>
