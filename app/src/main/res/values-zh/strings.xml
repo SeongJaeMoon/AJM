@@ -110,7 +110,7 @@
     <string name=	"google_api_error">该谷歌API的要求是有限的。</string>
     <string name=	"input_start">	请输入您的出发点。</string>
     <string name=	"input_end">	请输入您的目的地。</string>
-    <string name=	"navi_install"	>为了使用的地图功能，您必须下载可可导航。 \ n有可能发生数据的费用在移动数据体验。</string>
+    <string name=	"navi_install"	>为了使用路线功能，您必须下载kakao导航。 \n有可能发生数据的费用在移动数据体验。</string>
     <string name=	"error_default">未知错误。</string>
     <string name=	"set_current_loc">设置当前位置为起点</string>
     <string name=	"set_map_loc">	按住地图上所需的目的地。</string>

@@ -110,7 +110,7 @@
     <string name=	"google_api_error">GoogleのAPIリクエストは限定的でした。</string>
     <string name=	"input_start">あなたの出発点を入力してください。</string>
     <string name=	"input_end">あなたの目的地を入力してください。	</string>
-    <string name=	"navi_install"	>道順機能を使用するには、カカオのナビゲートをダウンロードする必要があります。 \ Nは、データ料金は、モバイルデータの経験で発生する可能性があります。	</string>
+    <string name=	"navi_install"	>ルート機能を利用するためにはKAKAOナビゲーションアプリをダウンロードする必要があります。 \nは、データ料金は、モバイルデータの経験で発生する可能性があります。	</string>
     <string name=	"error_default">不明なエラー。	</string>
     <string name=	"set_current_loc"	>出発点として、あなたの現在の位置を設定します</string>
     <string name=	"set_map_loc">長押しすると、マップ上の目的の宛先を保持します。</string>
