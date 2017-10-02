@@ -394,7 +394,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 switch (gpsValue) {
                     case "default":
                         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-                        Log.w("Main", "GPSprovider Default");
                         break;
                     case "high":
                         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, this);
@@ -413,14 +412,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
             if (mLocationManager!=null){
                 mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                Log.w("Main", "NetworkProvider Request");
             }
             gpsValue = sharedPreferences.getString("gps_level", "default");
             try {
                 switch (gpsValue) {
                     case "default":
                         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                        Log.w("Main", "NetworkProvider Default");
                         break;
                     case "high":
                         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, this);
