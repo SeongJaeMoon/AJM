@@ -35,8 +35,6 @@ public class AccActivity extends AppCompatActivity{
     private SQLiteDatabase sql;
     String provider;
     private static final String _ID = "id";
-    private TextToSpeech tts;
-    private AJMapp ajMapp;
     private Speech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,6 @@ public class AccActivity extends AppCompatActivity{
         final Cursor cursor = getAllContacts();
         final ArrayAdapter<String> arrayAdapter;
         Toast.makeText(getApplicationContext(),getString(R.string.sms_alert),Toast.LENGTH_LONG).show();
-        ajMapp = (AJMapp)getApplicationContext();
         speech = new Speech();
         start.setOnClickListener(new View.OnClickListener(){
         @Override
