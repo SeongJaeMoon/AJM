@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">안전모</string>
     <string name="open">열기</string>
     <string name="close">닫기</string>
     <string name="tts_isOK">음성 안내 사용 가능</string>
@@ -57,7 +58,7 @@
     <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
     <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
     <!--설정창-->
-    <string name="noti_id" translatable="false">안전모</string>
+    <string name="noti_id">안전모</string>
     <string name="title_activity_test">Map</string>
     <string name="permission_error_title">위치 권한 에러</string>
     <string name="permission_error_location">기기의 위치 권한을 켜주세요.</string>
