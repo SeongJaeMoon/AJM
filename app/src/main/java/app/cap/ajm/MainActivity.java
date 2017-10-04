@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Bind(R.id.weather5)
     TextView weather5;
     private Speech speech;
-
+    private boolean isPause = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             Intent intent = new Intent(getApplicationContext(), GpsServices.class);
             startService(intent);
             refresh.setVisibility(View.INVISIBLE);
-            if (sharedPreferences.getBoolean("route",false)) {
+            if (sharedPreferences.getBoolean("route",false)&&isPause) {
                 try {
                     AJMapp ajMapp = (AJMapp) getApplicationContext();
                     ajMapp.setStartAddr(getGeocode(lat, lng));
@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             }
           //주행 일시 정지
         } else {
+            isPause = false;
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_play));
             data.setRunning(false);
             Intent stop = new Intent(getApplicationContext(), GpsServices.class);
@@ -364,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 Toast.makeText(getApplicationContext(), getString(R.string.route_not_setup), Toast.LENGTH_SHORT).show();
             }
         }
+        isPause = true;
         resetData();
         Intent intent = new Intent(getApplicationContext(), GpsServices.class);
         stopService(intent);

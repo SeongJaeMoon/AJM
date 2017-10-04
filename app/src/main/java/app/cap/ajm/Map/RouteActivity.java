@@ -65,8 +65,6 @@ public class RouteActivity extends FragmentActivity implements
     public LocationManager locationManager;
     private boolean mapsSelection=false;
     double latitude, longitude;
-    private String gpsValue;
-    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +96,7 @@ public class RouteActivity extends FragmentActivity implements
                 mapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
                 mapView.setMapViewEventListener(this);
                 mapView.setPOIItemEventListener(this);
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                 findbutton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View v){
@@ -122,7 +120,6 @@ public class RouteActivity extends FragmentActivity implements
                         list1 = geocoder.getFromLocationName(eped1, 10);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Log.e("test", "입출력 오류 - 서버에서 주소변환시 에러발생");
                     }
                     if (list != null && list1 != null)
                     {
@@ -138,8 +135,6 @@ public class RouteActivity extends FragmentActivity implements
                             double splon = addr.getLongitude();
                             double edlat = addr1.getLatitude();
                             double edlon = addr1.getLongitude();
-                                Log.i("address :" , list.get(0).getAddressLine(0)+"**" + list1.get(0).getAddressLine(0)+"**"+eped1);
-                                Log.w("latlon",String.valueOf(splat)+","+String.valueOf(splon) +"**"+ String.valueOf(edlat)+","+String.valueOf(edlon));
                                 try {
                                     if(KakaoNaviService.isKakaoNaviInstalled(getApplicationContext())) {
                                         Location kakao = Destination.newBuilder(eped1, edlon, edlat).build();
