@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">안전모</string>
     <string name="open">열기</string>
     <string name="close">닫기</string>
     <string name="tts_isOK">음성 안내 사용 가능</string>
