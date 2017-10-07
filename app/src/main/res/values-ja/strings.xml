@@ -79,7 +79,6 @@
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344	</string>
     <string name=	"translate_title">言語設定</string>
     <string name=	"alert_title">あなたは、情報サービスを受けるようにしませんか？	</string>
-    <string name=	"translate">あなたは英語に翻訳したい場合は、それをオンにします。</string>
     <string name=	"alertsetting"	>	あなたが選択をキャンセルした場合の危険ゾーンの説明ということは表示されません。</string>
     <string name=	"autosaving">	あなたが選択をキャンセルした場合、保存するための自動パスではありません。</string>
     <string name=	"autocancle_title">システム終了時に自動的にサービス終了</string>

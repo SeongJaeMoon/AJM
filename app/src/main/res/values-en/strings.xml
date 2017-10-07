@@ -79,7 +79,6 @@
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
     <string name=	"translate_title">Language Setting</string>
     <string name=	"alert_title">	Receive information service?</string>
-    <string name=	"translate">If you want to translate to English, turn on it.</string>
     <string name=	"alertsetting"	>If you cancel the selection does not appear that the risk zone descriptions.</string>
     <string name=	"autosaving">If you cancel the selection is not an automatic path to save.	</string>
     <string name=	"autocancle_title">Automatically shut down service?</string>

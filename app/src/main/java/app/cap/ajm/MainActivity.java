@@ -115,25 +115,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     TextView weather5;
     private Speech speech;
     private boolean isPause = true;
+    private int MY_DATA_CHECK_CODE = 0;
+    private TextToSpeech tts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //권한 한번 더 확인.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                int PERMISSION_ALL = 1;
-                String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS,
-                        Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-            }
-        }
+
         handler = new Handler();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         views = getWindow().getDecorView();
@@ -166,8 +154,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        speech = new Speech();
 
+        Intent checkTTS = new Intent();
+        checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkTTS, MY_DATA_CHECK_CODE);
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
@@ -308,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             time.setBase(SystemClock.elapsedRealtime() - data.getTime());
             time.start();
             data.setFirstTime(true);
-            speech.Talk(getString(R.string.wear_helmet));
+            speak(getString(R.string.wear_helmet));
             Intent intent = new Intent(getApplicationContext(), GpsServices.class);
             startService(intent);
             refresh.setVisibility(View.INVISIBLE);
@@ -454,8 +444,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     public void onDestroy() {
         super.onDestroy();
         //mLocationManager.removeUpdates(this);
-        if (speech.getTTS() != null) {
-            speech.getTTS().shutdown();
+        if (tts != null) {
+            tts.shutdown();
         }
         if (sharedPreferences.getBoolean("autoservice", false)){
             Intent stop1 = new Intent(getApplicationContext(), TimeTask.class);
@@ -544,9 +534,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
             currentSpeed.setText(s);
 
-            if (30 <= location.getSpeed() * 3.6 && !speech.getTTS().isSpeaking() && data.isRunning()) {
+            if (30 <= location.getSpeed() * 3.6 && !tts.isSpeaking() && data.isRunning()) {
                 showNotification(getString(R.string.over_speed), getString(R.string.over_speed_alert));
-                speech.Talk(getString(R.string.over_speed_alert));
+                speak(getString(R.string.over_speed_alert));
                 try {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -766,8 +756,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onStop() {
         super.onStop();
-        if (speech.getTTS()!= null) {
-                speech.getTTS().stop();
+        if (tts!= null) {
+                tts.stop();
             }
     }
 
@@ -820,6 +810,34 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         return false;
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MY_DATA_CHECK_CODE){
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        if (status == TextToSpeech.SUCCESS)
+                        {
+                            if (tts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE)
+                                tts.setLanguage(Locale.getDefault());
+                        }
+                        else if (status == TextToSpeech.ERROR)
+                        {
+                            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            else{
+                Intent installTTS = new Intent();
+                installTTS.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTS);
+            }
+        }
+    }
+
+    private void speak(String s){tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);}
 }
 
 
