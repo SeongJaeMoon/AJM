@@ -76,7 +76,6 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new License("Google Play Services API",License.GOOGLE, License.APACHE_2, "https://developers.google.com/android/reference"));
         items.add(new License("material-design-icons","google",License.APACHE_2,"https://github.com/google/material-design-icons"));
         items.add(new License("Kakao Open SDK",License.KAKAO,License.APACHE_2,"https://developers.kakao.com/docs/sdk"));
-        items.add(new License("AJM","안전모",License.APACHE_2+", (CCL) "+License.CCL,"https://github.com/SeongJaeMoon/AJM"));
         items.add(new Line());
         items.add(new Category("Apache License\n" +
                 "\n" +
