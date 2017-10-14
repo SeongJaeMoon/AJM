@@ -43,12 +43,10 @@ public class GpsServices extends Service implements LocationListener{
     private SharedPreferences sharedPreferences;
     Location lastlocation = new Location("last");
     Data data;
-    private String gpsValue;
     double currentLon = 0;
     double currentLat = 0;
     double lastLon = 0;
     double lastLat = 0;
-    private String weight;
     PendingIntent contentIntent;
     Context context;
     private DatabaseReference ref;
@@ -74,7 +72,7 @@ public class GpsServices extends Service implements LocationListener{
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&& ActivityCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED) {
 
-            gpsValue = sharedPreferences.getString("gps_level", "default");
+           String gpsValue = sharedPreferences.getString("gps_level", "default");
             switch (gpsValue) {
                 case "default":
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
@@ -92,7 +90,7 @@ public class GpsServices extends Service implements LocationListener{
         }else if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&&
                 mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)&&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-            gpsValue = sharedPreferences.getString("gps_level", "default");
+           String gpsValue = sharedPreferences.getString("gps_level", "default");
             switch (gpsValue) {
                 case "default":
                     mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
@@ -128,7 +126,6 @@ public class GpsServices extends Service implements LocationListener{
 
             if (location.getAccuracy() < distance) {
                 data.addDistance(distance);
-
                 lastLat = currentLat;
                 lastLon = currentLon;
             }
@@ -139,7 +136,7 @@ public class GpsServices extends Service implements LocationListener{
                     new isStillStopped().execute();
                 }
             }
-            weight = sharedPreferences.getString("weight_value", "0");
+           String weight = sharedPreferences.getString("weight_value", "0");
             int to = Integer.parseInt(weight);
             if (to != 0){
                 data.addCalorie(data.setCalorie(to));
@@ -280,7 +277,9 @@ public class GpsServices extends Service implements LocationListener{
                                                                 break;
                                                             case "어린이보호구역": speech.Talk("前方に子供の保護区域に注意してください");
                                                                 break;
-                                                            case "사고다발지역" :speech.Talk("前方に事故多発地域に注意してください");
+                                                            case "사고다발지역" :speech.Talk("前方に事故多発地域に注意してくださ//TEST용");
+                                                                break;
+                                                            default: speech.Talk("前方に事故多発地域に注意してください");//TEST용
                                                                 break;
                                                         }
                                                  }else if(!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
@@ -292,6 +291,8 @@ public class GpsServices extends Service implements LocationListener{
                                                          case "어린이보호구역":speech.Talk("注意前面的儿童保护区");
                                                              break;
                                                          case "사고다발지역" :speech.Talk("在你面前要小心很多事故");
+                                                             break;
+                                                         default: speech.Talk("在你面前要小心很多事故"); //TEST용
                                                              break;
                                                      }
                                                  }

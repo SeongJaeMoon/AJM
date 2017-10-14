@@ -77,18 +77,17 @@ public class Data {
     public SpannableString getCalorieMeter(){
         SpannableString s;
         if (calorieK<1){
-            s = new SpannableString(String.format(Locale.KOREA,"%.0f", distanceM) + "cal");
+            s = new SpannableString(String.format(Locale.KOREA,"%.0f", calorie) + "cal");
             s.setSpan(new RelativeSizeSpan(0.5f), s.length() - 3, s.length(), 0);
         }
         else {
-            s = new SpannableString((String.format(Locale.KOREA, "%.0f", calorie) + "kcal"));
+            s = new SpannableString((String.format(Locale.KOREA, "%.0f", calorieK) + "kcal"));
             s.setSpan(new RelativeSizeSpan(0.5f), s.length() - 4, s.length(), 0);
         }
         return s;
     }
 
     public SpannableString getAverageSpeed(){
-
         double average = ((distanceM / (time / 1000)) * 3.6);
         SpannableString s;
         if (time > 0)
@@ -162,7 +161,7 @@ public class Data {
         this.time = time;
     }
 
-    public double getCalorie(){return calorie;}
+    //public double getCalorie(){return calorie;}
     /*칼로리 계산 몸무게x 칼로리소비계수x 평균속도km/h */
     public double setCalorie(int weight) {
         double averageSpeed = ((distanceM / (time / 1000)) * 3.6);

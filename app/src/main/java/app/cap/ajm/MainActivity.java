@@ -77,7 +77,6 @@ import app.cap.ajm.GPSTraker.TrackDBhelper;
 
 public class MainActivity extends AppCompatActivity implements LocationListener{
     public final String weather_id = BuildConfig.OWM_API_KEY;
-    private final String weather_city = "seoul";
     private BackPressCloseHandler backPressCloseHandler;
     private SharedPreferences sharedPreferences;
     private LocationManager mLocationManager;
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private boolean firstfix;
     private boolean hasFlash;
     private boolean turnFlash;
-    private String gpsValue;
     private boolean ishold;
     double lat, lng;
     @Bind(R.id.weather2)
@@ -116,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private Speech speech;
     private boolean isPause = true;
     private int MY_DATA_CHECK_CODE = 0;
+    private static final int PERMISSION_CEHCK_CODE=7;
     private TextToSpeech tts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,17 +122,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         setContentView(R.layout.activity_main);
         //권한 한번 더 확인
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                int PERMISSION_ALL = 1;
-                String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS,
+                //int PERMISSION_ALL = 1;
+                String[] PERMISSIONS = {Manifest.permission.SEND_SMS,
                         Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_CEHCK_CODE);
             }
         }
 
@@ -215,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 } else {
                     averageSpeed.setText(data.getAverageSpeed());
                 }
+                Log.w("update", data.getAverageSpeed()+", "+data.getAverageSpeedMotion()+", "+data.getCalorieMeter());
             }
         };
 
@@ -382,6 +380,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showGpsDisabledDialog();
         }
+        String weather_city = "seoul";
         loadWeather(weather_city);
         firstfix = true;
         if (!data.isRunning()) {
@@ -396,8 +395,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mLocationManager.getAllProviders().indexOf(LocationManager.GPS_PROVIDER) >= 0
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-            gpsValue = sharedPreferences.getString("gps_level", "default");
-            try {
+           String gpsValue = sharedPreferences.getString("gps_level", "default");
                 switch (gpsValue) {
                     case "default":
                         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
@@ -412,16 +410,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, this);
                         break;
                 }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
         }else if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
             if (mLocationManager!=null){
                 mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
-            gpsValue = sharedPreferences.getString("gps_level", "default");
-            try {
+           String gpsValue = sharedPreferences.getString("gps_level", "default");
                 switch (gpsValue) {
                     case "default":
                         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
@@ -436,9 +430,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, this);
                         break;
                 }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -853,6 +844,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     }
 
     private void speak(String s){tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_CEHCK_CODE: {
+                //요청이 취소되면 결과 배열이 비어있음
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){//권한부여
+                    Toast.makeText(getApplicationContext(), getString(R.string.permission),Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS,
+                            Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
+                }
+                return;
+            }
+        }
+    }
 }
 
 
