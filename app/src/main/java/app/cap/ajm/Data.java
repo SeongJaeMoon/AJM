@@ -17,7 +17,6 @@ public class Data {
     private double distanceM;
     private double curSpeed;
     private double maxSpeed;
-    private int weight;
     private onGpsServiceUpdate onGpsServiceUpdate;
 
     public interface onGpsServiceUpdate{
@@ -41,7 +40,6 @@ public class Data {
         timeStopped = 0;
         calorie = 0;
         calorieK =0;
-        weight = 0;
     }
 
     public Data(onGpsServiceUpdate onGpsServiceUpdate){
