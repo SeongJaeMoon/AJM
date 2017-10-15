@@ -146,6 +146,7 @@
     <string name="remove_all">All number deleted.</string>
     <string name="at_least_number">One or more numbers are required.</string>
     <string name="thk_you">Your bike has the effect of planting %1$d tree. :)</string>
+    <string name="not_supprot_acc">This device does not support accelerometer sensors.</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

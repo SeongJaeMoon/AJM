@@ -265,7 +265,7 @@ public class GpsServices extends Service implements LocationListener{
                                                              break;
                                                          case "사고다발지역" : speech.Talk("Be careful at the accident prone area");
                                                              break;
-                                                         default: speech.Talk("Be careful at the test");
+                                                         default: speech.Talk("Be careful at the test"); //테스트용
                                                              break;
                                                      }
                                                  }

@@ -146,6 +146,7 @@
     <string name="remove_all">所有号码已删除。</string>
     <string name="at_least_number">需要一个或多个数字。</string>
     <string name="thk_you">您的自行车具有种植 %1$d 棵树的效果。:)</string>
+    <string name="not_supprot_acc">该设备不支持加速度传感器。</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

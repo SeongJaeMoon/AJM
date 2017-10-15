@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:text="@string/permission"/>
 
     <Button

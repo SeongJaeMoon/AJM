@@ -57,6 +57,7 @@
     <string name="pref_miles_per_hour">시간당 마일 사용</string>
     <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
     <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
+    <string name="not_supprot_acc">이 단말기는 가속도계 센서를 지원하지 않습니다.</string>
     <!--설정창-->
     <string name="noti_id">안전모</string>
     <string name="title_activity_test">Map</string>

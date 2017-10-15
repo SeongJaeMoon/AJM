@@ -1,6 +1,7 @@
 package app.cap.ajm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,9 +13,16 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.Camera;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +34,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -39,9 +48,11 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -53,7 +64,6 @@ import app.cap.ajm.About.AboutActivity;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
-import com.noob.noobcameraflash.managers.NoobCameraManager;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -105,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private Data.onGpsServiceUpdate onGpsServiceUpdate;
     private boolean firstfix;
     private boolean hasFlash;
-    private boolean turnFlash;
+    private boolean turnFlash=false;
     private boolean ishold;
     double lat, lng;
     @Bind(R.id.weather2)
@@ -116,10 +126,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private int MY_DATA_CHECK_CODE = 0;
     private static final int PERMISSION_CEHCK_CODE=7;
     private TextToSpeech tts;
-    private String cameraId=null;
-    private CameraManager camManager;
+    private CameraDevice cameraDevice;
+    private String cameraId;
     private android.hardware.Camera camera = null;
-    android.hardware.Camera.Parameters cameraParameter;
+    private android.hardware.Camera.Parameters cameraParameter;
+    private Size mCameraSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,21 +138,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         //권한 한번 더 확인
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+                String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_CEHCK_CODE);
             }
         }
-
         handler = new Handler();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         views = getWindow().getDecorView();
         hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        turnFlash = false;
-        NoobCameraManager.getInstance().init(this);
         backPressCloseHandler = new BackPressCloseHandler(this);
         ButterKnife.bind(this);
         data = new Data(onGpsServiceUpdate);
@@ -168,15 +174,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-
-        camera = android.hardware.Camera.open();
-        cameraParameter = camera.getParameters();
 
         Intent checkTTS = new Intent();
         checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTS, MY_DATA_CHECK_CODE);
-        getAppKeyHash();
+        //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
                         try {
@@ -442,18 +444,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onPause() {
         super.onPause();
-        if (camera!=null){
-            camera.release();
-            turnFlash = false;
-        }
-        if (cameraId!=null&&Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+        /*if (cameraId!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
             try {
+                CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
                 cameraId = camManager.getCameraIdList()[0];
                 camManager.setTorchMode(cameraId, false);
                 turnFlash = false;
-            }catch (CameraAccessException e){
+            } catch (CameraAccessException e) {
                 e.printStackTrace();
-            }
+            }*/
+        /*}else */if(camera!=null){
+            camera.release();
+            turnFlash = false;
         }
         if(sharedPreferences.getBoolean("autoservice", false)) {
             mLocationManager.removeUpdates(this);
@@ -480,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             resetData();
             mLocationManager.removeUpdates(this);
         }
+
         showNotification(getString(R.string.app_name), String.format(getString(R.string.thk_you),trees));
     }
 
@@ -495,46 +498,70 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         if (id == R.id.action_flash) {
             if (!hasFlash) {
                 Toast.makeText(MainActivity.this, getString(R.string.sorry_not_settup), Toast.LENGTH_SHORT).show();
-            }
-            //NoobCameraManager.getInstance().takePermissions();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_DENIED) {
-                    if (!turnFlash) {
-                        try {
-                            cameraId = camManager.getCameraIdList()[0];
-                            camManager.setTorchMode(cameraId, true);
-                            turnFlash = true;//Turn ON
-                        } catch (CameraAccessException e) {
+            }else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA)) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.permission), Toast.LENGTH_LONG).show();
+                        } else {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+                        }
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                        try{
+                        CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+                        for (String cameraId : camManager.getCameraIdList()) {
+                            CameraCharacteristics characteristics = camManager.getCameraCharacteristics(cameraId);
+                            if (characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK) {
+                                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                                Size[] sizes = map.getOutputSizes(SurfaceTexture.class);
+                                mCameraSize = sizes[0];
+                                for (Size size : sizes) {
+                                    if (size.getWidth() > mCameraSize.getWidth()) {
+                                        mCameraSize = size;
+                                    }
+                                }
+                                if (!turnFlash) {
+                                    //cameraId = camManager.getCameraIdList()[0];
+                                    camManager.setTorchMode(cameraId, true);
+                                    turnFlash = true;//Turn ON
+                                } else {
+                                    camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+                                    //cameraId = camManager.getCameraIdList()[0];
+                                    camManager.setTorchMode(cameraId, false);
+                                    turnFlash = false;
+                                }
+                            }
+                        }
+                        }catch (CameraAccessException e){
                             e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),getString(R.string.error_default)+e,Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
-                            cameraId = camManager.getCameraIdList()[0];
-                            camManager.setTorchMode(cameraId, false);
-                            turnFlash = false;
-                        } catch (CameraAccessException e) {
+                            if (!turnFlash) {
+                                camera = android.hardware.Camera.open();
+                                cameraParameter = camera.getParameters();
+                                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                                camera.setParameters(cameraParameter);
+                                camera.startPreview();
+                                turnFlash = true;//Turn ON
+                            } else {
+                                camera = android.hardware.Camera.open();
+                                cameraParameter = camera.getParameters();
+                                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                camera.stopPreview();
+                                camera.release();
+                                turnFlash = false;
+                            }
+                        } catch (Exception e) {
                             e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_default) + e, Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-            }else{
-                try {
-                    if (!turnFlash) {
-                        camera.setParameters(cameraParameter);
-                    } else {
-                        camera.release();
-                        turnFlash = false;
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), getString(R.string.error_default)+e, Toast.LENGTH_SHORT).show();
-                }
+                //}
             }
         }
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+        return toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -597,7 +624,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 holder.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_black_24dp));
                 ishold = true;
             }
-            //double distance = lastlocation.distanceTo(location);
+
             double tree = data.returnDistance();
             if (tree > 1000 && tree < 2000) {
                 trees = 1;
@@ -888,12 +915,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     Toast.makeText(getApplicationContext(), getString(R.string.permission),Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
                 }
                 return;
             }
         }
     }
+
 }
 
 

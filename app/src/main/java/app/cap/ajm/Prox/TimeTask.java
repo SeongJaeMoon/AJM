@@ -103,9 +103,6 @@ public class TimeTask extends Service implements SensorEventListener{
     @Override
     public void onCreate() {
         super.onCreate();
-        //Intent checkTTSIntent = new Intent();
-        //checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        //tts = new TextToSpeech(this, this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         speech = new Speech();
@@ -155,7 +152,7 @@ public class TimeTask extends Service implements SensorEventListener{
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(TimeTask.this.getApplicationContext(), "위치 권한이 설정 되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TimeTask.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -170,7 +167,7 @@ public class TimeTask extends Service implements SensorEventListener{
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(TimeTask.this.getApplicationContext(), "위치 권한이 설정 되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TimeTask.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -184,7 +181,7 @@ public class TimeTask extends Service implements SensorEventListener{
             fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 1000, TIME_CONSTANT);
         }
         else {
-            Toast.makeText(getApplicationContext(), "이 스마트폰은 가속도계 센서를 지원하지 않습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.not_supprot_acc), Toast.LENGTH_SHORT).show();
         }
 
         return START_STICKY;

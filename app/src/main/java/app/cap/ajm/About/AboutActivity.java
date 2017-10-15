@@ -64,7 +64,6 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new License("okhttp","square", License.APACHE_2,"https://github.com/square/okhttp"));
         items.add(new License("volley","google", License.APACHE_2, "https://github.com/google/volley"));
         items.add(new License("butternife","JakeWharton",License.APACHE_2,"https://github.com/JakeWharton/butterknife"));
-        items.add(new License("NoobCameraFlash","abhi347",License.GPL_V3, "https://github.com/Abhi347/NoobCameraFlash"));
         items.add(new License("parcler","johncarl81",License.APACHE_2,"https://github.com/johncarl81/parceler"));
         items.add(new License("FloatingActionButton","makovkastar",License.MIT,"https://github.com/makovkastar/FloatingActionButton"));
         items.add(new License("AndroidSwipeLayout","daimajia",License.MIT,"https://github.com/daimajia/AndroidSwipeLayout"));
