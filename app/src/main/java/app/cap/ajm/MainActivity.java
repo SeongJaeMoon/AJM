@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.location.Address;
@@ -115,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private int MY_DATA_CHECK_CODE = 0;
     private static final int PERMISSION_CEHCK_CODE=7;
     private TextToSpeech tts;
+    private String cameraId=null;
+    private CameraManager camManager;
+    private android.hardware.Camera camera = null;
+    android.hardware.Camera.Parameters cameraParameter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+        camera = android.hardware.Camera.open();
+        cameraParameter = camera.getParameters();
 
         Intent checkTTS = new Intent();
         checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
@@ -433,6 +442,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onPause() {
         super.onPause();
+        if (camera!=null){
+            camera.release();
+            turnFlash = false;
+        }
+        if (cameraId!=null&&Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            try {
+                cameraId = camManager.getCameraIdList()[0];
+                camManager.setTorchMode(cameraId, false);
+                turnFlash = false;
+            }catch (CameraAccessException e){
+                e.printStackTrace();
+            }
+        }
         if(sharedPreferences.getBoolean("autoservice", false)) {
             mLocationManager.removeUpdates(this);
         }
@@ -475,11 +497,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 Toast.makeText(MainActivity.this, getString(R.string.sorry_not_settup), Toast.LENGTH_SHORT).show();
             }
             //NoobCameraManager.getInstance().takePermissions();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_DENIED) {
-                    if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && !turnFlash) {
-                        CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-                        String cameraId = null;
+                    if (!turnFlash) {
                         try {
                             cameraId = camManager.getCameraIdList()[0];
                             camManager.setTorchMode(cameraId, true);
@@ -487,9 +507,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
                         }
-                    } else if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && turnFlash) {
-                        CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-                        String cameraId = null;
+                    } else {
                         try {
                             cameraId = camManager.getCameraIdList()[0];
                             camManager.setTorchMode(cameraId, false);
@@ -499,6 +517,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         }
                     }
                 }
+            }else{
+                try {
+                    if (!turnFlash) {
+                        camera.setParameters(cameraParameter);
+                    } else {
+                        camera.release();
+                        turnFlash = false;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_default)+e, Toast.LENGTH_SHORT).show();
+                }
+            }
         }
         if (toggle.onOptionsItemSelected(item)) {
             return true;
