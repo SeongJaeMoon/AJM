@@ -104,11 +104,11 @@ public class DialogActivity extends AppCompatActivity{
         return sqls.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (speech.getTTS()!= null) {
-            speech.getTTS().shutdown();
-        }
-    }
+    //@Override
+    //public void onDestroy() {
+    //    super.onDestroy();
+    //    if (speech.getTTS()!= null) {
+    //        speech.getTTS().shutdown();
+    //    }
+    //}
 }

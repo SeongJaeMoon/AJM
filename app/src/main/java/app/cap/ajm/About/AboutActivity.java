@@ -24,7 +24,7 @@ public class AboutActivity extends AbsAboutActivity {
 
     @Override @SuppressLint("SetTextI18n")
     protected void onCreateHeader(ImageView icon, TextView slogan, TextView version) {
-        icon.setImageResource(R.drawable.mainlogo2);
+        icon.setImageResource(R.drawable.about_pagemainlogo2);
         slogan.setText(getString(R.string.about_pageApp));
         version.setText("v" + BuildConfig.VERSION_NAME);
     }
@@ -37,22 +37,22 @@ public class AboutActivity extends AbsAboutActivity {
         items.add(new Card(getString(R.string.about_page).replace(" ", "\u00A0"), getString(R.string.about_pageSHARE)));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageHelp)));
-        items.add(new Contributor(R.drawable.ic_my_location_black_48dp,getString(R.string.about_pageHow_gps), getString(R.string.about_pageGPS).replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_directions_bike_black_48dp ,getString(R.string.about_pageHow_Direct),getString(R.string.about_pageDirect).replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_trending_up_black_48dp,getString(R.string.about_pageHow_Route), getString(R.string.about_pageRoute).replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_sms_black_48dp,getString(R.string.about_pageHow_Save), getString(R.string.about_pageSave).replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_keyboard_voice_black_48dp,getString(R.string.about_pageHow_TTS),
+        items.add(new Contributor(R.drawable.about_pageic_my_location_black_48dp,getString(R.string.about_pageHow_gps), getString(R.string.about_pageGPS).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pageic_directions_bike_black_48dp ,getString(R.string.about_pageHow_Direct),getString(R.string.about_pageDirect).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pageic_trending_up_black_48dp,getString(R.string.about_pageHow_Route), getString(R.string.about_pageRoute).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pageic_sms_black_48dp,getString(R.string.about_pageHow_Save), getString(R.string.about_pageSave).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pageic_keyboard_voice_black_48dp,getString(R.string.about_pageHow_TTS),
                 getString(R.string.about_pageTTS).replace(" ","\u00A0")));
-        items.add(new Contributor(R.drawable.ic_warning_black_48dp,getString(R.string.about_pageHow_Alert), getString(R.string.about_pageAlerts).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pageic_warning_black_48dp,getString(R.string.about_pageHow_Alert), getString(R.string.about_pageAlerts).replace(" ","\u00A0")));
         items.add(new Category(getString(R.string.about_pageAlert)));
-        items.add(new Contributor(R.drawable.mainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
+        items.add(new Contributor(R.drawable.about_pagemainlogo2, getString(R.string.about_pageAJM), getString(R.string.about_pageAJM_Alert).replace(" ","\u00A0")));
         items.add(new Line());
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pagePL)));
-        items.add(new Contributor(R.drawable.ic_android_black_48dp,getString(R.string.about_pageWhere), getString(R.string.about_pageWhere_is)));
+        items.add(new Contributor(R.drawable.about_pageic_android_black_48dp,getString(R.string.about_pageWhere), getString(R.string.about_pageWhere_is)));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageCS)));
-        items.add(new Contributor(R.drawable.ic_star_black_48dp,getString(R.string.about_pageBike), getString(R.string.about_pageBikeis)));
+        items.add(new Contributor(R.drawable.about_pageic_star_black_48dp,getString(R.string.about_pageBike), getString(R.string.about_pageBikeis)));
         items.add(new Line());
         items.add(new Category(getString(R.string.about_pageLicense)));
         items.add(new License("MultiType", "drakeet",License.APACHE_2,"https://github.com/drakeet/MultiType"));

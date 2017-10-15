@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPoint.GeoCoordinate;
 import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapView;
+import net.daum.mf.map.api.MapLayout;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -54,7 +56,6 @@ public class SearchActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
-
         mMapView = (MapView)findViewById(R.id.map_view);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
@@ -143,11 +144,7 @@ public class SearchActivity extends FragmentActivity implements
 
     public void onMapViewInitialized(MapView mapView) {
 		ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-		try {
-			mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+		mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
 	}
     @Override
 	protected void onPause(){
@@ -156,8 +153,6 @@ public class SearchActivity extends FragmentActivity implements
     @Override
 	protected void onDestroy(){
 		super.onDestroy();
-		//mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-
 		mMapView.setShowCurrentLocationMarker(false);
 
 	}
@@ -242,7 +237,7 @@ public class SearchActivity extends FragmentActivity implements
 
     @Override
     public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapCenterPoint) {
-		//mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeadingWithoutMapMoving);
+
     }
 
     @Override

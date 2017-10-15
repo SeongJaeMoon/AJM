@@ -3,7 +3,6 @@ package app.cap.ajm.Map;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,13 +10,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,6 +31,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+import net.daum.mf.map.api.MapLayout;
 import com.kakao.kakaonavi.options.RpOption;
 import com.kakao.kakaonavi.options.VehicleType;
 import com.melnykov.fab.FloatingActionButton;
@@ -92,6 +92,7 @@ public class RouteActivity extends FragmentActivity implements
                 mSearchbymap = (Button)findViewById(R.id.myMapPath);
                 myposition = (FloatingActionButton)findViewById(R.id.mypositions);
                 mapView = (MapView) findViewById(R.id.map_view);
+
                 mapView.setCurrentLocationEventListener(this);
                 mapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
                 mapView.setMapViewEventListener(this);
@@ -313,11 +314,7 @@ public class RouteActivity extends FragmentActivity implements
     @Override
     public void onMapViewInitialized(MapView mapView) {
         ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        try {
-            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
     }
 
     @Override

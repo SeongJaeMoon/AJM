@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     TextView weather2;
     @Bind(R.id.weather5)
     TextView weather5;
-    private Speech speech;
     private boolean isPause = true;
     private int MY_DATA_CHECK_CODE = 0;
     private static final int PERMISSION_CEHCK_CODE=7;
@@ -124,12 +123,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                //int PERMISSION_ALL = 1;
-                String[] PERMISSIONS = {Manifest.permission.SEND_SMS,
-                        Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
+                String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_CEHCK_CODE);
             }
         }
@@ -170,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         Intent checkTTS = new Intent();
         checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTS, MY_DATA_CHECK_CODE);
-        //getAppKeyHash();
+        getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
                         try {
@@ -843,7 +840,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
-    private void speak(String s){tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);}
+    private void speak(String s){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);
+        }else{
+            tts.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -854,8 +857,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     Toast.makeText(getApplicationContext(), getString(R.string.permission),Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS,
-                            Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
                 }
                 return;
             }

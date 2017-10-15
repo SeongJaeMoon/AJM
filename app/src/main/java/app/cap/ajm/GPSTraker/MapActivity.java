@@ -1,10 +1,7 @@
 package app.cap.ajm.GPSTraker;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -15,7 +12,6 @@ import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 import app.cap.ajm.R;
-import android.util.Log;
 import android.widget.Toast;
 import java.util.ArrayList;
 import static net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord;
@@ -24,11 +20,10 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
     private ArrayList<TrackPoint> trackPointList;
     private TrackDBhelper trackDBhelper;
     private MapView mapView;
-    private SharedPreferences sharedPreferences;
     private MapPOIItem mapPOIItem, mapPOIItem1;
     private MapPolyline mapPolyline;
     private int i = 0;
-    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +32,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
         mapView.setMapViewEventListener(this);
         mapView.setPOIItemEventListener(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         trackDBhelper = new TrackDBhelper(getApplicationContext());
         trackDBhelper.open();
         trackPointList = new ArrayList<>();

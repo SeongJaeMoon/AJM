@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">안전모</string>
+    <string name="noti_id">안전모</string>
     <string name=	"open"	>開いた</string>
     <string name="tts_isOK">音声案内に使用可能</string>
     <string name=	"close"	>閉じる</string>
