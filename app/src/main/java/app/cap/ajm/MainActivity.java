@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onPause() {
         super.onPause();
-        /*if (cameraId!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+        if (cameraId!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             try {
                 CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
                 cameraId = camManager.getCameraIdList()[0];
@@ -452,10 +452,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 turnFlash = false;
             } catch (CameraAccessException e) {
                 e.printStackTrace();
-            }*/
-        /*}else */if(camera!=null){
-            camera.release();
-            turnFlash = false;
+            }
+        }
+        if(camera!=null) {
+            try {
+                camera.release();
+                turnFlash = false;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         if(sharedPreferences.getBoolean("autoservice", false)) {
             mLocationManager.removeUpdates(this);
@@ -520,12 +525,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                                     }
                                 }
                                 if (!turnFlash) {
-                                    //cameraId = camManager.getCameraIdList()[0];
                                     camManager.setTorchMode(cameraId, true);
                                     turnFlash = true;//Turn ON
                                 } else {
                                     camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-                                    //cameraId = camManager.getCameraIdList()[0];
                                     camManager.setTorchMode(cameraId, false);
                                     turnFlash = false;
                                 }

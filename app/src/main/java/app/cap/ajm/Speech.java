@@ -9,7 +9,7 @@ public class Speech {
     private static CharSequence sc_str;
     private static String st_str;
 
-    public void Talk(String str){
+    public static void Talk(String str){
         sc_str = str;
         st_str = str;
         tts = new TextToSpeech(AJMapp.getContext(), new TextToSpeech.OnInitListener() {
