@@ -28,7 +28,7 @@
     <string name=	"startTime">departure time:</string>
     <string name=	"endTime">arrival time:</string>
     <string name=	"calorie">Calorie:</string>
-    <string name=	"temp">Temperature:</string>
+    <string name=	"temp">Temp:</string>
     <string name=	"wet">Humidity:	</string>
     <string name=	"satellite">satellite</string>
     <string name=	"msg">Request permission.</string>
