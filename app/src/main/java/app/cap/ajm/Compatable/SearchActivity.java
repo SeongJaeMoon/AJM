@@ -80,7 +80,7 @@ public class SearchActivity extends FragmentActivity implements
 					int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
 					String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
 					Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
-					Toast.makeText(getApplicationContext(), "10km내의 "+query+"를 찾습니다.",Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
 					searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
 						@Override
 						public void onSuccess(List<Item> itemList) {
@@ -91,7 +91,7 @@ public class SearchActivity extends FragmentActivity implements
 						@Override
 						public void onFail(){
 							Log.w("오류: ","오류");
-							showToast("API_KEY의 제한 트래픽이 초과되었습니다.");
+							showToast(getString(R.string.not_connected));
 						}
 					});
 				}catch (Exception e){

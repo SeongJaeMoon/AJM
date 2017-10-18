@@ -77,7 +77,7 @@
     <string name=	"latitude_label">Latitude</string>
     <string name=	"longitude_label">Longitude</string>
     <string name=	"no_location_detected">Location not found. Make sure that the device\'s location setting is enabled.	</string>
-    <string name=	"not_connected">GoogleApiClient has not yet been connected. If you choose not to re-terminate the automatic storage paths.	</string>
+    <string name=	"not_connected">API has not yet been connected. Please, try again.	</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
     <string name=	"translate_title">Language Setting</string>
     <string name=	"alert_title">	Receive information service?</string>
@@ -121,7 +121,7 @@
     <string name=	"weight_val">Please fill weight is between 10kg ~ 120kg.</string>
     <string name=	"permission">To request permission from the app</string>
     <string name=	"start_app">Start app</string>
-    <string name=	"are_u_ok"	>Are you okay? \n (Tap).</string>
+    <string name=	"are_u_ok"	>Are you okay? \n(Tap).</string>
     <string name=	"find">Search</string>
     <string name=	"start_edit">Prices of inputs</string>
     <string name=	"end_edit"	>Enter destination</string>
@@ -147,6 +147,7 @@
     <string name="at_least_number">One or more numbers are required.</string>
     <string name="thk_you">Your bike has the effect of planting %1$d tree. :)</string>
     <string name="not_supprot_acc">This device does not support accelerometer sensors.</string>
+    <string name="search_10km">Search for 10km of %1$s. </string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

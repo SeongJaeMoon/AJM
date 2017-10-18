@@ -77,7 +77,7 @@
     <string name=	"latitude_label">	緯度</string>
     <string name=	"longitude_label">経度</string>
     <string name=	"no_location_detected">場所が見つかりません。デバイスの位置の設定が有効になっていることを確認してください。</string>
-    <string name=	"not_connected">GoogleApiClientはまだ接続されていません。あなたがいないことを選択した場合、自動ストレージ・パスを再終了します。</string>
+    <string name=	"not_connected">APIはまだ接続されていません。</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344	</string>
     <string name=	"translate_title">言語設定</string>
     <string name=	"alert_title">あなたは、情報サービスを受けるようにしませんか？	</string>
@@ -147,6 +147,7 @@
     <string name="at_least_number">少なくとも1つの番号を指定する必要があります。やり直してください。</string>
     <string name="thk_you">%1$dつ以上の番号が必要です</string>
     <string name="not_supprot_acc">このデバイスは加速度センサーをサポートしていません。</string>
+    <string name="search_10km">10kmの%1$sを検索します。</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>

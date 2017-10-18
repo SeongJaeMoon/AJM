@@ -77,7 +77,7 @@
     <string name=	"latitude_label">	纬度</string>
     <string name=	"longitude_label">经度</string>
     <string name=	"no_location_detected">未找到位置。确保设备的位置设置被启用。</string>
-    <string name=	"not_connected">GoogleApiClient尚未连接。如果您选择不重新终止自动存储路径。</string>
+    <string name=	"not_connected">API尚未连接。</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
     <string name=	"translate_title">语言设置</string>
     <string name=	"alert_title">	你想收到的信息服务？</string>
@@ -118,7 +118,7 @@
     <string name=	"exit_map_loc"	>取消在地图上选定的目的地。</string>
     <string name=	"set_map_loc_ok">	将选定的位置作为目标</string>
     <string name=	"long_press">按住地图。</string>
-    <string name=	"weight_val">请填写重量之间10千克〜120公斤。	</string>
+    <string name=	"weight_val">请填写重量之间10千克〜120公斤。</string>
     <string name=	"permission">要从应用申请许可	</string>
     <string name=	"start_app">启动应用程序</string>
     <string name=	"are_u_ok"	>你还好吗？ \n（TAP）。</string>
@@ -147,6 +147,7 @@
     <string name="at_least_number">需要一个或多个数字。</string>
     <string name="thk_you">您的自行车具有种植 %1$d 棵树的效果。:)</string>
     <string name="not_supprot_acc">该设备不支持加速度传感器。</string>
+    <string name="search_10km">在10公里内寻找%1$s。</string>
     <string-array name="gps_values">
         <item>high</item>
         <item>middle</item>
