@@ -215,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 } else {
                     averageSpeed.setText(data.getAverageSpeed());
                 }
-                Log.w("update", data.getAverageSpeed()+", "+data.getAverageSpeedMotion()+", "+data.getCalorieMeter());
             }
         };
 
