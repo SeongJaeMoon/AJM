@@ -1,24 +1,25 @@
 package app.cap.ajm.Prox;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
-import java.util.Locale;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Bundle;
@@ -26,20 +27,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-
-import app.cap.ajm.AJMapp;
 import app.cap.ajm.R;
-import app.cap.ajm.Speech;
 
-public class TimeTask extends Service implements SensorEventListener{
-    private SharedPreferences sharedPreferences;
+public class TimeTask extends Service implements SensorEventListener, TextToSpeech.OnInitListener{
+
+    private TextToSpeech tts;
     double latitude, longitude;
     LocationManager locationManager;
     LocationListener locationListener;
-    Handler handler = new Handler(Looper.getMainLooper());
-    private Handler mPeriodicEventHandler = new Handler();
-    private final int PERIODIC_EVENT_TIMEOUT = 3000;
-    //private final int PERIODIC_EVENT_TIMEON = 5000;
+    Handler handler = new Handler(Looper.getMainLooper()); // 메인 쓰레드
+    private Handler mPeriodicEventHandler = new Handler(); // TIME OUT 쓰레드
+    private final int PERIODIC_EVENT_TIMEOUT = 3000; // TIME OUT 세팅
     private Timer fuseTimer = new Timer();
     private int sendCount = 0;
     private char sentRecently = 'N';
@@ -82,7 +80,7 @@ public class TimeTask extends Service implements SensorEventListener{
     private Sensor senAccelerometer;
     private Sensor senProximity;
     private SensorEvent mSensorEvent;
-    private Speech speech;
+
     private Runnable doPeriodicTask = new Runnable() {
         public void run() {
             sentRecently = 'N';
@@ -93,7 +91,7 @@ public class TimeTask extends Service implements SensorEventListener{
 
     }
 
-    public static TextToSpeech tts;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -104,17 +102,19 @@ public class TimeTask extends Service implements SensorEventListener{
     public void onCreate() {
         super.onCreate();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        speech = new Speech();
+        tts = new TextToSpeech(this, this);
     }
 
     @Override
     public void onDestroy() {
-
         mPeriodicEventHandler.removeCallbacks(doPeriodicTask);
         senSensorManager.unregisterListener(this);
         sendCount = 0;
         locationManager.removeUpdates(locationListener);
+        if (tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
     }
     
     @Override
@@ -400,8 +400,7 @@ public class TimeTask extends Service implements SensorEventListener{
                     if (degreeFloat > 30 || degreeFloat2 > 30) {
                         Log.d("Degree1:", "" + degreeFloat);
                         Log.d("Degree2:", "" + degreeFloat2);
-                        speech.Talk(getString(R.string.fall_detect));
-
+                        speak(getString(R.string.fall_detect));
                         Intent intent = new Intent(TimeTask.this, DialogActivity.class);
                         intent.putExtra("lastlat",latitude);
                         intent.putExtra("lastlon",longitude);
@@ -414,7 +413,7 @@ public class TimeTask extends Service implements SensorEventListener{
                             @Override
                             public void run() {
                                 Toast.makeText(TimeTask.this.getApplicationContext(), getString(R.string.be_careful), Toast.LENGTH_LONG).show();
-                                speech.Talk(getString(R.string.be_careful_tts));
+                                speak(getString(R.string.be_careful_tts));
                                 Log.d("Send!", "센서 값 변화!!!!! " + sendCount);
                             }
                         });
@@ -427,6 +426,38 @@ public class TimeTask extends Service implements SensorEventListener{
             gyroMatrix = getRotationMatrixFromOrientation(fusedOrientation);
             System.arraycopy(fusedOrientation, 0, gyroOrientation, 0, 3);
         }
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS)
+        {
+            if (tts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.getDefault());
+        }
+        else if (status == TextToSpeech.ERROR)
+        {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
+        }
+    }
+    private void speak(String s){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            ttsGreater21(s);
+        }else{
+            ttsUnder20(s);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 }
 

@@ -1,5 +1,6 @@
 package app.cap.ajm.Prox;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,9 +11,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.content.SharedPreferences;
@@ -29,14 +32,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import app.cap.ajm.Data;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 import app.cap.ajm.MainActivity;
 import app.cap.ajm.R;
-import app.cap.ajm.Speech;
 
-public class GpsServices extends Service implements LocationListener{
+public class GpsServices extends Service implements LocationListener, TextToSpeech.OnInitListener{
 
     private static String TAG = GpsServices.class.getSimpleName();
     private LocationManager mLocationManager;
@@ -53,12 +56,11 @@ public class GpsServices extends Service implements LocationListener{
     private GeoFire geoFire;
     private TrackDBhelper trackDBhelper;
     private Query query;
-    private Speech speech;
+    private TextToSpeech tts;
     @Override
     public void onCreate() {
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
-        speech = new Speech();
         trackDBhelper = new TrackDBhelper(this);
         trackDBhelper.open();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -66,7 +68,7 @@ public class GpsServices extends Service implements LocationListener{
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         updateNotification(false);
-
+        tts = new TextToSpeech(this, this);
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&& ActivityCompat.checkSelfPermission(getApplicationContext(),
@@ -192,6 +194,10 @@ public class GpsServices extends Service implements LocationListener{
     public void onDestroy() {
         super.onDestroy();
         mLocationManager.removeUpdates(this);
+        if (tts != null){
+            tts.stop();
+            tts.shutdown();
+        }
     }
 
     @Override
@@ -252,47 +258,47 @@ public class GpsServices extends Service implements LocationListener{
                                              try {
                                                  //Firebase에서 위치 정보 가져오기
                                                  String content = dataSnapshot.getValue(String.class);
-                                                 if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("ko")){
-                                                     speech.Talk("전방에 "+content+ "입니다. 주의하세요.");
+                                                 if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ko")){
+                                                     speak("전방에 "+content+"입니다. 주의하세요.");
                                                  }
-                                                 else if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("en")){
+                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("en")){
                                                      switch (content){
-                                                         case "직각교차로": speech.Talk("Be careful at the intersection point ahead.");
+                                                         case "직각교차로": speak("Be careful at the intersection point ahead.");
                                                              break;
-                                                         case "보행자도로": speech.Talk("Be careful at the pedestrian road ahead");
+                                                         case "보행자도로": speak("Be careful at the pedestrian road ahead");
                                                              break;
-                                                         case "어린이보호구역": speech.Talk("Be careful at the child protection area");
+                                                         case "어린이보호구역": speak("Be careful at the child protection area");
                                                              break;
-                                                         case "사고다발지역" : speech.Talk("Be careful at the accident prone area");
+                                                         case "사고다발지역" : speak("Be careful at the accident prone area");
                                                              break;
-                                                         default: speech.Talk("Be careful at the test"); //테스트용
+                                                         default: speak("Be careful at the test"); //테스트용
                                                              break;
                                                      }
                                                  }
-                                                 else if (!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("ja")){
+                                                 else if (!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("ja")){
                                                         switch (content){
-                                                            case "직각교차로":speech.Talk("前方に交差点です注意してください");
+                                                            case "직각교차로": speak("前方に交差点です注意してください");
                                                                 break;
-                                                            case "보행자도로": speech.Talk("前方に歩行者道路に注意してください");
+                                                            case "보행자도로": speak("前方に歩行者道路に注意してください");
                                                                 break;
-                                                            case "어린이보호구역": speech.Talk("前方に子供の保護区域に注意してください");
+                                                            case "어린이보호구역": speak("前方に子供の保護区域に注意してください");
                                                                 break;
-                                                            case "사고다발지역" :speech.Talk("前方に事故多発地域に注意してくださ//TEST용");
+                                                            case "사고다발지역" :speak("前方に事故多発地域に注意してくださ//TEST용");
                                                                 break;
-                                                            default: speech.Talk("前方に事故多発地域に注意してください");//TEST용
+                                                            default: speak("前方に事故多発地域に注意してください");//TEST용
                                                                 break;
                                                         }
-                                                 }else if(!speech.getTTS().isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
+                                                 }else if(!tts.isSpeaking()&&Locale.getDefault().getLanguage().equals("zh")){
                                                      switch (content){
-                                                         case "직각교차로":speech.Talk("小心前方的路口");
+                                                         case "직각교차로":speak("小心前方的路口");
                                                              break;
-                                                         case "보행자도로":speech.Talk("小心行人专用道路");
+                                                         case "보행자도로":speak("小心行人专用道路");
                                                              break;
-                                                         case "어린이보호구역":speech.Talk("注意前面的儿童保护区");
+                                                         case "어린이보호구역":speak("注意前面的儿童保护区");
                                                              break;
-                                                         case "사고다발지역" :speech.Talk("在你面前要小心很多事故");
+                                                         case "사고다발지역" :speak("在你面前要小心很多事故");
                                                              break;
-                                                         default: speech.Talk("在你面前要小心很多事故"); //TEST용
+                                                         default: speak("在你面前要小心很多事故"); //TEST용
                                                              break;
                                                      }
                                                  }
@@ -310,7 +316,7 @@ public class GpsServices extends Service implements LocationListener{
 
                              @Override
                              public void onKeyExited(String key) {
-                                 speech.Talk(getString(R.string.left_alert));
+                                 speak(getString(R.string.left_alert));
                                 Toast.makeText(getApplicationContext(), getString(R.string.left_alert), Toast.LENGTH_SHORT).show();
                              }
 
@@ -339,6 +345,38 @@ public class GpsServices extends Service implements LocationListener{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
         String getTime = sdf.format(date);
         return getTime;
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS)
+        {
+            if (tts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE)
+                tts.setLanguage(Locale.getDefault());
+        }
+        else if (status == TextToSpeech.ERROR)
+        {
+            Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
+        }
+    }
+    private void speak(String s){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            ttsGreater21(s);
+        }else{
+            ttsUnder20(s);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 }
 

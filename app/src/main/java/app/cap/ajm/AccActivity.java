@@ -1,7 +1,6 @@
 package app.cap.ajm;
 
 import android.os.Build;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.Manifest;
@@ -21,20 +20,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Locale;
-
 import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.Prox.SMSContact;
 import app.cap.ajm.Prox.TimeTask;
 
 public class AccActivity extends AppCompatActivity{
-
     private Button start,stop,addContacts,removes;
     ListView lv;
     EditText edit;
     private SQLiteDatabase sql;
     private static final String _ID = "id";
-    private Speech speech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +55,7 @@ public class AccActivity extends AppCompatActivity{
         final Cursor cursor = getAllContacts();
         final ArrayAdapter<String> arrayAdapter;
         Toast.makeText(getApplicationContext(),getString(R.string.sms_alert),Toast.LENGTH_LONG).show();
-        speech = new Speech();
+
         start.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
@@ -70,7 +66,6 @@ public class AccActivity extends AppCompatActivity{
             if(icount>0)
             {
                 Toast.makeText(getApplicationContext(),getString(R.string.start_service_safe),Toast.LENGTH_SHORT).show();
-                speech.Talk(getString(R.string.start_service_safe));
                 Intent intent= new Intent(getApplicationContext(), TimeTask.class);
                 startService(intent);
 
@@ -86,7 +81,6 @@ public class AccActivity extends AppCompatActivity{
         @Override
         public void onClick(View view) {
             Toast.makeText(getApplication(),getString(R.string.stop_service_safe),Toast.LENGTH_LONG).show();
-            speech.Talk(getString(R.string.stop_service_safe));
             Intent intent= new Intent(getApplicationContext(), TimeTask.class);
             stopService(intent);
         }
@@ -190,16 +184,10 @@ public class AccActivity extends AppCompatActivity{
     @Override
     public void onStop(){
         super.onStop();
-        if (speech.getTTS()!= null) {
-            speech.getTTS().stop();
-        }
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (speech.getTTS()!= null) {
-            speech.getTTS().shutdown();
-        }
     }
 
     public static boolean isString(String s)
@@ -212,5 +200,4 @@ public class AccActivity extends AppCompatActivity{
             return false;
         }
     }
-
 }

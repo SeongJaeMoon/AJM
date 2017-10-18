@@ -1,6 +1,7 @@
 package app.cap.ajm;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -16,12 +17,8 @@ import android.content.pm.Signature;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.location.Address;
 import android.location.Geocoder;
@@ -34,7 +31,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -52,7 +48,6 @@ import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -68,6 +63,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import android.speech.tts.TextToSpeech;
@@ -126,10 +122,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private int MY_DATA_CHECK_CODE = 0;
     private static final int PERMISSION_CEHCK_CODE=7;
     private TextToSpeech tts;
-    private CameraDevice cameraDevice;
     private String cameraId;
+    @SuppressWarnings("deprecation")
     private android.hardware.Camera camera = null;
-    private android.hardware.Camera.Parameters cameraParameter;
     private Size mCameraSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -477,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         super.onDestroy();
         //mLocationManager.removeUpdates(this);
         if (tts != null) {
+            tts.stop();
             tts.shutdown();
         }
         if (sharedPreferences.getBoolean("autoservice", false)){
@@ -539,34 +535,39 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                             Toast.makeText(getApplicationContext(),getString(R.string.error_default)+e,Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        try {
-                            if (!turnFlash) {
-                                camera = android.hardware.Camera.open();
-                                cameraParameter = camera.getParameters();
-                                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                                camera.setParameters(cameraParameter);
-                                camera.startPreview();
-                                turnFlash = true;//Turn ON
-                            } else {
-                                camera = android.hardware.Camera.open();
-                                cameraParameter = camera.getParameters();
-                                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                                camera.stopPreview();
-                                camera.release();
-                                turnFlash = false;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), getString(R.string.error_default) + e, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                //}
+                            flashunder21(turnFlash);
+                }
             }
         }
 
         return toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("deprecation")
+    public void flashunder21(boolean turn){
+        try {
+            if (!turn) {
+                camera = android.hardware.Camera.open();
+                android.hardware.Camera.Parameters cameraParameter;
+                cameraParameter = camera.getParameters();
+                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                camera.setParameters(cameraParameter);
+                camera.startPreview();
+                turnFlash = true;
+            } else {
+                camera = android.hardware.Camera.open();
+                android.hardware.Camera.Parameters cameraParameter;
+                cameraParameter = camera.getParameters();
+                cameraParameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                camera.stopPreview();
+                camera.release();
+                turnFlash = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),getString(R.string.error_default), Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public void onLocationChanged(final Location location){
         lat = location.getLatitude();
@@ -875,7 +876,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         return false;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == MY_DATA_CHECK_CODE){
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
                 tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -902,11 +903,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     }
 
     private void speak(String s){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-        tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            ttsGreater21(s);
         }else{
-            tts.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+            ttsUnder20(s);
         }
+    }
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     @Override

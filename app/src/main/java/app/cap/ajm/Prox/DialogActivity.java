@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,25 +15,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-
-import app.cap.ajm.AJMapp;
 import app.cap.ajm.Adapter.SMSDBhelper;
 import app.cap.ajm.R;
-import app.cap.ajm.Speech;
 
 public class DialogActivity extends AppCompatActivity{
+
     private Handler handler;
     final Context context = this;
     String phoneNum = "";
     String textMsg;
     private String prevNumber;
     private SQLiteDatabase sqls;
-    private Speech speech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,7 +39,7 @@ public class DialogActivity extends AppCompatActivity{
         sqls = dpHelper.getReadableDatabase();
         handler = new Handler();
         final Dialog dialog = new Dialog(context);
-        speech = new Speech();
+
         dialog.setContentView(R.layout.custom_dialog);
         Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
         dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +89,6 @@ public class DialogActivity extends AppCompatActivity{
                     }
                 }
                 Toast.makeText(getApplicationContext(),getString(R.string.send_message),Toast.LENGTH_LONG).show();
-                speech.Talk(getString(R.string.send_message));
                 handler.removeCallbacksAndMessages(null);
                 finish();
             }
@@ -103,12 +97,4 @@ public class DialogActivity extends AppCompatActivity{
     public Cursor getAllContacts(){
         return sqls.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
     }
-
-    //@Override
-    //public void onDestroy() {
-    //    super.onDestroy();
-    //    if (speech.getTTS()!= null) {
-    //        speech.getTTS().shutdown();
-    //    }
-    //}
 }
