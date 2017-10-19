@@ -79,7 +79,6 @@
     <string name=	"no_location_detected">未找到位置。确保设备的位置设置被启用。</string>
     <string name=	"not_connected">API尚未连接。</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
-    <string name=	"translate_title">语言设置</string>
     <string name=	"alert_title">	你想收到的信息服务？</string>
     <string name=	"alertsetting"	>如果取消选择不会出现危险区的描述。</string>
     <string name=	"autosaving">如果取消选择不保存自动路径。</string>

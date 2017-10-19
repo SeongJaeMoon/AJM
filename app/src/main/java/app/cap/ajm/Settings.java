@@ -19,7 +19,7 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
     SharedPreferences sharedPreferences;
     public static final String KEY_GPS_VALUE = "gps_level";
     public static final String KEY_WEIGHT_VALUE="weight_value";
-    public static final String KEY_TRANSLATE = "translate";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +50,7 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
     protected void onResume() {
         super.onResume();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        //Map<String, ?> preferencesMap = sharedPreferences.getAll();
-        //for (Map.Entry<String, ?> preferenceEntry : preferencesMap.entrySet()) {
-            //if (preferenceEntry instanceof EditTextPreference) {
-            //    updateSummary((EditTextPreference) preferenceEntry);
-            //}
-        //}
+
     }
     @Override
     public void onPause() {

@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 if(ajMapp.getStartAddr()!=null&&getGeocode(lat, lng)!=null) {
                     //출발주소, 도착주소, 출발시간, 도착시간, 평균속도, 칼로리, 거리, 온도, 습도 저장
                     trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), getGeocode(lat, lng), ajMapp.getStartTime(), getCurrentSec(),
-                            averageSpeed.getText().toString(), calorie.getText().toString(), distance.getText().toString(), weather5.getText().toString(), weather2.getText().toString());
+                            averageSpeed.getText().toString(), data.returnCalorie(), data.returnDistance(), weather5.getText().toString(), weather2.getText().toString());
                     trackDBhelper.trackDBlocationStop(getCurrentSec(), lat, lng); //종료 시간, 위치 저장
                     trackDBhelper.close();
                 }

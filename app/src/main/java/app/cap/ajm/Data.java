@@ -127,6 +127,8 @@ public class Data {
         return distanceM;
     }
 
+    public double returnCalorie(){return calorie;}
+
     public boolean isFirstTime() {
         return isFirstTime;
     }
@@ -163,7 +165,10 @@ public class Data {
     /*칼로리 계산 몸무게x 칼로리소비계수x 평균속도km/h */
     public double setCalorie(int weight) {
         double averageSpeed = ((distanceM / (time / 1000)) * 3.6);
-        if (distanceM>10 && averageSpeed > 5 && averageSpeed < 13){
+        if(distanceM>10 && averageSpeed < 5){
+            calorie = weight * 0.0500 * averageSpeed;
+        }
+        else if (distanceM>10 && averageSpeed > 5 && averageSpeed < 13){
             calorie = weight * 0.0650 * averageSpeed;
         }
         else if (distanceM >10 && averageSpeed > 13 && averageSpeed <= 15) {
@@ -193,19 +198,15 @@ public class Data {
         {
             calorie = weight * 0.163 * averageSpeed;
         }
-        else if(distanceM > 10 && averageSpeed >32)
-        {
+        else if(distanceM > 10 && averageSpeed >32) {
             calorie = weight * 0.196 * averageSpeed;
         }
         return calorie;
     }
 
-    public void addCalorie(double cal){
-        if (cal>10000||Double.isNaN(cal)||Double.isInfinite(cal)){
-            cal = 0;
-        }
-        calorie = calorie + cal;
-        calorieK = calorie / 1000f;
+    public void addCalorie(int weight){
+        calorie = calorie + setCalorie(weight);
+        calorieK = calorie /1000f;
     }
 }
 

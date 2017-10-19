@@ -95,7 +95,6 @@
     <string name="no_location_detected">위치가 발견되지 않았습니다. 장치에서 위치설정이 활성화되어 있는지 확인하십시오.</string>
     <string name="not_connected">API 트래픽이 원할하지 않습니다. 다시 시도해주세요.</string>
     <string name="kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
-    <string name="translate_title">Language Setting</string>
     <string name="alertsetting">선택을 해지하면 위험 구간 안내가 나오지 않습니다.</string>
     <string name="autosaving">선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
     <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>

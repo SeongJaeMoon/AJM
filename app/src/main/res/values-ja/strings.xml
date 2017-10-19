@@ -78,12 +78,11 @@
     <string name=	"longitude_label">経度</string>
     <string name=	"no_location_detected">場所が見つかりません。デバイスの位置の設定が有効になっていることを確認してください。</string>
     <string name=	"not_connected">APIはまだ接続されていません。</string>
-    <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344	</string>
-    <string name=	"translate_title">言語設定</string>
-    <string name=	"alert_title">あなたは、情報サービスを受けるようにしませんか？	</string>
-    <string name=	"alertsetting"	>	あなたが選択をキャンセルした場合の危険ゾーンの説明ということは表示されません。</string>
+    <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
+    <string name=	"alert_title">案内サービスを受けたいですか？</string>
+    <string name=	"alertsetting"	>あなたが選択をキャンセルした場合の危険ゾーンの説明ということは表示されません。</string>
     <string name=	"autosaving">	あなたが選択をキャンセルした場合、保存するための自動パスではありません。</string>
-    <string name=	"autocancle_title">システム終了時に自動的にサービス終了</string>
+    <string name=	"autocancle_title">アプリ終了時のサービス終了</string>
     <string name=	"autocancel">あなたがGPSで自分の選択をキャンセルし、落ちる場合の検出は、アプリが画面に表示されている場合でも継続されます。	</string>
     <string name=	"bike">自転車</string>
     <string name=	"introduce">紹介します	</string>

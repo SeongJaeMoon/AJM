@@ -42,8 +42,8 @@ public class TrackDBhelper{
                     +KEY_END_ADDR+" TEXT,"
                     +KEY_END_TIME+" TEXT,"
                     +KEY_AVG_SPEED+" TEXT,"
-                    +KEY_CALORIE+ " TEXT,"
-                    +KEY_DISTANCE+" TEXT,"
+                    +KEY_CALORIE+ " REAL,"
+                    +KEY_DISTANCE+" REAL,"
                     +KEY_TEMP+" TEXT,"
                     +KEY_WET+" TEXT"+ ");";
 
@@ -89,7 +89,7 @@ public class TrackDBhelper{
     }
 
     //종료할 때 출발 주소<>시간, 도착 주소<>시간, 평속, 칼로리, 거리, 온도, 습도 저장
-    public long trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, String calroie, String distance, String temp, String wet){
+    public long trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, double calroie, double distance, String temp, String wet){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_START_ADDR, startAddr);
         contentValues.put(KEY_END_ADDR, endAddr);
@@ -161,7 +161,6 @@ public class TrackDBhelper{
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
         return mDb.delete(DATABASE_TABLE, "_id = ?",new String[]{String.valueOf(id)});
-        //Toast.makeText(getApplicationContext(),"번호가 삭제되었습니다.",Toast.LENGTH_SHORT).show();
     }
 
 }

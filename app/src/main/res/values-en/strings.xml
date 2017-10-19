@@ -79,7 +79,6 @@
     <string name=	"no_location_detected">Location not found. Make sure that the device\'s location setting is enabled.	</string>
     <string name=	"not_connected">API has not yet been connected. Please, try again.	</string>
     <string name=	"kakao_app_key">0eda81c004b1d43a3f81ee7cf6bbd344</string>
-    <string name=	"translate_title">Language Setting</string>
     <string name=	"alert_title">	Receive information service?</string>
     <string name=	"alertsetting"	>If you cancel the selection does not appear that the risk zone descriptions.</string>
     <string name=	"autosaving">If you cancel the selection is not an automatic path to save.	</string>

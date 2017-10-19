@@ -139,11 +139,9 @@ public class GpsServices extends Service implements LocationListener, TextToSpee
                 }
             }
            String weight = sharedPreferences.getString("weight_value", "0");
-            int to = Integer.parseInt(weight);
-            if (to != 0){
-                data.addCalorie(data.setCalorie(to));
+            if (Integer.parseInt(weight) != 0){
+                data.addCalorie(Integer.parseInt(weight));
             }
-            Log.w(TAG, "addCalorie: "+ data.setCalorie(to));
             if (sharedPreferences.getBoolean("route", false)){
                 try {
                     trackDBhelper.trackDBlocationRunning(getCurrentSec(),lastLat, lastLon);
