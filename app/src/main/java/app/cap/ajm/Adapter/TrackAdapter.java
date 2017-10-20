@@ -82,7 +82,7 @@ public class TrackAdapter extends CursorAdapter{
             }else{
                 distanceView.setText(String.valueOf(decimalFormat.format(dis/1000f))+"km");
             }
-                tempView.setText(String.valueOf(temp)+"°C");
-                wetView.setText(String.valueOf(wet)+"%");
+                tempView.setText(String.valueOf(decimalFormat.format(temp))+"°C");
+                wetView.setText(String.valueOf(decimalFormat.format(wet))+"%");
     }
 }
