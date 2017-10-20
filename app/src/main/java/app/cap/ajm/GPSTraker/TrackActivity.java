@@ -3,6 +3,7 @@ package app.cap.ajm.GPSTraker;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,56 +55,86 @@ public class TrackActivity extends AppCompatActivity {
             }
             progressDialog.cancel();
         }
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
                 android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(TrackActivity.this);
-                alertDialog.setTitle(getString(R.string.what));
-                alertDialog.setMessage(getString(R.string.category));
-                alertDialog.setPositiveButton(getString(R.string.remove), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
-                        try {
-                            TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
-                            trackDBhelper1.open();
-                            Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
-                            TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
-                            Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
-                            int index = cursor1.getInt(cursor1.getColumnIndex(TrackDBhelper.KEY_ROWID));
-                            trackDBhelper1.removeList(index);
-                            Cursor newcursor = trackDBhelper1.fetchAllListOrderBYDec();
-                            trackAdapter.changeCursor(newcursor);
-                            listView.setAdapter(trackAdapter);
-                            trackDBhelper1.close();
-                            i--;
-                            textView.setText(getString(R.string.save_how_many)+" "+ i);
-                            Toast.makeText(getApplicationContext(),getString(R.string.remove_category),Toast.LENGTH_SHORT).show();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                alertDialog.setNegativeButton(getString(R.string.show_map), new DialogInterface.OnClickListener() {
+                alertDialog.setTitle(getString(R.string.category));
+                alertDialog.setItems(new CharSequence[]{getString(R.string.remove), getString(R.string.show_map), getString(R.string.about_pageSHARE), getString(R.string.close)},
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
-                                trackDBhelper1.open();
-                                Cursor cursor = trackDBhelper1.fetchAllListOrderBYDec();
-                                TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
-                                Cursor cursor1 = (Cursor)trackAdapter.getItem(position);
-                                String startTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_START_TIME));
-                                String endTime = cursor1.getString(cursor1.getColumnIndex(TrackDBhelper.KEY_END_TIME));
-                                Intent intent = new Intent(TrackActivity.this, MapActivity.class);
-                                intent.putExtra("startTime", startTime);
-                                intent.putExtra("endTime", endTime);
-                                startActivity(intent);
+                                switch (which){
+                                    case 0:try {
+                                        TrackDBhelper trackDBhelper = new TrackDBhelper(getApplicationContext());
+                                        trackDBhelper.open();
+                                        Cursor cursor = trackDBhelper.fetchAllListOrderBYDec();
+                                        TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+                                        Cursor cursor1 = (Cursor) trackAdapter.getItem(position);
+                                        int index = cursor1.getInt(cursor1.getColumnIndex(TrackDBhelper.KEY_ROWID));
+                                        trackDBhelper.removeList(index);
+                                        Cursor newcursor = trackDBhelper.fetchAllListOrderBYDec();
+                                        trackAdapter.changeCursor(newcursor);
+                                        listView.setAdapter(trackAdapter);
+                                        trackDBhelper.close();
+                                        i--;
+                                        textView.setText(getString(R.string.save_how_many) + " " + i);
+                                        Toast.makeText(getApplicationContext(), getString(R.string.remove_category), Toast.LENGTH_SHORT).show();
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.error_default)+e, Toast.LENGTH_SHORT).show();
+                                    }
+                                        break;
+                                    case 1:
+                                        try {
+                                            TrackDBhelper trackDBhelper1 = new TrackDBhelper(getApplicationContext());
+                                            trackDBhelper1.open();
+                                            Cursor cursor2 = trackDBhelper1.fetchAllListOrderBYDec();
+                                            TrackAdapter trackAdapter1 = new TrackAdapter(getApplicationContext(), cursor2);
+                                            Cursor cursor3 = (Cursor) trackAdapter1.getItem(position);
+                                            String startTime = cursor3.getString(cursor3.getColumnIndex(TrackDBhelper.KEY_START_TIME));
+                                            String endTime = cursor3.getString(cursor3.getColumnIndex(TrackDBhelper.KEY_END_TIME));
+                                            Intent intent = new Intent(TrackActivity.this, MapActivity.class);
+                                            intent.putExtra("startTime", startTime);
+                                            intent.putExtra("endTime", endTime);
+                                            startActivity(intent);
+                                            trackDBhelper1.close();
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.error_default)+e, Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                    case 2:
+                                        try {
+                                            TrackDBhelper trackDBhelper2 = new TrackDBhelper(getApplicationContext());
+                                            trackDBhelper2.open();
+                                            Cursor cursor4 = trackDBhelper2.fetchAllListOrderBYDec();
+                                            TrackAdapter trackAdapter2 = new TrackAdapter(getApplicationContext(), cursor4);
+                                            Cursor cursor5 = (Cursor) trackAdapter2.getItem(position);
+                                            String shareStartTime = cursor5.getString(cursor5.getColumnIndex(TrackDBhelper.KEY_START_TIME));
+                                            String shareEndTime = cursor5.getString(cursor5.getColumnIndex(TrackDBhelper.KEY_END_TIME));
+                                            double shareDistance = cursor5.getDouble(cursor5.getColumnIndex(TrackDBhelper.KEY_DISTANCE));
+                                            double shareCalorie = cursor5.getDouble(cursor5.getColumnIndex(TrackDBhelper.KEY_CALORIE));
+                                            Intent intents = new Intent(Intent.ACTION_SEND);
+                                            intents.setType("text/plain");
+                                            intents.putExtra(Intent.EXTRA_SUBJECT, "안전모 기록공유");
+                                            intents.putExtra(Intent.EXTRA_TEXT, "시작시간:" + shareStartTime + " 종료시간:" + shareEndTime + " 주행거리:" + String.valueOf(shareDistance) + " 소모칼로리:" + String.valueOf(shareCalorie));
+                                            intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(Intent.createChooser(intents, getTitle()));
+                                            trackDBhelper2.close();
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.error_default)+e, Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                    case 3:
+                                        dialog.cancel();
+                                        break;
+                                }
                             }
                         });
-                        alertDialog.setNeutralButton(getString(R.string.close), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
+                alertDialog.create().show();
                 return false;
             }
         });
