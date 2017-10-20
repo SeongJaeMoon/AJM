@@ -3,7 +3,6 @@
     <string name="app_name">안전모</string>
     <string name="noti_id">안전모</string>
     <string name=	"open">	打开</string>
-    <string name=  "tts_isOK">提供语音指导</string>
     <string name=	"close"	>关</string>
     <string name=	"mobile_data">	此功能可通过移动数据收费</string>
     <string name=	"route_data">按住列表中，您可以查看和删除列表中的指导。</string>
@@ -154,9 +153,9 @@
         <item>default</item>
     </string-array>
     <string-array name="gps_weight">
-        <item>GPS灵敏度高</item>
-        <item>中间GPS灵敏度</item>
-        <item>GPS灵敏度低</item>
+        <item>高GPS灵敏度</item>
+        <item>中GPS灵敏度</item>
+        <item>低GPS灵敏度</item>
         <item>默认GPS灵敏度</item>
     </string-array>
 </resources>

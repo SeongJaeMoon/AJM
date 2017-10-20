@@ -113,19 +113,68 @@ public class Settings extends AppCompatActivity implements SharedPreferences.OnS
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    if (!value.equals("")){
+                    if (!value.equals("")) {
                         if (Locale.getDefault().getLanguage().equals("ko")) {
-                            switch (value){
-                                case "high": listPref.setSummary("높은 GPS 수신감도");
+                            switch (value) {
+                                case "high":
+                                    listPref.setSummary("높은 GPS 수신감도");
                                     break;
-                                case "middle": listPref.setSummary("중간 GPS 수신감도");
+                                case "middle":
+                                    listPref.setSummary("중간 GPS 수신감도");
                                     break;
-                                case "low": listPref.setSummary("낮은 GPS 수신감도");
+                                case "low":
+                                    listPref.setSummary("낮은 GPS 수신감도");
                                     break;
-                                case "default": listPref.setSummary("기본 GPS 수신감도");
+                                case "default":
+                                    listPref.setSummary("기본 GPS 수신감도");
+                                    break;
                             }
-                        }
-                        else {
+                        } else if (Locale.getDefault().getLanguage().equals("en")) {
+                            switch (value) {
+                                case "high":
+                                    listPref.setSummary("High GPS sensitivity");
+                                    break;
+                                case "middle":
+                                    listPref.setSummary("Middle GPS sensitivity");
+                                    break;
+                                case "low":
+                                    listPref.setSummary("Low GPS sensitivity");
+                                    break;
+                                case "default":
+                                    listPref.setSummary("Default GPS sensitivity");
+                                    break;
+                            }
+                        } else if (Locale.getDefault().getLanguage().equals("zh")) {
+                            switch (value) {
+                                case "high":
+                                    listPref.setSummary("高GPS灵敏度");
+                                    break;
+                                case "middle":
+                                    listPref.setSummary("中GPS灵敏度");
+                                    break;
+                                case "low":
+                                    listPref.setSummary("低GPS灵敏度");
+                                    break;
+                                case "default":
+                                    listPref.setSummary("默认GPS灵敏度");
+                                    break;
+                            }
+                        }else if (Locale.getDefault().getLanguage().equals("ja")){
+                            switch (value) {
+                                case "high":
+                                    listPref.setSummary("高いGPS感度");
+                                    break;
+                                case "middle":
+                                    listPref.setSummary("中程度のGPS感度");
+                                    break;
+                                case "low":
+                                    listPref.setSummary("低いGPS感度");
+                                    break;
+                                case "default":
+                                    listPref.setSummary("デフォルトのGPS感度");
+                                    break;
+                            }
+                        }else{
                             listPref.setSummary(value);
                         }
                         return true;
