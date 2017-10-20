@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import me.drakeet.multitype.Items;
 import me.drakeet.support.about.AbsAboutActivity;
 import me.drakeet.support.about.BuildConfig;
@@ -17,9 +15,7 @@ import me.drakeet.support.about.Contributor;
 import me.drakeet.support.about.License;
 import me.drakeet.support.about.Line;
 import me.drakeet.support.about.R;
-/**
- * @author drakeet
- */
+
 public class AboutActivity extends AbsAboutActivity {
 
     @Override @SuppressLint("SetTextI18n")

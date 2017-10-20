@@ -2,7 +2,6 @@ package app.cap.ajm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -82,6 +81,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 
+/*
+*Release : 2017-10-20
+*Auth : 안전모팀, 교신메일: seongjae.m@gmail.com
+ */
 public class MainActivity extends AppCompatActivity implements LocationListener{
     public final String weather_id = BuildConfig.OWM_API_KEY;
     private BackPressCloseHandler backPressCloseHandler;
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             }
         }
         handler = new Handler();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //화면 꺼짐 방지
         views = getWindow().getDecorView();
         hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         backPressCloseHandler = new BackPressCloseHandler(this);
@@ -873,7 +876,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             }
         }
         return false;
-    }
+    }//서비스 실행 중인지 알아오기
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == MY_DATA_CHECK_CODE){
@@ -899,7 +902,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 startActivity(installTTS);
             }
         }
-    }
+    }//tts엔진세팅
 
     private void speak(String s){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -935,7 +938,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 return;
             }
         }
-    }
+    }//퍼미션 all pass 필요...
 
 }
 

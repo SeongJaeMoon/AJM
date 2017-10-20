@@ -2,8 +2,6 @@ package app.cap.ajm;
 
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
-
 import java.util.Locale;
 
 public class Data {

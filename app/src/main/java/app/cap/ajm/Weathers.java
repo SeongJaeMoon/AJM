@@ -1,7 +1,4 @@
 package app.cap.ajm;
-
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -9,7 +6,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,7 +29,6 @@ public class Weathers extends AppCompatActivity {
 
     public final String APP_ID = OWM_API_KEY;
     String city = "Seoul";
-    String theCity = "서울";
     @Bind(R.id.weather_title)
     TextView weatherTitle;
     @Bind(R.id.refresh)
@@ -90,7 +85,6 @@ public class Weathers extends AppCompatActivity {
     private void loadWeather(final String city) {
         WeatherMap weatherMap = new WeatherMap(this, APP_ID);
         weatherMap.getCityWeather(city, new WeatherCallback() {
-
             @Override
             public void success(WeatherResponseModel response) {
                 populateWeather(response);
@@ -105,7 +99,6 @@ public class Weathers extends AppCompatActivity {
         weatherMap.getCityForecast(city, new ForecastCallback() {
             @Override
             public void success(ForecastResponseModel response) {
-                ForecastResponseModel responseModel = response;
             }
 
             @Override
@@ -120,7 +113,6 @@ public class Weathers extends AppCompatActivity {
         Weather weather[] = response.getWeather();
         condition.setText(weather[0].getMain());
         temp.setText(TempUnitConverter.convertToCelsius(response.getMain().getTemp()).intValue() + " °C");
-        //location.setText(response.getName());
         tvHumidity.setText(response.getMain().getHumidity() + "%");
         tvPressure.setText(response.getMain().getPressure() + " hPa");
         tvWind.setText(response.getWind().getSpeed() + "m/s");
