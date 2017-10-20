@@ -154,7 +154,7 @@ public class SearchActivity extends FragmentActivity implements
 	protected void onDestroy(){
 		super.onDestroy();
 		mMapView.setShowCurrentLocationMarker(false);
-
+		mMapView.removeAllPOIItems();
 	}
 
     private void showToast(final String text) {
