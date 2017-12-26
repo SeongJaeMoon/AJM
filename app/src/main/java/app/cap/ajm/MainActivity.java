@@ -6,6 +6,7 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,13 +72,13 @@ import app.cap.ajm.GPSTraker.TrackActivity;
 import app.cap.ajm.Map.RouteActivity;
 import app.cap.ajm.Prox.GpsServices;
 import app.cap.ajm.Prox.TimeTask;
+import butterknife.BindView;
 import github.vatsal.easyweather.Helper.ForecastCallback;
 import github.vatsal.easyweather.Helper.TempUnitConverter;
 import github.vatsal.easyweather.Helper.WeatherCallback;
 import github.vatsal.easyweather.WeatherMap;
 import github.vatsal.easyweather.retrofit.models.ForecastResponseModel;
 import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import app.cap.ajm.GPSTraker.TrackDBhelper;
 
@@ -117,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private boolean turnFlash=false;
     private boolean ishold;
     double lat, lng;
-    @Bind(R.id.weather2)
+    @BindView(R.id.weather2)
     TextView weather2;
-    @Bind(R.id.weather5)
+    @BindView(R.id.weather5)
     TextView weather5;
     private boolean isPause = true;
     private int MY_DATA_CHECK_CODE = 0;
@@ -173,9 +174,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        Intent checkTTS = new Intent();
-        checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkTTS, MY_DATA_CHECK_CODE);
+        try {
+            Intent checkTTS = new Intent();
+            checkTTS.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+            startActivityForResult(checkTTS, MY_DATA_CHECK_CODE);
+        }catch (ActivityNotFoundException e){
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.tts_not_setup), Toast.LENGTH_SHORT).show();
+        }
         //getAppKeyHash();
                     final String starts = getIntent().getStringExtra("start");
                     if (starts!=null && starts.equals("start")) {
@@ -689,7 +694,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:119"));
                         try {
                             startActivity(intent);
-                        }catch (Exception e){
+                        }catch (SecurityException e){
                             e.printStackTrace();
                         }
             }

@@ -31,6 +31,7 @@ public class PermissionActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             }
         }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
