@@ -27,15 +27,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.cap.ajm.Adapter.ListAdapter;
+import app.cap.ajm.Adapter.WeatherDBHelper;
 import jxl.Sheet;
 import jxl.Workbook;
 
 public class SplashActivity extends AppCompatActivity {
+    private WeatherDBHelper weatherDBHelper;
     private ListAdapter listAdapter;
     private Handler handler;
     private ProgressBar progressBar;
     private GeoFire geoFire, geoFire1;
     private DatabaseReference ref;
+    private static final String TAG = SplashActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +55,19 @@ public class SplashActivity extends AppCompatActivity {
         //Cursor cursor = listAdapter.fetchAllList();
         //Log.w("How many places? ", String.valueOf(cursor.getCount()));
         //if (cursor.getCount() == 0)
-        //    ExcelToList();
+        //    excelToList();
         //listAdapter.close();
         //cursor.close();
+
+        /*엑셀파일 자바로 가져오기 (날씨 정보 SQLite 저장용!)*/
+        this.weatherDBHelper = new WeatherDBHelper(this);
+        weatherDBHelper.open();
+        Cursor cursor = weatherDBHelper.fetchAllList();
+        Log.w("How many Value?:", String.valueOf(cursor.getCount()));
+        if (cursor.getCount() == 0)
+            excelToWeather();
+        weatherDBHelper.close();
+        cursor.close();
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -105,7 +118,7 @@ public class SplashActivity extends AppCompatActivity {
         }, 3000);
     }
 
-    private void ExcelToList() {
+    private void excelToList() {
         Workbook workbook = null;
         try {
             InputStream is = getBaseContext().getResources().getAssets().open("pois.xls");
@@ -127,14 +140,48 @@ public class SplashActivity extends AppCompatActivity {
                     listAdapter.close();
 
                 } else {
-                    Log.i("Splash", "Sheet is null!!");
+                    Log.i(TAG, "Sheet is null!!");
                 }
             } else {
-                Log.i("Splash", "WorkBook is null!!");
+                Log.i(TAG, "WorkBook is null!!");
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (workbook != null) {
+                workbook.close();
+            }
+        }
+    }
+
+    private void excelToWeather(){
+        Workbook workbook = null;
+        try{
+            InputStream is = getBaseContext().getResources().getAssets().open("weathers.xls");
+            workbook = Workbook.getWorkbook(is);
+            if (workbook != null) {
+                Sheet sheet = workbook.getSheet(0);
+                if (sheet != null) {
+                    int nMaxColumn = sheet.getColumns();
+                    int nRowStartIndex = 0;
+                    int nRowEndIndex = sheet.getColumn(nMaxColumn - 1).length - 1;
+                    int nColumnStartIndex = 0;
+                    weatherDBHelper.open();
+                    for (int nRow = nRowStartIndex - 1; nRow <= nRowEndIndex; nRow++) {
+                        String key = sheet.getCell(nColumnStartIndex, nRow).getContents();
+                        String value = sheet.getCell(nColumnStartIndex + 1, nRow).getContents();
+                        weatherDBHelper.createList(key, value);
+                    }
+                    weatherDBHelper.close();
+                } else {
+                    Log.i(TAG, "Sheet is null!!");
+                }
+            }else{
+                    Log.i(TAG, "Woorkbook is null!!!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
             if (workbook != null) {
                 workbook.close();
             }

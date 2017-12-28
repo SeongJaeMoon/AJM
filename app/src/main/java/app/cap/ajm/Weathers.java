@@ -1,4 +1,5 @@
 package app.cap.ajm;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -10,8 +11,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
+import app.cap.ajm.Adapter.WeatherDBHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,6 +72,8 @@ public class Weathers extends AppCompatActivity {
     LinearLayout llExtraWeather;
     @BindView(R.id.weatherCard)
     CardView weatherCard;
+    private WeatherDBHelper weatherDBHelper;
+    private List<app.cap.ajm.Weather>weathers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,8 @@ public class Weathers extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
         ButterKnife.bind(this);
         loadWeather(city);
-
+        weatherDBHelper = new WeatherDBHelper(this);
+        weathers = new ArrayList<app.cap.ajm.Weather>();
     }
 
     @OnClick(R.id.refresh)
@@ -122,95 +130,16 @@ public class Weathers extends AppCompatActivity {
         }else{
             location.setText(response.getName());
         }
+        String key = weather[0].getMain();
         if (Locale.getDefault().getLanguage().equals("ko")) {
-            switch (weather[0].getMain()) {
-                case "Thunderstorm with light rain":
-                    condition.setText("약한 비를 동반한 천둥");
-                    break;
-                case "Thunderstorm with rain":
-                    condition.setText("비를 동반한 천둥");
-                    break;
-                case "Thunderstorm with heavy rain":
-                    condition.setText("폭우를 동반한 천둥");
-                    break;
-                case "Light thunderstorm":
-                    condition.setText("약한 천둥");
-                    break;
-                case "Heavy thunderstorm":
-                    condition.setText("강한 천둥");
-                    break;
-                case "Ragged thunderstorm":
-                    condition.setText("불규칙한 천둥");
-                    break;
-                case "Drizzle":
-                    condition.setText("안개비");
-                    break;
-                case "Extreme rain":
-                    condition.setText("극심한 비");
-                    break;
-                case "Fresh breeze":
-                    condition.setText("선선한 바람");
-                    break;
-                case "Strong breeze":
-                    condition.setText("센 바람");
-                    break;
-                case "High win":
-                    condition.setText("매우 센 바람");
-                    break;
-                case "Gale":
-                    condition.setText("돌풍");
-                    break;
-                case "Strom":
-                    condition.setText("폭풍");
-                    break;
-                case "Cold":
-                    condition.setText("추운");
-                    break;
-                case "Hot":
-                    condition.setText("고온");
-                    break;
-                case "Mist":
-                    condition.setText("안개");
-                    break;
-                case "Clouds":
-                    condition.setText("구름 낀 하늘");
-                    break;
-                case "Clear":
-                    condition.setText("맑음");
-                    break;
-                case "Haze":
-                    condition.setText("연무");
-                    break;
-                case "Windy":
-                    condition.setText("바람부는");
-                    break;
-                case "Shower drizzle":
-                    condition.setText("소나기");
-                    break;
-                case "Heavy intensity rain":
-                    condition.setText("강한 비");
-                    break;
-                case "Very heavy rain":
-                    condition.setText("매우 강한 비");
-                    break;
-                case "Snow":
-                    condition.setText("눈");
-                    break;
-                case "Light snow":
-                    condition.setText("가벼운 눈");
-                    break;
-                case "Heavy snow":
-                    condition.setText("강한 눈");
-                    break;
-                case "Sand":
-                    condition.setText("모래 먼지");
-                    break;
-                default:
-                    condition.setText(weather[0].getMain());
-                    break;
+            String value = getWeatherValue(key);
+            if(value !=null){
+                condition.setText(value);
+            }else{
+                condition.setText(key);
             }
         }else {
-            condition.setText(weather[0].getMain());
+            condition.setText(key);
         }
         String link = weather[0].getIconLink();
         Picasso.with(this).load(link).into(weatherIcon);
@@ -220,5 +149,17 @@ public class Weathers extends AppCompatActivity {
     public void go() {
         city = etCity.getText().toString().trim();
         loadWeather(city);
+    }
+
+    public String getWeatherValue(String key){
+
+        String value = null;
+        weatherDBHelper.open();
+        weathers = weatherDBHelper.fetchForList();
+        for(app.cap.ajm.Weather w : weathers){
+            if(w.getKey().equals(key))
+                value = w.getValue();
+        }
+        return value;
     }
 }

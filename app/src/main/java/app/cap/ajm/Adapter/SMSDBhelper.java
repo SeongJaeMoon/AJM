@@ -7,6 +7,7 @@ import android.util.Log;
 
 
 public class SMSDBhelper extends SQLiteOpenHelper {
+
     private static final String DATABASE_NAME = "smslist.db";
     private static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME = "ContactList";

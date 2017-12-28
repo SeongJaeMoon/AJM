@@ -16,7 +16,7 @@ public class ListAdapter{
     public static final String KEY_COORDINATE_X = "coor_x";
     public static final String KEY_COORDINATE_Y = "coor_y";
 
-    private static final String TAG = "ListAdapter";
+    private static final String TAG = ListAdapter.class.getSimpleName();
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
     private static final String DATABASE_NAME = "forefirebase";

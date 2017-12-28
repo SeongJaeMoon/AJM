@@ -14,10 +14,12 @@ import net.daum.mf.map.api.MapView;
 import app.cap.ajm.R;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.List;
+
 import static net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord;
 
 public class MapActivity extends FragmentActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener{
-    private ArrayList<TrackPoint> trackPointList;
+    private List<TrackPoint> trackPointList;
     private TrackDBhelper trackDBhelper;
     private MapView mapView;
     private MapPOIItem mapPOIItem, mapPOIItem1;
@@ -62,7 +64,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                         trackPointList = trackDBhelper.fetchBetweenTime(starts, ends);
                         mapPolyline = new MapPolyline();
                         if (trackPointList != null && trackPointList.size() > 0) {
-                            for (i = 0; i < trackPointList.size(); i++) {
+                            for (i = 0; i < trackPointList.size()-1; i++) {
                                 TrackPoint obj = trackPointList.get(i);
                                 mapPolyline.setLineColor(Color.argb(128, 50, 0, 255));
                                 mapPolyline.addPoint(MapPoint.mapPointWithGeoCoord(obj.getLat(), obj.getLng()));
@@ -75,7 +77,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            i--;
             TrackPoint trackPoint1 = trackPointList.get(i);
             double endLat = trackPoint1.getLat();
             double endLng = trackPoint1.getLng();

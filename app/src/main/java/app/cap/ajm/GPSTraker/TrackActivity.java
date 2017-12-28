@@ -20,7 +20,7 @@ public class TrackActivity extends AppCompatActivity {
     private TextView textView;
     private ListView listView;
     private ProgressDialog progressDialog;
-    private int i;
+    private int i = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -41,7 +41,6 @@ public class TrackActivity extends AppCompatActivity {
         }
         else {
             try {
-                i = -1;
                 while (!cursor.isAfterLast()) {
                     TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
                     listView.setAdapter(trackAdapter);
@@ -119,7 +118,7 @@ public class TrackActivity extends AppCompatActivity {
                                             Intent intents = new Intent(Intent.ACTION_SEND);
                                             intents.setType("text/plain");
                                             intents.putExtra(Intent.EXTRA_SUBJECT, "안전모 기록공유");
-                                            intents.putExtra(Intent.EXTRA_TEXT, "시작시간:" + shareStartTime + " 종료시간:" + shareEndTime + " 주행거리:" + String.valueOf(shareDistance) + " 소모칼로리:" + String.valueOf(shareCalorie));
+                                            intents.putExtra(Intent.EXTRA_TEXT, "시작시간:" + shareStartTime + " 종료시간:" + shareEndTime + " 주행거리:" + String.valueOf(Math.ceil(shareDistance)) + " 소모칼로리:" + String.valueOf(Math.ceil(shareCalorie)));
                                             intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(Intent.createChooser(intents, getTitle()));
                                             trackDBhelper2.close();

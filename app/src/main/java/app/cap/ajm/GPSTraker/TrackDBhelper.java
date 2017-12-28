@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrackDBhelper{
 
@@ -56,7 +57,7 @@ public class TrackDBhelper{
                     + KEY_COORDINATE_X+" REAL,"
                     + KEY_COORDINATE_Y+" REAL"+ ");";
 
-    private ArrayList<TrackPoint>trackPoints;
+    private List<TrackPoint> trackPoints;
     private final Context mCtx;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -129,7 +130,7 @@ public class TrackDBhelper{
     }
 
     //출발 시간 between 도착 시간 사이에 있는 값 다가져오기
-    public ArrayList<TrackPoint> fetchBetweenTime(String start, String end){
+    public List<TrackPoint> fetchBetweenTime(String start, String end){
         trackPoints = new ArrayList<>();
         mDbHelper = new DatabaseHelper(mCtx);
         mDb =  mDbHelper.getReadableDatabase();
