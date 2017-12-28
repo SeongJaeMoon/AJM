@@ -117,8 +117,8 @@ public class TrackActivity extends AppCompatActivity {
                                             double shareCalorie = cursor5.getDouble(cursor5.getColumnIndex(TrackDBhelper.KEY_CALORIE));
                                             Intent intents = new Intent(Intent.ACTION_SEND);
                                             intents.setType("text/plain");
-                                            intents.putExtra(Intent.EXTRA_SUBJECT, "안전모 기록공유");
-                                            intents.putExtra(Intent.EXTRA_TEXT, "시작시간:" + shareStartTime + " 종료시간:" + shareEndTime + " 주행거리:" + String.valueOf(Math.ceil(shareDistance)) + " 소모칼로리:" + String.valueOf(Math.ceil(shareCalorie)));
+                                            intents.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.about_pageSHARE));
+                                            intents.putExtra(Intent.EXTRA_TEXT, getString(R.string.startTime) +" "+shareStartTime +"\n"+getString(R.string.endTime) +" "+ shareEndTime + "\n"+ getString(R.string.distance)+ " " + String.valueOf(Math.ceil(shareDistance)) + "\n" + getString(R.string.calorie)+ " " + String.valueOf(Math.ceil(shareCalorie)));
                                             intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(Intent.createChooser(intents, getTitle()));
                                             trackDBhelper2.close();
