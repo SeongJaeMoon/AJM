@@ -92,36 +92,34 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private SharedPreferences sharedPreferences;
     private LocationManager mLocationManager;
     private static Data data;
-    private NavigationView navigationView;
-    private DrawerLayout drawerLayout;
+    @BindView(R.id.mainNavigationView) private NavigationView navigationView;
+    @BindView(R.id.mainDrawerLayout) private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private RecyclerView mainRecyclerView;
+    @BindView(R.id.xrvMainRecyclerView) private RecyclerView mainRecyclerView;
     private Boolean fboolean = true;
     private View views;
-    private FloatingActionButton fab;
-    private FloatingActionButton refresh;
-    private FloatingActionButton holder;
+    @BindView(R.id.fab) private FloatingActionButton fab;
+    @BindView(R.id.refresh) private FloatingActionButton refresh;
+    @BindView(R.id.holder) private FloatingActionButton holder;
     private ProgressBarCircularIndeterminate progressBarCircularIndeterminate;
     public static Context context;
-    private TextView accuracy;
-    private TextView currentSpeed;
-    private TextView maxSpeed;
-    private TextView averageSpeed;
-    private TextView distance;
-    private TextView calorie;
+    @BindView(R.id.accuracy) private TextView accuracy;
+    @BindView(R.id.currentSpeed) private TextView currentSpeed;
+    @BindView(R.id.maxSpeed) private TextView maxSpeed;
+    @BindView(R.id.averageSpeed) private TextView averageSpeed;
+    @BindView(R.id.distance) private TextView distance;
+    @BindView(R.id.calorie) private TextView calorie;
     private int trees;
     Handler handler;
-    private Chronometer time;
+    @BindView(R.id.time) private Chronometer time;
     private Data.onGpsServiceUpdate onGpsServiceUpdate;
     private boolean firstfix;
     private boolean hasFlash;
     private boolean turnFlash=false;
     private boolean ishold;
     double lat, lng;
-    @BindView(R.id.weather2)
-    TextView weather2;
-    @BindView(R.id.weather5)
-    TextView weather5;
+    @BindView(R.id.weather2) TextView weather2;
+    @BindView(R.id.weather5) TextView weather5;
     private boolean isPause = true;
     private int MY_DATA_CHECK_CODE = 0;
     private static final int PERMISSION_CEHCK_CODE=7;
@@ -153,18 +151,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.mainDrawerLayout);
-        navigationView = (NavigationView) findViewById(R.id.mainNavigationView);
+        //drawerLayout = (DrawerLayout) findViewById(R.id.mainDrawerLayout);
+        //navigationView = (NavigationView) findViewById(R.id.mainNavigationView);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button phonecall = (Button) findViewById(R.id.phonecall);
         holder = (FloatingActionButton) findViewById(R.id.holder);
-        mainRecyclerView = (RecyclerView) findViewById(R.id.xrvMainRecyclerView);
-        refresh = (FloatingActionButton) findViewById(R.id.refresh);
+        //mainRecyclerView = (RecyclerView) findViewById(R.id.xrvMainRecyclerView);
+        //refresh = (FloatingActionButton) findViewById(R.id.refresh);
         refresh.setVisibility(View.INVISIBLE);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        //fab = (FloatingActionButton) findViewById(R.id.fab);
         //자동 서비스 꺼짐 선택이 되지 않았을 경우 && 서비스가 실행 중일 경우
         if (!sharedPreferences.getBoolean("autoservice",false)&&isServiceRunning(GpsServices.class)){
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_pause));
@@ -227,14 +225,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         };
 
 
-        accuracy = (TextView) findViewById(R.id.accuracy);
-        maxSpeed = (TextView) findViewById(R.id.maxSpeed);
-        averageSpeed = (TextView) findViewById(R.id.averageSpeed);
-        distance = (TextView) findViewById(R.id.distance);
+        //accuracy = (TextView) findViewById(R.id.accuracy);
+        //maxSpeed = (TextView) findViewById(R.id.maxSpeed);
+        //averageSpeed = (TextView) findViewById(R.id.averageSpeed);
+        //distance = (TextView) findViewById(R.id.distance);
         time = (Chronometer) findViewById(R.id.time);
-        currentSpeed = (TextView) findViewById(R.id.currentSpeed);
+        //currentSpeed = (TextView) findViewById(R.id.currentSpeed);
         progressBarCircularIndeterminate = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndeterminate);
-        calorie = (TextView) findViewById(R.id.calorie);
+        //calorie = (TextView) findViewById(R.id.calorie);
 
         time.setText("00:00:00");
         time.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
