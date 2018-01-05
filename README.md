@@ -2,7 +2,7 @@
 ## 2017년 서울시 앱공모전 출품작(안전하게 자전거 타는 모임)
 
 ### 안전모
-This open source project was won 3rd at the Seoul mobile patform contest in 2017. 
+This open source project was won 3rd at the Seoul mobile platform contest in 2017. 
 
 이 프로젝트는 2017 서울시 모바일 플렛폼의 발전상을 수상하였습니다. 
 
