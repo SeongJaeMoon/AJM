@@ -3,7 +3,7 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="app.cap.ajm.Map.RouteActivity"
+    tools:context="app.cap.ajm.Activity.RouteActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"  >

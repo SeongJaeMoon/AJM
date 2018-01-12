@@ -24,14 +24,14 @@
         android:required="true" />
 
     <application
-        android:name=".AJMapp"
+        android:name=".Util.AJMapp"
         android:allowBackup="true"
         android:icon="@drawable/mainlogo2"
         android:label="@string/app_name"
         android:roundIcon="@drawable/mainlogo2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -41,51 +41,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Settings"
+            android:name=".Activity.SettingActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Map.RouteActivity"
+            android:name=".Activity.RouteActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Compatable.SearchActivity"
+            android:name=".Activity.SearchActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".About.AboutActivity"
+            android:name=".Activity.AboutActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Weathers"
+            android:name=".Activity.WeatherActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AccActivity"
+            android:name=".Activity.AccActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".Prox.TimeTask"
+            android:name=".Service.SensorService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".Prox.GpsServices"
+            android:name=".Service.GPSService"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name=".Prox.DialogActivity"
+            android:name=".Activity.DialogActivity"
             android:theme="@style/Base.Theme.AppCompat.Dialog" />
 
         <meta-data
@@ -99,16 +99,16 @@
             android:value="@string/kakao_app_key" />
 
         <activity
-            android:name=".PermissionActivity"
+            android:name=".Activity.PermissionActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".GPSTraker.TrackActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".Activity.TrackActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".GPSTraker.MapActivity"
-            android:parentActivityName=".GPSTraker.TrackActivity"
+            android:name=".Activity.MapActivity"
+            android:parentActivityName=".Activity.TrackActivity"
             android:screenOrientation="portrait">
 
         </activity>
