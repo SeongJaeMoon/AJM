@@ -10,7 +10,7 @@ This open source project was won 3rd at the Seoul mobile platform contest in 201
 
 * 앱 홍보 영상은 [여기서](https://www.youtube.com/watch?v=BF-TiYfyLsg) 확인 가능합니다.
 
-* 현재 코드 리팩토링이 진행 중이며, 리팩토링 및 테스트 완료 후 플레이 스토어에 업로드 할 예정입니다.
+* 현재 코드 리팩토링이 진행 중이며, 리팩토링 및 테스트 완료 후 플레이 스토어에 업로드 할 예정입니다. 개발 중인 브랜치(Branch)는 MVP 브랜치입니다. 
 
 * 이 프로젝트엔 아래와 같은 오픈 소스 라이브러리와 소프트웨어가 사용되었습니다.
 
