@@ -4,7 +4,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@color/grey_lighter"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="app.cap.ajm.Activity.SplashActivity">
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
     <TextView
         android:text="안"
-        android:textSize="60dp"
+        android:textSize="60sp"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="#BB0000"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="#000000"
-            android:textSize="30dp"/>
+            android:textSize="30sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,13 +43,13 @@
             android:textColor="#BB0000"
             android:text="전"
             android:textStyle="bold"
-            android:textSize="60dp"
+            android:textSize="60sp"
             android:gravity="center" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="거타는"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:gravity="center"
             android:textColor="#000000"/>
         <TextView
@@ -58,21 +58,30 @@
             android:textColor="#BB0000"
             android:text="모"
             android:textStyle="bold"
-            android:textSize="60dp"
+            android:textSize="60sp"
             android:gravity="center" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="임"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:gravity="center"
             android:textColor="#000000"/>
-    </LinearLayout> 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/splash_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_message"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#000000"/>
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:max="100"/>
+        android:max="100" />
     </LinearLayout>

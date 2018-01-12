@@ -20,17 +20,18 @@ import java.util.Iterator;
 import java.util.List;
 import app.cap.ajm.Helper.SMSDBhelper;
 import app.cap.ajm.R;
-import app.cap.ajm.Service.SMSContact;
 
 public class DialogActivity extends AppCompatActivity{
 
     private Handler handler;
-    final Context context = this;
-    String phoneNum = "";
-    String textMsg;
+    private final Context context = this;
+    private String phoneNum = "";
+    private String textMsg;
     private String prevNumber;
     private SQLiteDatabase sqls;
-
+    private static final String TABLE_NAME = "ContactList";
+    private static final String COLUMN_CONTACT  = "contact";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -96,6 +97,6 @@ public class DialogActivity extends AppCompatActivity{
         }, 7000);
     }
     public Cursor getAllContacts(){
-        return sqls.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
+        return sqls.query(TABLE_NAME,null,null,null,null,null,COLUMN_CONTACT);
     }
 }

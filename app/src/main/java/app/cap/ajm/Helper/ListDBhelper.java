@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 //직각교차로, 사고다발지역, 어린이보호구역, 보행자전용도로
-public class ListAdapter{
+public class ListDBhelper {
 
     public static final String KEY_ROWID = "_id";
     public static final String KEY_CONTENT_NAME = "content_nm";
     public static final String KEY_COORDINATE_X = "coor_x";
     public static final String KEY_COORDINATE_Y = "coor_y";
 
-    private static final String TAG = ListAdapter.class.getSimpleName();
+    private static final String TAG = ListDBhelper.class.getSimpleName();
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
     private static final String DATABASE_NAME = "forefirebase";
@@ -57,11 +57,11 @@ public class ListAdapter{
 
     }
 
-    public ListAdapter(Context ctx) {
+    public ListDBhelper(Context ctx) {
         this.mCtx = ctx;
     }
 
-    public ListAdapter open() throws SQLException {
+    public ListDBhelper open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;

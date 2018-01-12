@@ -22,16 +22,17 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import app.cap.ajm.Helper.SMSDBhelper;
 import app.cap.ajm.R;
-import app.cap.ajm.Service.SMSContact;
 import app.cap.ajm.Service.SensorService;
 
 public class AccActivity extends AppCompatActivity{
     private Button start,stop,addContacts,removes;
-    ListView lv;
-    EditText edit;
+    private ListView lv;
+    private EditText edit;
     private SQLiteDatabase sql;
     private static final String _ID = "id";
-
+    private static final String TABLE_NAME = "ContactList";
+    private static final String COLUMN_CONTACT  = "contact";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class AccActivity extends AppCompatActivity{
         start.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            String count = "SELECT count(*) FROM "+SMSContact.TABLE_NAME;
+            String count = "SELECT count(*) FROM "+TABLE_NAME;
             Cursor mcursor = sql.rawQuery(count, null);
             mcursor.moveToFirst();
             int icount = mcursor.getInt(0);
@@ -69,7 +70,6 @@ public class AccActivity extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(),getString(R.string.start_service_safe),Toast.LENGTH_SHORT).show();
                 Intent intent= new Intent(getApplicationContext(), SensorService.class);
                 startService(intent);
-
             }
             else
             {
@@ -171,16 +171,16 @@ public class AccActivity extends AppCompatActivity{
 
     public long addNewContact(String contact){
         ContentValues cv = new ContentValues();
-        cv.put(SMSContact.COLUMN_CONTACT,contact);
-        return sql.insert(SMSContact.TABLE_NAME,null,cv);
+        cv.put(COLUMN_CONTACT,contact);
+        return sql.insert(TABLE_NAME,null,cv);
     }
 
     public void removeContact(String contact){
-        sql.delete(SMSContact.TABLE_NAME, "contact"+"=?",new String[]{contact});
+        sql.delete(TABLE_NAME, "contact"+"=?",new String[]{contact});
     }
 
     public Cursor getAllContacts(){
-        return sql.query(SMSContact.TABLE_NAME,null,null,null,null,null,SMSContact.COLUMN_CONTACT);
+        return sql.query(TABLE_NAME,null,null,null,null,null,COLUMN_CONTACT);
     }
     @Override
     public void onStop(){

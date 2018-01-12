@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.cap.ajm.Model.Item;
-import app.cap.ajm.API.MapApiConst;
 import app.cap.ajm.API.OnFinishSearchListener;
 import app.cap.ajm.API.Searcher;
 import app.cap.ajm.R;
@@ -56,6 +55,7 @@ public class SearchActivity extends FragmentActivity implements
     private Button mButtonSearch;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
     private int n = 0;
+    private static final String DAUM_MAPS_ANDROID_APP_API_KEY = "97171e5d82d63c9d6353e66c403745f9";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +67,7 @@ public class SearchActivity extends FragmentActivity implements
         mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
         mButtonSearch = (Button) findViewById(R.id.buttonSearch); // 검색버튼
 		mypositon = (FloatingActionButton)findViewById(R.id.myserachposition);
+
         mButtonSearch.setOnClickListener(new OnClickListener() { // 검색버튼 클릭 이벤트 리스너
 			@Override
 			public void onClick(View v) {
@@ -82,10 +83,9 @@ public class SearchActivity extends FragmentActivity implements
 					double longitude = geoCoordinate.longitude; // 경도
 					int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
 					int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
-					String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
 					Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
 					Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
-					searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
+					searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, DAUM_MAPS_ANDROID_APP_API_KEY, new OnFinishSearchListener() {
 						@Override
 						public void onSuccess(List<Item> itemList) {
 							mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제

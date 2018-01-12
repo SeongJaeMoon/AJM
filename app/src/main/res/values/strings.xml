@@ -159,4 +159,8 @@
     <string name="at_least_number">최소한 하나의 번호 지정이 필요합니다. 다시 시도하세요.</string>
     <string name="thk_you">자전거 이용으로 %1$d 그루의 나무을 심었습니다:)</string>
     <string name="search_10km">10km 내의 %1$s를 찾습니다.</string>
+    <string name="splash_message">데이터를 받아오는 중입니다. \n잠시만 기다려주세요:)</string>
+    <string name="permission_role_location"></string>
+    <string name="permission_role_sms"></string>
+    <string name="permission_role_camera"></string>
     </resources>
