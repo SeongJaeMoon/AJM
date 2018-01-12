@@ -20,14 +20,33 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:text="@string/permission"/>
+        <View
+            android:id="@+id/separator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textView"
+            android:background="@color/primary_dark">
+        </View>
+
+    <TextView
+        android:id="@+id/sonucTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@+id/separator"
+        android:text="@string/permission_role_location"
+        android:textSize="15sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:maxLines="50"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/buttons"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/sonucTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="@dimen/_50dp"
         android:background="@color/red"
         android:textColor="@color/white"

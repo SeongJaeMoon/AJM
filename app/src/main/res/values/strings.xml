@@ -131,7 +131,6 @@
     <string name="set_map_loc_ok">선택한 위치를 도착지로 설정합니다</string>
     <string name="long_press">지도를 길게 눌러주세요.</string>
     <string name="weight_val">몸무게는 10kg~120kg 사이로 입력해주세요.</string>
-    <string name="permission">안전모에서 권한을 요청합니다.</string>
     <string name="start_app">안전모 시작</string>
     <string name="are_u_ok">괜찮습니까? \n (터치하세요.)</string>
     <string name="find">검색</string>
@@ -160,7 +159,13 @@
     <string name="thk_you">자전거 이용으로 %1$d 그루의 나무을 심었습니다:)</string>
     <string name="search_10km">10km 내의 %1$s를 찾습니다.</string>
     <string name="splash_message">데이터를 받아오는 중입니다. \n잠시만 기다려주세요:)</string>
-    <string name="permission_role_location"></string>
-    <string name="permission_role_sms"></string>
-    <string name="permission_role_camera"></string>
+    <string name="permission">안전모에서 권한을 요청합니다.</string>
+    <string name="permission_intro">본 내용은 안전모 프로그램을 이용하는 이용자(프로그램을 사용하는 모든 사람을 말합니다.이하 \"이용자\"이라고 합니다)가 위치기반서비스(이하 \"위치\"라고 합니다)와 문자에 관한 정보(이하 \"일정\"이라 합니다)를 이용함에 있어
+        개발자(이하 \"개발자\"이라고 합니다)와 이용자의 이용방침, 책임의 제한 및 기타 필요 사항 등을 규정함을 목적으로 합니다.</string>
+    <string name="permission_view">\n(1.) 이용자의 의무\n\n이 프로그램은 자전거 이용자들의 안전한 라이딩 문화를 조성하기 위해 개발되었으며, 개발자에 동의 없는 리버스 엔지리어닝, 디컴파일, 디스어셈블 등을 할 수 없습니다.</string>
+    <string name="permission_role_location">1.위치 권한: 위치는 스마트폰 단말기의 네트워크, GPS 정보를 통해 수집되며 이용자의 위치와 관련된 모든 정보(주행 속도, 주행 기록 등)를 제공하고, 위치기반음성 안내 서비스를 제공하기 위한 수집을 목적으로 합니다.
+        수집된 모든 자료와 정보는 개발자를 비롯한 제 3자에게 제공될 수 없습니다.\n\n2.SMS 문자 메세지 권한: SMS 문자 메세지는 넘어짐 감지시 사용자가 등록한 번호로 위치 정보를 자동으로 전송하기 위한 사용을 목적으로 합니다.
+        사용된 모든 자료와 정보는 개발자를 비롯한 제 3자에게 제공될 수 없습니다.\n\n3.카메라 권한: 카메라는 불빛(플래쉬)를 위한 사용을 목적으로 합니다. 사용된 모든 자료와 정보는 개발자를 비롯한 제 3자에게 제공될 수 없습니다.</string>
+    <!--<string name="permission_role_sms">2.SMS 문자 메세지 권한: SMS 문자 메세지는 넘어짐 감지시 사용자가 등록한 번호로 위치 정보를 자동으로 전송하기 위한 사용을 목적으로 합니다. 사용된 모든 자료와 정보는 개발자를 비롯한 제 3자에게 제공될 수 없습니다.</string>-->
+    <!--<string name="permission_role_camera">3.카메라 권한: 카메라는 불빛(플래쉬)를 위한 사용을 목적으로 합니다. 사용된 모든 자료와 정보는 개발자를 비롯한 제 3자에게 제공될 수 없습니다.</string>-->
     </resources>
