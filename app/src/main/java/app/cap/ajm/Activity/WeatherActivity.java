@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -33,44 +34,25 @@ public class WeatherActivity extends AppCompatActivity {
 
     public final String APP_ID = OWM_API_KEY;
     String city = "Seoul";
-    @BindView(R.id.weather_title)
-    TextView weatherTitle;
-    @BindView(R.id.refresh)
-    ImageButton refresh;
-    @BindView(R.id.weather_icon)
-    ImageView weatherIcon;
-    @BindView(R.id.location)
-    TextView location;
-    @BindView(R.id.condition)
-    TextView condition;
-    @BindView(R.id.temp)
-    TextView temp;
-    @BindView(R.id.tvHumidity)
-    TextView tvHumidity;
-    @BindView(R.id.tvPressure)
-    TextView tvPressure;
-    @BindView(R.id.tvWind)
-    TextView tvWind;
-    @BindView(R.id.tvWindDeg)
-    TextView tvWindDeg;
-    @BindView(R.id.et_city)
-    EditText etCity;
-    @BindView(R.id.tv_go)
-    TextView tvGo;
-    @BindView(R.id.textLayout)
-    LinearLayout textLayout;
-    @BindView(R.id.humidity_desc)
-    TextView humidityDesc;
-    @BindView(R.id.pres_desc)
-    TextView presDesc;
-    @BindView(R.id.ws_desc)
-    TextView wsDesc;
-    @BindView(R.id.wd_desc)
-    TextView wdDesc;
-    @BindView(R.id.ll_extraWeather)
-    LinearLayout llExtraWeather;
-    @BindView(R.id.weatherCard)
-    CardView weatherCard;
+    @BindView(R.id.weather_title) TextView weatherTitle;
+    @BindView(R.id.refresh) ImageButton refresh;
+    @BindView(R.id.weather_icon) ImageView weatherIcon;
+    @BindView(R.id.location) TextView location;
+    @BindView(R.id.condition) TextView condition;
+    @BindView(R.id.temp) TextView temp;
+    @BindView(R.id.tvHumidity) TextView tvHumidity;
+    @BindView(R.id.tvPressure) TextView tvPressure;
+    @BindView(R.id.tvWind) TextView tvWind;
+    @BindView(R.id.tvWindDeg) TextView tvWindDeg;
+    @BindView(R.id.et_city) EditText etCity;
+    @BindView(R.id.tv_go) TextView tvGo;
+    @BindView(R.id.textLayout) LinearLayout textLayout;
+    @BindView(R.id.humidity_desc) TextView humidityDesc;
+    @BindView(R.id.pres_desc) TextView presDesc;
+    @BindView(R.id.ws_desc) TextView wsDesc;
+    @BindView(R.id.wd_desc) TextView wdDesc;
+    @BindView(R.id.ll_extraWeather) LinearLayout llExtraWeather;
+    @BindView(R.id.weatherCard) CardView weatherCard;
     private WeatherDBhelper weatherDBhelper;
     private List<app.cap.ajm.Model.Weather>weathers;
 
@@ -96,21 +78,16 @@ public class WeatherActivity extends AppCompatActivity {
             public void success(WeatherResponseModel response) {
                 populateWeather(response);
             }
-
             @Override
-            public void failure(String message) {
-
-            }
+            public void failure(String message) {}
         });
 
         weatherMap.getCityForecast(city, new ForecastCallback() {
             @Override
-            public void success(ForecastResponseModel response) {
-            }
-
+            public void success(ForecastResponseModel response) {}
             @Override
             public void failure(String message) {
-
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

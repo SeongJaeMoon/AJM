@@ -117,7 +117,8 @@ public class TrackActivity extends AppCompatActivity {
                                             Intent intents = new Intent(Intent.ACTION_SEND);
                                             intents.setType("text/plain");
                                             intents.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.about_pageSHARE));
-                                            intents.putExtra(Intent.EXTRA_TEXT, getString(R.string.startTime) +" "+shareStartTime +"\n"+getString(R.string.endTime) +" "+ shareEndTime + "\n"+ getString(R.string.distance)+ " " + String.valueOf(Math.ceil(shareDistance)) + "\n" + getString(R.string.calorie)+ " " + String.valueOf(Math.ceil(shareCalorie)));
+                                            intents.putExtra(Intent.EXTRA_TEXT, getString(R.string.startTime) +" "+shareStartTime +"\n"+ getString(R.string.endTime) +" "+
+                                                    shareEndTime + "\n"+ getString(R.string.distance)+ " " + String.valueOf(Math.ceil(shareDistance)) + "\n" + getString(R.string.calorie)+ " " + String.valueOf(Math.ceil(shareCalorie)));
                                             intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(Intent.createChooser(intents, getTitle()));
                                             trackDBhelper2.close();

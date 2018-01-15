@@ -243,6 +243,7 @@ public class SplashActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "오류 발생" + e, Toast.LENGTH_LONG).show();
         }
     }
+
     private boolean isConnected() throws NullPointerException {
         boolean isConnected = false;
 

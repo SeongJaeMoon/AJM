@@ -68,13 +68,13 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                         mapPolyline = new MapPolyline();
                         if (trackPointList != null && trackPointList.size() > 0) {
                             for (i = 0; i < trackPointList.size()-1; i++) {
-                                TrackPoint obj = trackPointList.get(i);
                                 mapPolyline.setLineColor(Color.argb(128, 50, 0, 255));
-                                mapPolyline.addPoint(MapPoint.mapPointWithGeoCoord(obj.getLat(), obj.getLng()));
+                                mapPolyline.addPoint(MapPoint.mapPointWithGeoCoord(trackPointList.get(i).getLat(), trackPointList.get(i).getLng()));
                                 mapView.addPolyline(mapPolyline);
                             }
                         }
                     }
+
                 });
                 Thread.sleep(500);
             } catch (InterruptedException e) {

@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private boolean firstfix;
     private boolean hasFlash;
     private boolean turnFlash=false;
-    private boolean ishold;
+    private boolean ishold=false;
     double lat, lng;
     @BindView(R.id.weather2) TextView weather2;
     @BindView(R.id.weather5) TextView weather5;
@@ -165,15 +165,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         holder = (FloatingActionButton) findViewById(R.id.holder);
         //mainRecyclerView = (RecyclerView) findViewById(R.id.xrvMainRecyclerView);
         //refresh = (FloatingActionButton) findViewById(R.id.refresh);
-        refresh.setVisibility(View.INVISIBLE);
         //fab = (FloatingActionButton) findViewById(R.id.fab);
+        refresh.setVisibility(View.INVISIBLE);
+
         //자동 서비스 꺼짐 선택이 되지 않았을 경우 && 서비스가 실행 중일 경우
         if (!sharedPreferences.getBoolean("autoservice",false)&&isServiceRunning(GPSService.class)){
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_pause));
         }else {
             fab.setVisibility(View.INVISIBLE);
         }
-        ishold = false;
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         try {
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         });
    }
     //주행 시작
-    public void onFabClick(View v) {
+    private void onFabClick(View v) {
         if (!data.isRunning()) {
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_pause));
             data.setRunning(true);
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
     //주행 종료
-    public void onRefreshClick(View v) {
+    private void onRefreshClick(View v) {
         if (sharedPreferences.getBoolean("route", false)){
             try {
                 TrackDBhelper trackDBhelper = new TrackDBhelper(this);
@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
-    public void showGpsDisabledDialog(){
+    private void showGpsDisabledDialog(){
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle(getString(R.string.action_settings));
         alertDialog.setMessage(getString(R.string.please_enable_gps));
@@ -669,7 +669,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         alertDialog.show();
     }
 
-    public void showGuide(){
+    private void showGuide(){
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle(getString(R.string.nav_title_ajm));
         alertDialog.setMessage(getString(R.string.ajm_support));
@@ -687,7 +687,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         alertDialog.show();
     }
 
-    public void showCallDialog(){
+    private void showCallDialog(){
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle(getString(R.string.call_emergency));
         alertDialog.setMessage(getString(R.string.call_alert));
@@ -709,7 +709,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         alertDialog.show();
     }
 
-    public void resetData(){
+    private void resetData(){
         fab.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_action_play));
         refresh.setVisibility(View.INVISIBLE);
         time.stop();
@@ -741,6 +741,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {}
+
     @Override
     public void onProviderEnabled(String s) {
     }
@@ -774,7 +775,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         return super.dispatchKeyEvent(event);
     }
 
-    public void showNotification(String title, String message) {
+    private void showNotification(String title, String message) {
         Intent notifyIntent = new Intent(this, MainActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, new Intent[]{notifyIntent} , PendingIntent.FLAG_UPDATE_CURRENT);
@@ -794,7 +795,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         notificationManager.notify(1, notification);
     }
 
-    public void loadWeather(String city) {
+    private void loadWeather(String city) {
         WeatherMap weatherMap = new WeatherMap(this, weather_id);
         weatherMap.getCityWeather(city, new WeatherCallback() {
             @Override
@@ -850,15 +851,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
-    public String getCurrentSec(){
+    private String getCurrentSec(){
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-        String getTime = sdf.format(date);
+        String getTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(date);
         return getTime;
     }
 
-    public String getGeocode(double lat, double lng) {
+    private String getGeocode(double lat, double lng) {
         String address = null;
         final Geocoder geocoder = new Geocoder(this, Locale.KOREA);
         List<Address>addr = null;
@@ -942,7 +942,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 else{
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CEHCK_CODE);
                 }
-                return;
+                //return;
             }
         }
     }//퍼미션 all pass 필요...
