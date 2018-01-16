@@ -19,9 +19,9 @@ public class TrackActivity extends AppCompatActivity {
     private TextView textView;
     private ListView listView;
     private int i = -1;
-    private final TrackDBhelper trackDBhelper = new TrackDBhelper(this);
-    private final Cursor cursor = trackDBhelper.fetchAllListOrderBYDec();
-    private final TrackAdapter trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
+    private TrackDBhelper trackDBhelper;
+    private Cursor cursor;
+    private TrackAdapter trackAdapter;
     
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,7 +34,9 @@ public class TrackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_track);
         textView = (TextView)findViewById(R.id.trackTitle);
         listView = (ListView)findViewById(R.id.trackListview);
-
+        trackDBhelper = new TrackDBhelper(this);
+        cursor = trackDBhelper.fetchAllListOrderBYDec();
+        trackAdapter = new TrackAdapter(getApplicationContext(), cursor);
         trackDBhelper.open();
     try {
         if (cursor.getCount() == 0) {

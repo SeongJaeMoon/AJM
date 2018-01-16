@@ -59,22 +59,24 @@ public class RouteActivity extends FragmentActivity implements
     private static final String LOG_TAG = RouteActivity.class.getSimpleName();
     private static final int PLACE_PIKER_REQUEST = 1;
     private static final int PLACE_PIKER_REQUEST_EP = 2;
-    @BindView(R.id.etOrigin) private EditText spEditext;
-    @BindView(R.id.etDestination) private EditText epEditext;
-    @BindView(R.id.btnFindPath) private Button findbutton;
-    @BindView(R.id.myFindPath) private Button findStartLocation;
-    @BindView(R.id.myMapPath) private Button mSearchbymap;
-    @BindView(R.id.mypositions) private FloatingActionButton myposition;
-    private MapView mapView;
-    public LocationManager locationManager;
+    @BindView(R.id.etOrigin) EditText spEditext;
+    @BindView(R.id.etDestination) EditText epEditext;
+    @BindView(R.id.btnFindPath) Button findbutton;
+    @BindView(R.id.myFindPath) Button findStartLocation;
+    @BindView(R.id.myMapPath) Button mSearchbymap;
+    @BindView(R.id.mypositions) FloatingActionButton myposition;
+    private MapView mMapView;
+    private LocationManager locationManager;
     private boolean mapsSelection=false;
-    double latitude, longitude;
-
+    private double latitude, longitude;
+    private MapPOIItem mapPOIItem;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
+
         ButterKnife.bind(this);
+
         GoogleApiClient mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -95,12 +97,13 @@ public class RouteActivity extends FragmentActivity implements
 //                findStartLocation = (Button)findViewById(R.id.myFindPath);
 //                mSearchbymap = (Button)findViewById(R.id.myMapPath);
 //                myposition = (FloatingActionButton)findViewById(R.id.mypositions);
-                mapView = (MapView) findViewById(R.id.map_view);
 
-                mapView.setCurrentLocationEventListener(this);
-                mapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
-                mapView.setMapViewEventListener(this);
-                mapView.setPOIItemEventListener(this);
+//                mMapView = new MapView(this);
+                mMapView = (MapView) findViewById(R.id.map_view);
+                mMapView.setCurrentLocationEventListener(this);
+                mMapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
+                mMapView.setMapViewEventListener(this);
+                mMapView.setPOIItemEventListener(this);
 
                 findbutton.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -273,6 +276,7 @@ public class RouteActivity extends FragmentActivity implements
         touchOrigin();
         touchDestination();
         clickPosition();
+        clickMap();
 
 //        myposition.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -281,8 +285,25 @@ public class RouteActivity extends FragmentActivity implements
 //            }
 //        });
     }
-    @OnClick(R.id.mypositions)private void clickPosition(){mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);}
-    @OnTouch(R.id.etOrigin) private boolean touchOrigin(){
+
+    @OnClick(R.id.myMapPath) void clickMap(){
+        if(!mapsSelection){
+            mapsSelection = true;
+            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+            mMapView.setShowCurrentLocationMarker(false);
+            Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc),Toast.LENGTH_SHORT).show();
+            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+            mapsSelection=false;
+        }
+    }
+    @OnClick(R.id.mypositions) void clickPosition(){
+        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+    }
+
+
+    @OnTouch(R.id.etOrigin) boolean touchOrigin(){
             try {
                 spEditext.setText("");
                 Intent intent =
@@ -296,7 +317,8 @@ public class RouteActivity extends FragmentActivity implements
             }
             return false;
     }
-    @OnTouch(R.id.etDestination) private boolean touchDestination(){
+
+    @OnTouch(R.id.etDestination) boolean touchDestination(){
             try {
                 epEditext.setText("");
                 Intent intent =
@@ -356,16 +378,31 @@ public class RouteActivity extends FragmentActivity implements
 
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-//        if(mapsSelection){
-//            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
-//        }
+        if(mapsSelection) {
+            if (mapPOIItem != null) {
+                mapView.removePOIItem(mapPOIItem);
+            } else {
+                MapPoint SELECT_POINT = MapPoint.mapPointWithGeoCoord(mapPoint.getMapPointGeoCoord().latitude, mapPoint.getMapPointGeoCoord().longitude);
+                mapPOIItem = new MapPOIItem();
+                mapPOIItem.setItemName(getString(R.string.settings));
+                mapPOIItem.setTag(1);
+                mapPOIItem.setMapPoint(SELECT_POINT);
+                mapPOIItem.setMarkerType(MapPOIItem.MarkerType.RedPin);
+                mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+                mapPOIItem.setCustomImageAutoscale(false);
+                mapPOIItem.setCustomImageAnchor(0.5f, 1.0f);
+                mapView.addPOIItem(mapPOIItem);
+                mapView.setMapCenterPoint(SELECT_POINT, true);
+                mapView.setZoomLevel(3, true);
+            }
+        }
     }
 
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-//        if(mapsSelection){
-//            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
-//        }
+        if(mapsSelection){
+            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -430,7 +467,7 @@ public class RouteActivity extends FragmentActivity implements
         if (locationManager!=null){
             locationManager.removeUpdates(locationListener);
         }
-        mapView.setShowCurrentLocationMarker(false);
+        mMapView.setShowCurrentLocationMarker(false);
     }
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint currentLocation, float accuracyInMeters) {

@@ -17,7 +17,7 @@ import butterknife.OnClick;
 
 public class PermissionActivity extends AppCompatActivity {
 //    @BindView(R.id.textView) private TextView textView;
-      @BindView(R.id.buttons) private Button button;
+      @BindView(R.id.buttons) Button button;
 //    @BindView(R.id.sonucTextView) private TextView scrollView;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {android.Manifest.permission.SEND_SMS, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION};

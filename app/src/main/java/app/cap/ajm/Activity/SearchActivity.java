@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,13 +55,16 @@ public class SearchActivity extends FragmentActivity implements
     private EditText mEditTextQuery;
     private Button mButtonSearch;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
-    private int n = 0;
     private static final String DAUM_MAPS_ANDROID_APP_API_KEY = "97171e5d82d63c9d6353e66c403745f9";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
+
+//		mMapView = new MapView(this);
         mMapView = (MapView)findViewById(R.id.map_view);
+//		ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+//		mapViewContainer.addView(mMapView);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
         mMapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
@@ -175,7 +179,6 @@ public class SearchActivity extends FragmentActivity implements
 		
 		for (int i = 0; i < itemList.size(); i++) {
 			Item item = itemList.get(i);
-
 			MapPOIItem poiItem = new MapPOIItem();
 			poiItem.setItemName(item.title+", "+item.distance);
 			poiItem.setTag(i);
@@ -214,10 +217,9 @@ public class SearchActivity extends FragmentActivity implements
 		}
 	}
 	
-	private Object fetch(String address) throws MalformedURLException,IOException {
+	private Object fetch(String address) throws IOException {
 		URL url = new URL(address);
-		Object content = url.getContent();
-		return content;
+		return url.getContent();
 	}
 	
 	@Override

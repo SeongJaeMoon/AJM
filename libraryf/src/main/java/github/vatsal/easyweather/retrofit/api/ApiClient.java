@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static ApiClient uniqInstance;
-    private final String URL_LIVE = "http://api.openweathermap.org/data/2.5/";
+    private static final String URL_LIVE = "http://api.openweathermap.org/data/2.5/";
 
     private WeatherInterface weatherInterface;
 
@@ -51,10 +51,10 @@ public class ApiClient {
                     .addInterceptor(headerInterceptor)
                     .addInterceptor(logging)
                     .build();
-            String API_URL = URL_LIVE;
+            //String API_URL = URL_LIVE;
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API_URL)
+                    .baseUrl(URL_LIVE)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient)
                     .build();

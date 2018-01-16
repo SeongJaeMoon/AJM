@@ -37,7 +37,7 @@
     <string name=	"running">Specify the path of progress</string>
     <string name=	"notification"	>Calories: %1$s, Distance: %2$s.</string>
     <string name=	"previsions">forecast</string>
-    <string name=	"settings"	>Set</string>
+    <string name=	"settings"	>Setting</string>
     <string name=	"app_info">Help</string>
     <string name=	"pref_auto_average">Automatically detects the stop time</string>
     <string name=	"pref_auto_average_summary">	Downtime is not included in the average rate.</string>
@@ -48,7 +48,7 @@
     <string name=	"no_internet_conection">It did not have an Internet connection. \n Some features are not available.</string>
     <string name=	"no_way">Can not find your destination.</string>
     <string name=	"weight_value"	>Input your weight for calorie calculation.</string>
-    <string name=	"action_settings">Set</string>
+    <string name=	"action_settings">Settting</string>
     <string name=	"menu">menu</string>
     <string name=	"source_code_summary"	>Access to the source code.</string>
     <string name=	"version">안전모 version</string>
@@ -97,7 +97,7 @@
     <string name=	"fall_detect"	>It has detected a fall.</string>
     <string name=	"be_careful">Sudden movement is detected, your ride safe!</string>
     <string name=	"be_careful_tts">I\'m begging you safe riding	</string>
-    <string name=	"set_number">Please set the number to send an urgent letter.</string>
+    <string name=	"set_number">Please set the number to send an sms.</string>
     <string name=	"number_ok">Number setup complete.</string>
     <string name=	"start_detect"	>Start safe services</string>
     <string name=	"stop_detect">Stop safe service</string>

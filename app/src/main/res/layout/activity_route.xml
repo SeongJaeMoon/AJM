@@ -51,6 +51,7 @@
             android:text="@string/set_map"
             android:id="@+id/myMapPath"/>
     </LinearLayout>
+
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -64,7 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_my_location_black_24dp"
-        android:background="#00ff0000"
         android:layout_gravity="start|bottom"
         fab:fab_colorNormal="@color/red"
         fab:fab_colorPressed="@color/black"

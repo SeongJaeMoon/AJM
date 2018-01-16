@@ -33,6 +33,7 @@ import app.cap.ajm.Helper.ListDBhelper;
 import app.cap.ajm.Helper.WeatherDBhelper;
 import app.cap.ajm.R;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import jxl.Sheet;
 import jxl.Workbook;
 
@@ -44,15 +45,16 @@ public class SplashActivity extends AppCompatActivity {
     private GeoFire geoFire, geoFire1;
     private DatabaseReference ref;
     private static final String TAG = SplashActivity.class.getSimpleName();
-    @BindView(R.id.splash_message)
-    private TextView splash_message;
+    @BindView(R.id.splash_message) TextView splash_message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
+
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         final boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -187,7 +189,7 @@ public class SplashActivity extends AppCompatActivity {
                     int nRowEndIndex = sheet.getColumn(nMaxColumn - 1).length - 1;
                     int nColumnStartIndex = 0;
                     weatherDBhelper.open();
-                    for (int nRow = nRowStartIndex - 1; nRow <= nRowEndIndex; nRow++) {
+                    for (int nRow = nRowStartIndex + 1; nRow <= nRowEndIndex; nRow++) {
                         String key = sheet.getCell(nColumnStartIndex, nRow).getContents();
                         String value = sheet.getCell(nColumnStartIndex + 1, nRow).getContents();
                         weatherDBhelper.createList(key, value);
