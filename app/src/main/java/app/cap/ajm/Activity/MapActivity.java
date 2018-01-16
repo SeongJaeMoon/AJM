@@ -2,6 +2,7 @@ package app.cap.ajm.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.text.UnicodeSetSpanner;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -25,10 +26,8 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
     private List<TrackPoint> trackPointList;
     private TrackDBhelper trackDBhelper;
     private MapView mapView;
-    private MapPOIItem mapPOIItem, mapPOIItem1;
     private MapPolyline mapPolyline;
     private int i = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +50,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             double startLng = trackPoint.getLng();
             String startTitle = getString(R.string.start_positon);
             MapPoint startMarkerPoint = mapPointWithGeoCoord(startLat, startLng);
+            MapPOIItem mapPOIItem, mapPOIItem1;
             mapPOIItem = new MapPOIItem();
             mapPOIItem.setItemName(startTitle);
             mapPOIItem.setTag(0);
@@ -60,6 +60,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
             mapPOIItem.setCustomImageAutoscale(false);
             mapPOIItem.setCustomImageAnchor(0.5f, 1.0f);
             mapView.addPOIItem(mapPOIItem);
+
             try {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -79,6 +80,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             TrackPoint trackPoint1 = trackPointList.get(i);
             double endLat = trackPoint1.getLat();

@@ -61,12 +61,11 @@
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/mypositions"
-        android:onClick="positions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_my_location_black_24dp"
         android:background="#00ff0000"
-        android:layout_gravity="left|bottom"
+        android:layout_gravity="start|bottom"
         fab:fab_colorNormal="@color/red"
         fab:fab_colorPressed="@color/black"
         fab:fab_colorRipple="@color/white"

@@ -1,4 +1,5 @@
 package app.cap.ajm.Activity;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -93,7 +94,6 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void populateWeather(WeatherResponseModel response) {
-
         Weather weather[] = response.getWeather();
         condition.setText(weather[0].getMain());
         temp.setText(TempUnitConverter.convertToCelsius(response.getMain().getTemp()).intValue() + " °C");
@@ -128,7 +128,6 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     public String getWeatherValue(String key){
-
         String value = null;
         weatherDBhelper.open();
         weathers = weatherDBhelper.fetchForList();

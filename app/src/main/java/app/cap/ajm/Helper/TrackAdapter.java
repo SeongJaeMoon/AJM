@@ -46,6 +46,7 @@ public class TrackAdapter extends CursorAdapter{
 
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor){
+
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         final String sttime = cursor.getString(startTime);
         final String endtime = cursor.getString(endTime);

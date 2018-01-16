@@ -37,6 +37,11 @@ import com.melnykov.fab.FloatingActionButton;
 import java.io.IOException;
 import java.util.List;
 import app.cap.ajm.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTouch;
+
 import android.view.MotionEvent;
 import com.kakao.kakaonavi.Location;
 import com.kakao.kakaonavi.Destination;
@@ -49,27 +54,28 @@ public class RouteActivity extends FragmentActivity implements
         MapView.MapViewEventListener,
         MapView.POIItemEventListener,
         MapView.CurrentLocationEventListener{
+
     private LocationListener locationListener;
-    private static final String LOG_TAG = "RouteActivity";
+    private static final String LOG_TAG = RouteActivity.class.getSimpleName();
     private static final int PLACE_PIKER_REQUEST = 1;
     private static final int PLACE_PIKER_REQUEST_EP = 2;
-    private EditText spEditext;
-    private EditText epEditext;
-    private Button findbutton;
-    private Button findStartLocation;
-    private Button mSearchbymap;
+    @BindView(R.id.etOrigin) private EditText spEditext;
+    @BindView(R.id.etDestination) private EditText epEditext;
+    @BindView(R.id.btnFindPath) private Button findbutton;
+    @BindView(R.id.myFindPath) private Button findStartLocation;
+    @BindView(R.id.myMapPath) private Button mSearchbymap;
+    @BindView(R.id.mypositions) private FloatingActionButton myposition;
     private MapView mapView;
-    private GoogleApiClient mGoogleApiClient;
-    private FloatingActionButton myposition;
     public LocationManager locationManager;
     private boolean mapsSelection=false;
     double latitude, longitude;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-
-        mGoogleApiClient = new GoogleApiClient
+        ButterKnife.bind(this);
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
@@ -81,15 +87,14 @@ public class RouteActivity extends FragmentActivity implements
         }).build();
                 mGoogleApiClient.connect();
 
-
                 final Geocoder geocoder = new Geocoder(this);
                 // 다음지도 불러오기
-                spEditext = (EditText)findViewById(R.id.etOrigin);
-                epEditext = (EditText)findViewById(R.id.etDestination);
-                findbutton = (Button)findViewById(R.id.btnFindPath);
-                findStartLocation = (Button)findViewById(R.id.myFindPath);
-                mSearchbymap = (Button)findViewById(R.id.myMapPath);
-                myposition = (FloatingActionButton)findViewById(R.id.mypositions);
+//                spEditext = (EditText)findViewById(R.id.etOrigin);
+//                epEditext = (EditText)findViewById(R.id.etDestination);
+//                findbutton = (Button)findViewById(R.id.btnFindPath);
+//                findStartLocation = (Button)findViewById(R.id.myFindPath);
+//                mSearchbymap = (Button)findViewById(R.id.myMapPath);
+//                myposition = (FloatingActionButton)findViewById(R.id.mypositions);
                 mapView = (MapView) findViewById(R.id.map_view);
 
                 mapView.setCurrentLocationEventListener(this);
@@ -105,11 +110,9 @@ public class RouteActivity extends FragmentActivity implements
                 if (sped1 == null || sped1.length() == 0)
                 {
                     Toast.makeText(getApplicationContext(), getString(R.string.input_start), Toast.LENGTH_SHORT).show();
-                    return;
                 } else if (eped1 == null || eped1.length() == 0)
                 {
                     Toast.makeText(getApplicationContext(), getString(R.string.input_end), Toast.LENGTH_SHORT).show();
-                    return;
                 }
                 else
                     {
@@ -160,38 +163,32 @@ public class RouteActivity extends FragmentActivity implements
                         }
                     }
                 }
-
-            }
-            });
+             }
+         });
         //현재 위치를 출발지로
         findStartLocation.setOnClickListener(new View.OnClickListener() {
         @Override
          public void onClick(View v) {
             try {
                 spEditext.setText("");
-
-            if (ContextCompat.checkSelfPermission(RouteActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_DENIED&&
+            if(ContextCompat.checkSelfPermission(RouteActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_DENIED&&
                     ContextCompat.checkSelfPermission(RouteActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_DENIED) {
-                locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
+                locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                 locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(android.location.Location location) {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                     }
-
                     @Override
                     public void onStatusChanged(String provider, int status, Bundle extras) {
                     }
-
                     @Override
                     public void onProviderEnabled(String provider) {
                     }
-
                     @Override
                     public void onProviderDisabled(String provider) {
-
                     }
                 };
 
@@ -221,69 +218,100 @@ public class RouteActivity extends FragmentActivity implements
          mSearchbymap.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 if (!mapsSelection) {
-                     mapsSelection = true;
-                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
-                     mapView.setShowCurrentLocationMarker(false);
-                     Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
-                 }
-                 else {
-                     Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc),Toast.LENGTH_SHORT).show();
-                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-                     mapsSelection=false;
-                 }
+//                 if (!mapsSelection) {
+//                     mapsSelection = true;
+//                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+//                     mapView.setShowCurrentLocationMarker(false);
+//                     Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
+//                 }
+//                 else {
+//                     Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc),Toast.LENGTH_SHORT).show();
+//                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//                     mapsSelection=false;
+//                 }
              }
          });
 
-        spEditext.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    try {
-                        spEditext.setText("");
-                        Intent intent =
-                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                        .build(RouteActivity.this);
-                        startActivityForResult(intent, PLACE_PIKER_REQUEST);
-                    } catch (GooglePlayServicesRepairableException e) {
-                        e.printStackTrace();
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                return false;
-            }
-        });
-        epEditext.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    try {
-                        epEditext.setText("");
-                        Intent intent =
-                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                        .build(RouteActivity.this);
-                        startActivityForResult(intent, PLACE_PIKER_REQUEST_EP);
-                    } catch (GooglePlayServicesRepairableException e) {
-                        e.printStackTrace();
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                return false;
-            }
-        });
+//        spEditext.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//                    try {
+//                        spEditext.setText("");
+//                        Intent intent =
+//                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+//                                        .build(RouteActivity.this);
+//                        startActivityForResult(intent, PLACE_PIKER_REQUEST);
+//                    } catch (GooglePlayServicesRepairableException e) {
+//                        e.printStackTrace();
+//                    } catch (GooglePlayServicesNotAvailableException e) {
+//                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+//        epEditext.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//                    try {
+//                        epEditext.setText("");
+//                        Intent intent =
+//                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+//                                        .build(RouteActivity.this);
+//                        startActivityForResult(intent, PLACE_PIKER_REQUEST_EP);
+//                    } catch (GooglePlayServicesRepairableException e) {
+//                        e.printStackTrace();
+//                    } catch (GooglePlayServicesNotAvailableException e) {
+//                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+        touchOrigin();
+        touchDestination();
+        clickPosition();
 
-        myposition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+//        myposition.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+//            }
+//        });
+    }
+    @OnClick(R.id.mypositions)private void clickPosition(){mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);}
+    @OnTouch(R.id.etOrigin) private boolean touchOrigin(){
+            try {
+                spEditext.setText("");
+                Intent intent =
+                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                .build(RouteActivity.this);
+                startActivityForResult(intent, PLACE_PIKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
             }
-        });
+            return false;
+    }
+    @OnTouch(R.id.etDestination) private boolean touchDestination(){
+            try {
+                epEditext.setText("");
+                Intent intent =
+                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                .build(RouteActivity.this);
+                startActivityForResult(intent, PLACE_PIKER_REQUEST_EP);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
+            }
+        return false;
     }
 
-
-        @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PIKER_REQUEST) {
             if (resultCode == RESULT_OK) {
@@ -328,49 +356,47 @@ public class RouteActivity extends FragmentActivity implements
 
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-        if(mapsSelection){
-            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
-        }
+//        if(mapsSelection){
+//            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-        if(mapsSelection){
-            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
-        }
+//        if(mapsSelection){
+//            Toast.makeText(getApplication(),getString(R.string.long_press),Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
     public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-        Geocoder geocoder = new Geocoder(this);
-    if (mapsSelection){
-        try {
-            MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
-            List<Address> list = null;
-            list = geocoder.getFromLocation(mapPointGeo.latitude, mapPointGeo.longitude, 10);
-            if (list != null) {
-                if (list.size() == 0)
-                    Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc_ok), Toast.LENGTH_LONG).show();
-                epEditext.setText(list.get(0).getAddressLine(0));
-                mapsSelection=false;
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
-        }
-    }
+//        Geocoder geocoder = new Geocoder(this);
+//    if (mapsSelection){
+//        try {
+//            MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
+//            List<Address> list = null;
+//            list = geocoder.getFromLocation(mapPointGeo.latitude, mapPointGeo.longitude, 10);
+//            if (list != null) {
+//                if (list.size() == 0)
+//                    Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
+//                else
+//                    Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc_ok), Toast.LENGTH_LONG).show();
+//                epEditext.setText(list.get(0).getAddressLine(0));
+//                mapsSelection=false;
+//            }
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//            Toast.makeText(getApplicationContext(), e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
+//        }
+//        }
     }
     @Override
     public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
     }
-
     @Override
     public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
     }
-
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
@@ -379,17 +405,14 @@ public class RouteActivity extends FragmentActivity implements
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(mapPOIItem.getMapPoint().getMapPointGeoCoord().latitude,mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude), 2, true);
     }
-
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
 
     }
-
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
 
     }
-
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 

@@ -62,7 +62,7 @@ public class DialogActivity extends AppCompatActivity{
                 Intent intent = getIntent();
                 double latitude = intent.getExtras().getDouble("lastlat");
                 double longitude = intent.getExtras().getDouble("lastlon");
-                List itemIds = new ArrayList<>();
+                List<String> itemIds = new ArrayList<>();
                 Cursor cursor = getAllContacts();
                 cursor.moveToFirst();
                 if (cursor.moveToFirst()) {
@@ -72,9 +72,8 @@ public class DialogActivity extends AppCompatActivity{
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                Iterator it = itemIds.iterator();
-                while (it.hasNext()) {
-                    phoneNum = it.next().toString();
+                for(String s : itemIds){
+                    phoneNum = s;
                     if (!phoneNum.equals(prevNumber) && phoneNum != null && ContextCompat.checkSelfPermission(getApplicationContext(),
                             android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED &&
                             ContextCompat.checkSelfPermission(getApplicationContext(),

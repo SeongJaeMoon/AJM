@@ -13,7 +13,7 @@ import app.cap.ajm.Model.TrackPoint;
 
 public class TrackDBhelper{
 
-    private static final String TAG ="TrackDBhelper";
+     static final String TAG ="TrackDBhelper";
 
     public static final String KEY_ROWID = "_id";
     public static final String KEY_START_ADDR = "startAddr";
@@ -29,13 +29,13 @@ public class TrackDBhelper{
     public static final String KEY_COORDINATE_X = "_x";
     public static final String KEY_COORDINATE_Y = "_y";
 
-    private DatabaseHelper mDbHelper;
-    private SQLiteDatabase mDb;
+    public DatabaseHelper mDbHelper;
+    public SQLiteDatabase mDb;
 
-    private static final String DATABASE_NAME = "trackdb";
-    private static final String DATABASE_TABLE = "track";
-    private static final String DATABASE_TABLE_MAP = "map";
-    private static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "trackdb";
+    public static final String DATABASE_TABLE = "track";
+    public static final String DATABASE_TABLE_MAP = "map";
+    public static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_CREATE =
             "CREATE TABLE "+ DATABASE_TABLE +" ("
@@ -59,9 +59,7 @@ public class TrackDBhelper{
                     + KEY_COORDINATE_X+" REAL,"
                     + KEY_COORDINATE_Y+" REAL"+ ");";
 
-    private List<TrackPoint> trackPoints;
     private final Context mCtx;
-
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {
@@ -92,7 +90,7 @@ public class TrackDBhelper{
     }
 
     //종료할 때 출발 주소<>시간, 도착 주소<>시간, 평속, 칼로리, 거리, 온도, 습도 저장
-    public long trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, double calroie, double distance, String temp, String wet){
+    public void trackDBallFetch(String startAddr, String endAddr, String startTime, String endTime, String avgSpeed, double calroie, double distance, String temp, String wet){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_START_ADDR, startAddr);
         contentValues.put(KEY_END_ADDR, endAddr);
@@ -103,37 +101,37 @@ public class TrackDBhelper{
         contentValues.put(KEY_DISTANCE, distance);
         contentValues.put(KEY_TEMP, temp);
         contentValues.put(KEY_WET, wet);
-        return mDb.insert(DATABASE_TABLE, null, contentValues);
+        mDb.insert(DATABASE_TABLE, null, contentValues);
     }
 
     //시작할 때 위치, 시간 저장
-    public long trackDBlocationStart(String startTime, double lat, double lng){
+    public void trackDBlocationStart(String startTime, double lat, double lng){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_START_TIME, startTime);
         contentValues.put(KEY_COORDINATE_X, lat);
         contentValues.put(KEY_COORDINATE_Y, lng);
-        return mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
+        mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
     //종료할 때 위치, 시간 저장
-    public long trackDBlocationStop(String endTime, double lat, double lng){
+    public void trackDBlocationStop(String endTime, double lat, double lng){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_END_TIME, endTime);
         contentValues.put(KEY_COORDINATE_X, lat);
         contentValues.put(KEY_COORDINATE_Y, lng);
-        return mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
+        mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
     //달리는 중일 때 시간, 위치 저장
-    public long trackDBlocationRunning(String time, double lat, double lng){
+    public void trackDBlocationRunning(String time, double lat, double lng){
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_RUNNING_TIME, time);
         contentValues.put(KEY_COORDINATE_X,lat);
         contentValues.put(KEY_COORDINATE_Y, lng);
-        return mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
+        mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
 
     //출발 시간 between 도착 시간 사이에 있는 값 다가져오기
     public List<TrackPoint> fetchBetweenTime(String start, String end){
-        trackPoints = new ArrayList<>();
+        List<TrackPoint>trackPoints = new ArrayList<>();
         mDbHelper = new DatabaseHelper(mCtx);
         mDb =  mDbHelper.getReadableDatabase();
         Cursor res = mDb.rawQuery("select * from " + DATABASE_TABLE_MAP+" where "+ KEY_RUNNING_TIME +" between "+"'"+start+"'"+" and "+"'"+end+"'", null);
@@ -155,15 +153,14 @@ public class TrackDBhelper{
     public Cursor fetchAllListOrderBYDec() {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
-        Cursor res =  mDb.rawQuery( "select * from "+ DATABASE_TABLE +" order by "+KEY_ROWID + " desc", null);
-        return res;
+        return mDb.rawQuery( "select * from "+ DATABASE_TABLE +" order by "+KEY_ROWID + " desc", null);
 }
 
 //_id로 값 삭제하기
-    public int removeList(int id){
+    public void removeList(int id){
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
-        return mDb.delete(DATABASE_TABLE, "_id = ?",new String[]{String.valueOf(id)});
+        mDb.delete(DATABASE_TABLE, "_id = ?",new String[]{String.valueOf(id)});
     }
 
 }

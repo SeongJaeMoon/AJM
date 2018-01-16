@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         Toast.makeText(getApplicationContext(), getString(R.string.start_location_detect),Toast.LENGTH_SHORT).show();
                     }
 
-
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
