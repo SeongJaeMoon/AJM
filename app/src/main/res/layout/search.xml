@@ -19,7 +19,7 @@
             <requestFocus />
         </EditText>
         <Button
-            android:id="@+id/buttonSearch"
+            android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,12 +28,22 @@
             android:text="@string/find" />
 
     </LinearLayout>
-
-<FrameLayout
+    <TextView
+        android:id="@+id/textList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/list"
+        android:textSize="15sp"/>
+    <ListView
+        android:id="@+id/list_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+<!--<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <net.daum.mf.map.api.MapView
-        android:id="@+id/map_view"
+        android:id="@+id/map_views"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -48,5 +58,6 @@
         fab:fab_colorRipple="@color/white"
         fab:fab_type="normal"
         />
-</FrameLayout>
+</FrameLayout>-->
+
 </LinearLayout>

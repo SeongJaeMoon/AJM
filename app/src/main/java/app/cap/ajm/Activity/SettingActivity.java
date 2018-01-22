@@ -63,13 +63,6 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        //Map<String, ?> preferencesMap = sharedPreferences.getAll();
-        //for (Map.Entry<String, ?> preferenceEntry : preferencesMap.entrySet())
-        //{
-        //if (preferenceEntry instanceof EditTextPreference ) {
-        //updateSummary((EditTextPreference) preferenceEntry);
-        //}
-        //}
     }
 
     public static class SettingsFragment extends PreferenceFragment {
@@ -96,7 +89,7 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
                     String news = newValue.toString();
                     if (!news.equals("")) {
                         int to = Integer.parseInt(news);
-                        if (to < 10 || to > 120 || !isString(news))
+                        if (to < 10 || to > 120)
                         {
                             Toast.makeText(getActivity(), getString(R.string.weight_val), Toast.LENGTH_SHORT).show();
                             return false;
@@ -199,16 +192,6 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
                 EditTextPreference editTextPreference = (EditTextPreference) preference;
                 editTextPreference.setSummary(editTextPreference.getText());
             }
-        }
-    }
-    public static boolean isString(String s)
-    {
-        try{
-            Integer.parseInt(s);
-            return true;
-        }catch (NumberFormatException e)
-        {
-            return false;
         }
     }
 }

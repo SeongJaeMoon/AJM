@@ -13,10 +13,12 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.content.SharedPreferences;
 import android.widget.Toast;
@@ -38,18 +40,19 @@ import app.cap.ajm.Model.Data;
 import app.cap.ajm.Helper.TrackDBhelper;
 import app.cap.ajm.Activity.MainActivity;
 import app.cap.ajm.R;
+import app.cap.ajm.Util.Utils;
 
 public class GPSService extends Service implements LocationListener, TextToSpeech.OnInitListener{
 
     private static String TAG = GPSService.class.getSimpleName();
     private LocationManager mLocationManager;
     private SharedPreferences sharedPreferences;
-    Location lastlocation = new Location("last");
-    Data data;
-    double currentLon = 0;
-    double currentLat = 0;
-    double lastLon = 0;
-    double lastLat = 0;
+    private Location lastlocation = new Location("last");
+    private Data data;
+    private double currentLon = 0;
+    private double currentLat = 0;
+    private double lastLon = 0;
+    private double lastLat = 0;
     PendingIntent contentIntent;
     Context context;
     private DatabaseReference ref;
@@ -57,8 +60,10 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     private TrackDBhelper trackDBhelper;
     private Query query;
     private TextToSpeech tts;
+    private Handler handler;
     @Override
     public void onCreate() {
+        handler = new Handler();
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
         trackDBhelper = new TrackDBhelper(this);
@@ -144,7 +149,7 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
             }
             if (sharedPreferences.getBoolean("route", false)){
                 try {
-                    trackDBhelper.trackDBlocationRunning(getCurrentSec(),lastLat, lastLon);
+                    trackDBhelper.trackDBlocationRunning(Utils.INSTANCE.getCurrentSec(),lastLat, lastLon);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -175,9 +180,19 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         context = getApplicationContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GPSService.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
         return START_STICKY;
     }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -337,13 +352,7 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
              e.printStackTrace();
          }
      }
-    public String getCurrentSec(){
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-        String getTime = sdf.format(date);
-        return getTime;
-    }
+
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS)
@@ -356,6 +365,7 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
             Toast.makeText(getApplicationContext(), getString(R.string.tts_not_setup), Toast.LENGTH_LONG).show();
         }
     }
+
     private void speak(String s){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             ttsGreater21(s);
@@ -375,6 +385,10 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     private void ttsGreater21(String text) {
         String utteranceId=this.hashCode() + "";
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+    }
+
+    public Location getLastlocation(){
+        return this.lastlocation;
     }
 }
 

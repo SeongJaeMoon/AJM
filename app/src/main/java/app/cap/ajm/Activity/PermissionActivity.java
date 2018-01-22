@@ -33,7 +33,7 @@ public class PermissionActivity extends AppCompatActivity {
 //                    ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
 //            }
 //        }
-        suceesPermission();
+
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

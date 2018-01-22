@@ -1,75 +1,100 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="app.cap.ajm.Activity.RouteActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"  >
+    android:orientation="vertical"
+    tools:context="app.cap.ajm.Activity.RouteActivity">
 
     <EditText
+        android:id="@+id/etOrigin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etOrigin"
         android:hint="@string/start_edit" />
 
     <EditText
+        android:id="@+id/etDestination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/end_edit"
-        android:id="@+id/etDestination"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:hint="@string/end_edit" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
+            android:id="@+id/btnFindPath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:background="@color/red"
-            android:textColor="@color/white"
             android:text="@string/direction"
-            android:id="@+id/btnFindPath"/>
+            android:textColor="@color/white" />
+
         <Button
+            android:id="@+id/myFindPath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/red_dark"
-            android:textColor="@color/white"
             android:text="@string/my_loc"
-            android:id="@+id/myFindPath"/>
+            android:textColor="@color/white" />
+
         <Button
+            android:id="@+id/myMapPath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/red"
-            android:textColor="@color/white"
             android:text="@string/set_map"
-            android:id="@+id/myMapPath"/>
+            android:textColor="@color/white" />
+
     </LinearLayout>
 
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+   <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <net.daum.mf.map.api.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/mypositions"
+        android:id="@+id/myposition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_my_location_black_24dp"
         android:layout_gravity="start|bottom"
+        android:src="@drawable/ic_my_location_black_24dp"
         fab:fab_colorNormal="@color/red"
         fab:fab_colorPressed="@color/black"
         fab:fab_colorRipple="@color/white"
-        fab:fab_type="normal"
-        />
-</FrameLayout>
+        fab:fab_type="normal" />
+
+    </FrameLayout>
+
+    <!--<android.support.v4.view.ViewPager
+        android:id="@+id/vp_horizontal_ntb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+        <devlight.io.library.ntb.NavigationTabBar
+            android:id="@+id/ntb_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:ntb_badge_gravity="bottom"
+            app:ntb_badge_position="left"
+            app:ntb_badged="true"
+            app:ntb_scaled="true"
+            app:ntb_swiped="true"
+            app:ntb_tinted="true"
+            app:ntb_title_mode="all"
+            app:ntb_titled="true" />-->
+
 </LinearLayout>

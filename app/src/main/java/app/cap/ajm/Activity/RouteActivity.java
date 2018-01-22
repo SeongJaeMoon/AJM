@@ -14,8 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,8 +29,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapView;
 
 import com.kakao.kakaonavi.options.RpOption;
@@ -37,6 +42,8 @@ import com.melnykov.fab.FloatingActionButton;
 import java.io.IOException;
 import java.util.List;
 import app.cap.ajm.R;
+import app.cap.ajm.Service.GPSService;
+import app.cap.ajm.Util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,23 +60,23 @@ import com.kakao.kakaonavi.options.CoordType;
 public class RouteActivity extends FragmentActivity implements
         MapView.MapViewEventListener,
         MapView.POIItemEventListener,
-        MapView.CurrentLocationEventListener{
+        MapView.CurrentLocationEventListener {
 
     private LocationListener locationListener;
     private static final String LOG_TAG = RouteActivity.class.getSimpleName();
     private static final int PLACE_PIKER_REQUEST = 1;
     private static final int PLACE_PIKER_REQUEST_EP = 2;
-    @BindView(R.id.etOrigin) EditText spEditext;
-    @BindView(R.id.etDestination) EditText epEditext;
+    @BindView(R.id.etOrigin)
+    EditText spEditext;
+    @BindView(R.id.etDestination)
+    EditText epEditext;
     @BindView(R.id.btnFindPath) Button findbutton;
     @BindView(R.id.myFindPath) Button findStartLocation;
     @BindView(R.id.myMapPath) Button mSearchbymap;
-    @BindView(R.id.mypositions) FloatingActionButton myposition;
+    //@BindView(R.id.mypositions) FloatingActionButton myposition;
     private MapView mMapView;
-    private LocationManager locationManager;
-    private boolean mapsSelection=false;
-    private double latitude, longitude;
-    private MapPOIItem mapPOIItem;
+    private boolean mapsSelection = false;
+       private MapPOIItem mapPOIItem;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,211 +89,95 @@ public class RouteActivity extends FragmentActivity implements
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                Toast.makeText(getApplicationContext(),getString(R.string.google_api_error),Toast.LENGTH_SHORT).show();
-            }
-        }).build();
-                mGoogleApiClient.connect();
-
-                final Geocoder geocoder = new Geocoder(this);
-                // 다음지도 불러오기
-//                spEditext = (EditText)findViewById(R.id.etOrigin);
-//                epEditext = (EditText)findViewById(R.id.etDestination);
-//                findbutton = (Button)findViewById(R.id.btnFindPath);
-//                findStartLocation = (Button)findViewById(R.id.myFindPath);
-//                mSearchbymap = (Button)findViewById(R.id.myMapPath);
-//                myposition = (FloatingActionButton)findViewById(R.id.mypositions);
-
-//                mMapView = new MapView(this);
-                mMapView = (MapView) findViewById(R.id.map_view);
-                mMapView.setCurrentLocationEventListener(this);
-                mMapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
-                mMapView.setMapViewEventListener(this);
-                mMapView.setPOIItemEventListener(this);
-
-                findbutton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick (View v){
-                String sped1 = spEditext.getText().toString();
-                String eped1 = epEditext.getText().toString();
-                if (sped1 == null || sped1.length() == 0)
-                {
-                    Toast.makeText(getApplicationContext(), getString(R.string.input_start), Toast.LENGTH_SHORT).show();
-                } else if (eped1 == null || eped1.length() == 0)
-                {
-                    Toast.makeText(getApplicationContext(), getString(R.string.input_end), Toast.LENGTH_SHORT).show();
-                }
-                else
-                    {
-                    List<Address> list = null;
-                    List<Address> list1 = null;
-                    try {
-                        list = geocoder.getFromLocationName(sped1, 10);
-                        list1 = geocoder.getFromLocationName(eped1, 10);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (list != null && list1 != null)
-                    {
-                        if (list.size() == 0 || list1.size() == 0)
-                        {
-                            Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            {
-                            Address addr = list.get(0);
-                            Address addr1 = list1.get(0);
-                            double splat = addr.getLatitude();
-                            double splon = addr.getLongitude();
-                            double edlat = addr1.getLatitude();
-                            double edlon = addr1.getLongitude();
-                                try {
-                                    if(KakaoNaviService.isKakaoNaviInstalled(getApplicationContext())) {
-                                        Location kakao = Destination.newBuilder(eped1, edlon, edlat).build();
-                                        KakaoNaviParams params = KakaoNaviParams.newBuilder(kakao)
-                                                .setNaviOptions(NaviOptions.newBuilder()
-                                                        .setCoordType(CoordType.WGS84)
-                                                        .setRpOption(RpOption.NO_AUTO)
-                                                        .setStartX(splat)
-                                                        .setStartY(splon)
-                                                        .setStartAngle(200)
-                                                        .setVehicleType(VehicleType.TWO_WHEEL).build()).build();
-                                        KakaoNaviService.navigate(RouteActivity.this, params);
-                                    }
-                                    else
-                                    {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.locnall.KimGiSa"));
-                                        startActivity(intent);
-                                        Toast.makeText(getApplicationContext(), getString(R.string.navi_install),Toast.LENGTH_LONG).show();
-                                    }
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                        }
-                    }
-                }
-             }
-         });
-        //현재 위치를 출발지로
-        findStartLocation.setOnClickListener(new View.OnClickListener() {
-        @Override
-         public void onClick(View v) {
-            try {
-                spEditext.setText("");
-            if(ContextCompat.checkSelfPermission(RouteActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_DENIED&&
-                    ContextCompat.checkSelfPermission(RouteActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_DENIED) {
-
-                locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                locationListener = new LocationListener() {
                     @Override
-                    public void onLocationChanged(android.location.Location location) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
                     }
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-                    }
-                    @Override
-                    public void onProviderEnabled(String provider) {
-                    }
-                    @Override
-                    public void onProviderDisabled(String provider) {
-                    }
-                };
+                }).build();
+        mGoogleApiClient.connect();
 
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-                String locationProvider = LocationManager.NETWORK_PROVIDER;
-                latitude = locationManager.getLastKnownLocation(locationProvider).getLatitude();
-                longitude = locationManager.getLastKnownLocation(locationProvider).getLongitude();
+        // 다음지도 불러오기
+        mMapView = findViewById(R.id.map_view);
+        mMapView.setCurrentLocationEventListener(this);
+        mMapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
+        mMapView.setMapViewEventListener(this);
+        mMapView.setPOIItemEventListener(this);
 
-                List<Address> list = null;
-                list = geocoder.getFromLocation(latitude, longitude, 10);
-                if (list != null) {
-                    if (list.size() == 0)
-                        Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(getApplicationContext(), getString(R.string.set_current_loc), Toast.LENGTH_SHORT).show();
-                    spEditext.setText(list.get(0).getAddressLine(0));
-                }
-            }
-            }catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(),e.toString()+getString(R.string.error_route),Toast.LENGTH_SHORT).show();
-            }
-         }
-         });
-
-        //지도에서 도착지 선택
-         mSearchbymap.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-//                 if (!mapsSelection) {
-//                     mapsSelection = true;
-//                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
-//                     mapView.setShowCurrentLocationMarker(false);
-//                     Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
-//                 }
-//                 else {
-//                     Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc),Toast.LENGTH_SHORT).show();
-//                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-//                     mapsSelection=false;
-//                 }
-             }
-         });
-
-//        spEditext.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    try {
-//                        spEditext.setText("");
-//                        Intent intent =
-//                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-//                                        .build(RouteActivity.this);
-//                        startActivityForResult(intent, PLACE_PIKER_REQUEST);
-//                    } catch (GooglePlayServicesRepairableException e) {
-//                        e.printStackTrace();
-//                    } catch (GooglePlayServicesNotAvailableException e) {
-//                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-//        epEditext.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    try {
-//                        epEditext.setText("");
-//                        Intent intent =
-//                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-//                                        .build(RouteActivity.this);
-//                        startActivityForResult(intent, PLACE_PIKER_REQUEST_EP);
-//                    } catch (GooglePlayServicesRepairableException e) {
-//                        e.printStackTrace();
-//                    } catch (GooglePlayServicesNotAvailableException e) {
-//                        Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-        touchOrigin();
-        touchDestination();
-        clickPosition();
-        clickMap();
-
-//        myposition.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
-//            }
-//        });
     }
 
-    @OnClick(R.id.myMapPath) void clickMap(){
+    @OnClick(R.id.btnFindPath) void onClickFindRoute() {
+        String sped1 = spEditext.getText().toString();
+        String eped1 = epEditext.getText().toString();
+        Geocoder geocoder = new Geocoder(this);
+        if (sped1.length() == 0) {
+            Toast.makeText(getApplicationContext(), getString(R.string.input_start), Toast.LENGTH_SHORT).show();
+        } else if (eped1.length() == 0) {
+            Toast.makeText(getApplicationContext(), getString(R.string.input_end), Toast.LENGTH_SHORT).show();
+        } else {
+            List<Address> list = null;
+            List<Address> list1 = null;
+            try{
+                list = geocoder.getFromLocationName(sped1, 10);
+                list1 = geocoder.getFromLocationName(eped1, 10);
+
+            if (list != null && list1 != null) {
+                if (list.size() == 0 || list1.size() == 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+                } else {
+                    Address addr = list.get(0);
+                    Address addr1 = list1.get(0);
+                    double splat = addr.getLatitude();
+                    double splon = addr.getLongitude();
+                    double edlat = addr1.getLatitude();
+                    double edlon = addr1.getLongitude();
+
+                    if (KakaoNaviService.isKakaoNaviInstalled(getApplicationContext())) {
+                        Location kakao = Destination.newBuilder(eped1, edlon, edlat).build();
+                        KakaoNaviParams params = KakaoNaviParams.newBuilder(kakao)
+                                .setNaviOptions(NaviOptions.newBuilder()
+                                        .setCoordType(CoordType.WGS84)
+                                        .setRpOption(RpOption.NO_AUTO)
+                                        .setStartX(splat)
+                                        .setStartY(splon)
+                                        .setStartAngle(200)
+                                        .setVehicleType(VehicleType.TWO_WHEEL).build()).build();
+                        KakaoNaviService.navigate(RouteActivity.this, params);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.locnall.KimGiSa"));
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), getString(R.string.navi_install), Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @OnClick(R.id.myFindPath) void onClickFindMyLocation(){
+        GPSService gps = new GPSService();
+        Geocoder geocoder = new Geocoder(this);
+        spEditext.setText("");
+        try {
+            if (gps.getLastlocation() != null) {
+                List<Address> list = null;
+                list = geocoder.getFromLocation(gps.getLastlocation().getLatitude(), gps.getLastlocation().getLongitude(), 10);
+                if(list!=null) {
+                    if (list.size() == 0) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.set_current_loc), Toast.LENGTH_SHORT).show();
+                        spEditext.setText(list.get(0).getAddressLine(0));
+                    }
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.myMapPath) void onClickMap(){
         if(!mapsSelection){
             mapsSelection = true;
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
@@ -298,12 +189,23 @@ public class RouteActivity extends FragmentActivity implements
             mapsSelection=false;
         }
     }
-    @OnClick(R.id.mypositions) void clickPosition(){
-        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+
+    @OnClick(R.id.myposition) void onClickPosition() {
+        MapPointBounds mapPointBounds = new MapPointBounds();
+        GPSService gps = new GPSService();
+        if (gps.getLastlocation() != null) {
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(gps.getLastlocation().getLatitude(), gps.getLastlocation().getLongitude());
+            mapPointBounds.add(mapPoint);;
+            mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds));
+            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.location_find_error), Toast.LENGTH_SHORT).show();
+            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        }
     }
 
-
-    @OnTouch(R.id.etOrigin) boolean touchOrigin(){
+    @OnTouch(R.id.etOrigin) boolean touchOrigin(View view, MotionEvent motionEvent){
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             try {
                 spEditext.setText("");
                 Intent intent =
@@ -315,10 +217,12 @@ public class RouteActivity extends FragmentActivity implements
             } catch (GooglePlayServicesNotAvailableException e) {
                 Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
             }
-            return false;
+        }
+        return false;
     }
 
-    @OnTouch(R.id.etDestination) boolean touchDestination(){
+    @OnTouch(R.id.etDestination) boolean touchDestination(View view, MotionEvent motionEvent){
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             try {
                 epEditext.setText("");
                 Intent intent =
@@ -330,6 +234,7 @@ public class RouteActivity extends FragmentActivity implements
             } catch (GooglePlayServicesNotAvailableException e) {
                 Toast.makeText(getApplicationContext(), getString(R.string.google_api_error), Toast.LENGTH_SHORT).show();
             }
+        }
         return false;
     }
 
@@ -457,16 +362,10 @@ public class RouteActivity extends FragmentActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (locationManager!=null){
-            locationManager.removeUpdates(locationListener);
-        }
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (locationManager!=null){
-            locationManager.removeUpdates(locationListener);
-        }
         mMapView.setShowCurrentLocationMarker(false);
     }
     @Override
@@ -482,5 +381,9 @@ public class RouteActivity extends FragmentActivity implements
     }
     @Override
     public void onCurrentLocationUpdateCancelled(MapView mapView) {
+    }
+
+    private void initUI(){
+
     }
 }

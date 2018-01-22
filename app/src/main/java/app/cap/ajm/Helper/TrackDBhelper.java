@@ -16,26 +16,26 @@ public class TrackDBhelper{
      static final String TAG ="TrackDBhelper";
 
     public static final String KEY_ROWID = "_id";
-    public static final String KEY_START_ADDR = "startAddr";
-    public static final String KEY_END_ADDR = "endAddr";
+    private static final String KEY_START_ADDR = "startAddr";
+    private static final String KEY_END_ADDR = "endAddr";
     public static final String KEY_START_TIME = "startTime";
     public static final String KEY_END_TIME = "endTime";
-    public static final String KEY_AVG_SPEED = "avgSpeed";
+    private static final String KEY_AVG_SPEED = "avgSpeed";
     public static final String KEY_CALORIE = "calorie";
     public static final String KEY_DISTANCE = "distance";
-    public static final String KEY_TEMP = "temp";
-    public static final String KEY_WET = "wet";
-    public static final String KEY_RUNNING_TIME = "runtime";
-    public static final String KEY_COORDINATE_X = "_x";
-    public static final String KEY_COORDINATE_Y = "_y";
+    private static final String KEY_TEMP = "temp";
+    private static final String KEY_WET = "wet";
+    private static final String KEY_RUNNING_TIME = "runtime";
+    private static final String KEY_COORDINATE_X = "_x";
+    private static final String KEY_COORDINATE_Y = "_y";
 
-    public DatabaseHelper mDbHelper;
-    public SQLiteDatabase mDb;
+    private DatabaseHelper mDbHelper;
+    private SQLiteDatabase mDb;
 
-    public static final String DATABASE_NAME = "trackdb";
-    public static final String DATABASE_TABLE = "track";
-    public static final String DATABASE_TABLE_MAP = "map";
-    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "trackdb";
+    private static final String DATABASE_TABLE = "track";
+    private static final String DATABASE_TABLE_MAP = "map";
+    private static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_CREATE =
             "CREATE TABLE "+ DATABASE_TABLE +" ("

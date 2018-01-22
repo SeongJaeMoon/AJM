@@ -20,6 +20,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.icu.util.UniversalTimeScale;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -76,7 +77,9 @@ import app.cap.ajm.Model.Data;
 import app.cap.ajm.R;
 import app.cap.ajm.Service.GPSService;
 import app.cap.ajm.Service.SensorService;
+import app.cap.ajm.Util.Utils;
 import butterknife.BindView;
+import butterknife.OnClick;
 import github.vatsal.easyweather.Helper.ForecastCallback;
 import github.vatsal.easyweather.Helper.TempUnitConverter;
 import github.vatsal.easyweather.Helper.WeatherCallback;
@@ -136,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         //권한 한번 더 확인
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
@@ -150,22 +154,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         views = getWindow().getDecorView();
         hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         backPressCloseHandler = new BackPressCloseHandler(this);
-        ButterKnife.bind(this);
         data = new Data(onGpsServiceUpdate);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //drawerLayout = (DrawerLayout) findViewById(R.id.mainDrawerLayout);
-        //navigationView = (NavigationView) findViewById(R.id.mainNavigationView);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button phonecall = (Button) findViewById(R.id.phonecall);
-        holder = (FloatingActionButton) findViewById(R.id.holder);
-        //mainRecyclerView = (RecyclerView) findViewById(R.id.xrvMainRecyclerView);
-        //refresh = (FloatingActionButton) findViewById(R.id.refresh);
-        //fab = (FloatingActionButton) findViewById(R.id.fab);
+
         refresh.setVisibility(View.INVISIBLE);
 
         //자동 서비스 꺼짐 선택이 되지 않았을 경우 && 서비스가 실행 중일 경우
@@ -232,10 +230,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         //maxSpeed = (TextView) findViewById(R.id.maxSpeed);
         //averageSpeed = (TextView) findViewById(R.id.averageSpeed);
         //distance = (TextView) findViewById(R.id.distance);
-        time = (Chronometer) findViewById(R.id.time);
-        //currentSpeed = (TextView) findViewById(R.id.currentSpeed);
-        progressBarCircularIndeterminate = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndeterminate);
-        //calorie = (TextView) findViewById(R.id.calorie);
+         time = (Chronometer) findViewById(R.id.time);
+         progressBarCircularIndeterminate = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndeterminate);
+
 
         time.setText("00:00:00");
         time.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -307,15 +304,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 return true;
             }
         });
-            //<- 119 -->
-        phonecall.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View view) {
-                showCallDialog();
-            }
-        });
    }
     //주행 시작
-    private void onFabClick(View v) {
+    @OnClick(R.id.fab) void onFabClick(View v) {
         if (!data.isRunning()) {
             fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_pause));
             data.setRunning(true);
@@ -329,13 +320,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             if (sharedPreferences.getBoolean("route",false)&&isPause) {
                 try {
                     AJMapp ajMapp = (AJMapp) getApplicationContext();
-                    ajMapp.setStartAddr(getGeocode(lat, lng));
-                    ajMapp.setStartTime(getCurrentSec());
+                    ajMapp.setStartAddr(Utils.INSTANCE.getGeocode(getApplicationContext(), lat, lng));
+                    ajMapp.setStartTime(Utils.INSTANCE.getCurrentSec());
                     //시작 시간, 위치 저장
                     if (ajMapp.getStartAddr()!=null&&ajMapp.getStartTime()!=null){
                         TrackDBhelper trackDBhelper = new TrackDBhelper(this);
                         trackDBhelper.open();
-                        trackDBhelper.trackDBlocationStart(getCurrentSec(), lat, lng);
+                        trackDBhelper.trackDBlocationStart(Utils.INSTANCE.getCurrentSec(), lat, lng);
                         trackDBhelper.close();
                     }else{
                         Toast.makeText(getApplicationContext(), getString(R.string.error_route) ,Toast.LENGTH_SHORT).show();
@@ -356,17 +347,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
     //주행 종료
-    private void onRefreshClick(View v) {
+    @OnClick(R.id.fab) void onRefreshClick(View v) {
         if (sharedPreferences.getBoolean("route", false)){
             try {
                 TrackDBhelper trackDBhelper = new TrackDBhelper(this);
                 trackDBhelper.open();
                 AJMapp ajMapp = (AJMapp) getApplicationContext();
-                if(ajMapp.getStartAddr()!=null&&getGeocode(lat, lng)!=null) {
+                if(ajMapp.getStartAddr()!=null&& Utils.INSTANCE.getGeocode(getApplicationContext(),lat, lng)!=null) {
                     //출발주소, 도착주소, 출발시간, 도착시간, 평균속도, 칼로리, 거리, 온도, 습도 저장
-                    trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), getGeocode(lat, lng), ajMapp.getStartTime(), getCurrentSec(),
+                    trackDBhelper.trackDBallFetch(ajMapp.getStartAddr(), Utils.INSTANCE.getGeocode(getApplicationContext(), lat, lng), ajMapp.getStartTime(), Utils.INSTANCE.getCurrentSec(),
                             averageSpeed.getText().toString(), data.returnCalorie(), data.returnDistance(), weather5.getText().toString(), weather2.getText().toString());
-                    trackDBhelper.trackDBlocationStop(getCurrentSec(), lat, lng); //종료 시간, 위치 저장
+                    trackDBhelper.trackDBlocationStop(Utils.INSTANCE.getCurrentSec(), lat, lng); //종료 시간, 위치 저장
                     trackDBhelper.close();
                 }
                 else{
@@ -384,15 +375,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         Intent intent = new Intent(getApplicationContext(), GPSService.class);
         stopService(intent);
     }
-
+        //<- 119 -->
+    @OnClick(R.id.phonecall) void onPhoneClick(View v){
+        showCallDialog();
+    }
     @Override
     protected void onResume() {
         super.onResume();
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showGpsDisabledDialog();
         }
-        String weather_city = "seoul";
-        loadWeather(weather_city);
+        loadWeather("seoul");
         firstfix = true;
         if (!data.isRunning()) {
             Gson gson = new Gson();
@@ -403,44 +396,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             data = new Data(onGpsServiceUpdate);
         } else {
             data.setOnGpsServiceUpdate(onGpsServiceUpdate);
-        }
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mLocationManager.getAllProviders().indexOf(LocationManager.GPS_PROVIDER) >= 0
-                && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-           String gpsValue = sharedPreferences.getString("gps_level", "default");
-                switch (gpsValue) {
-                    case "default":
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-                        break;
-                    case "high":
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, this);
-                        break;
-                    case "low":
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 7000, 0, this);
-                        break;
-                    case "middle":
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, this);
-                        break;
-                }
-        }else if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-                && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED){
-            if (mLocationManager!=null){
-                mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            }
-           String gpsValue = sharedPreferences.getString("gps_level", "default");
-                switch (gpsValue) {
-                    case "default":
-                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                        break;
-                    case "high":
-                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, this);
-                        break;
-                    case "low":
-                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 7000, 0, this);
-                        break;
-                    case "middle":
-                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, this);
-                        break;
-                }
         }
     }
 
@@ -576,8 +531,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             Toast.makeText(getApplicationContext(),getString(R.string.error_default), Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onLocationChanged(final Location location){
+
         lat = location.getLatitude();
         lng = location.getLongitude();
         if (location.hasAccuracy()) {
@@ -850,30 +807,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
-    private String getCurrentSec(){
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        String getTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(date);
-        return getTime;
-    }
-
-    private String getGeocode(double lat, double lng) {
-        String address = null;
-        final Geocoder geocoder = new Geocoder(this, Locale.KOREA);
-        List<Address>addr = null;
-        try{
-                addr = geocoder.getFromLocation(lat, lng, 1);
-                if (addr!=null&&addr.size()>0){
-                    address = addr.get(0).getThoroughfare().toString();
-                    Log.w("Main :", address);
-                }
-        }catch (IOException e){
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
-        }
-        return address;
-    }
-
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -917,6 +850,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             ttsUnder20(s);
         }
     }
+
     @SuppressWarnings("deprecation")
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();

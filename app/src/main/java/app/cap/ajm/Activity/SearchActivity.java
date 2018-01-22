@@ -45,76 +45,79 @@ import app.cap.ajm.Model.Item;
 import app.cap.ajm.API.OnFinishSearchListener;
 import app.cap.ajm.API.Searcher;
 import app.cap.ajm.R;
+import app.cap.ajm.Service.GPSService;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SearchActivity extends FragmentActivity implements
 		MapView.MapViewEventListener,
 		MapView.POIItemEventListener{
-    private static final String LOG_TAG = "SearchDemoActivity";
-	private FloatingActionButton mypositon;
+
     private MapView mMapView;
-    private EditText mEditTextQuery;
-    private Button mButtonSearch;
+    @BindView(R.id.editTextQuery) EditText mEditTextQuery;
+    @BindView(R.id.btnSearch) Button mButtonSearch;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
     private static final String DAUM_MAPS_ANDROID_APP_API_KEY = "97171e5d82d63c9d6353e66c403745f9";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
+		ButterKnife.bind(this);
 
-//		mMapView = new MapView(this);
-        mMapView = (MapView)findViewById(R.id.map_view);
-//		ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-//		mapViewContainer.addView(mMapView);
+        mMapView = findViewById(R.id.map_views);
+
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
         mMapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
-        mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
-        mButtonSearch = (Button) findViewById(R.id.buttonSearch); // 검색버튼
-		mypositon = (FloatingActionButton)findViewById(R.id.myserachposition);
-
-        mButtonSearch.setOnClickListener(new OnClickListener() { // 검색버튼 클릭 이벤트 리스너
-			@Override
-			public void onClick(View v) {
-				try {
-					String query = mEditTextQuery.getText().toString();
-					if (query == null || query.length() == 0) {
-						showToast("검색어를 입력하세요.");
-						return;
-					}
-					hideSoftKeyboard(); // 키보드 숨김
-					GeoCoordinate geoCoordinate = mMapView.getMapCenterPoint().getMapPointGeoCoord();
-					double latitude = geoCoordinate.latitude; // 위도
-					double longitude = geoCoordinate.longitude; // 경도
-					int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
-					int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
-					Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
-					Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
-					searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, DAUM_MAPS_ANDROID_APP_API_KEY, new OnFinishSearchListener() {
-						@Override
-						public void onSuccess(List<Item> itemList) {
-							mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제
-							showResult(itemList); // 검색 결과 보여줌
-						}
-
-						@Override
-						public void onFail(){
-							Log.w("오류: ","오류");
-							showToast(getString(R.string.not_connected));
-						}
-					});
-				}catch (Exception e){
-					e.printStackTrace();
-				}
-			}
-		});
-		mypositon.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
-			}
-		});
     }
 
+//    @OnClick(R.id.myserachposition) void onMyPosition(){
+//		MapPointBounds mapPointBounds = new MapPointBounds();
+//		GPSService gps = new GPSService();
+//		if(gps.getLastlocation()!=null){
+//			MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(gps.getLastlocation().getLatitude(), gps.getLastlocation().getLongitude());
+//			mapPointBounds.add(mapPoint);;
+//			mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds));
+//			mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+//		}else{
+//			Toast.makeText(getApplicationContext(), getString(R.string.location_find_error), Toast.LENGTH_SHORT).show();
+//			mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+//		}
+//	}
+
+	@OnClick(R.id.btnSearch) void onClickSearch(){
+		try {
+			String query = mEditTextQuery.getText().toString();
+			if (query == null || query.length() == 0) {
+				showToast("검색어를 입력하세요.");
+				return;
+			}
+			hideSoftKeyboard(); // 키보드 숨김
+			GeoCoordinate geoCoordinate = mMapView.getMapCenterPoint().getMapPointGeoCoord();
+			double latitude = geoCoordinate.latitude; // 위도
+			double longitude = geoCoordinate.longitude; // 경도
+			int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
+			int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
+			Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
+			Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
+			searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, DAUM_MAPS_ANDROID_APP_API_KEY, new OnFinishSearchListener() {
+				@Override
+				public void onSuccess(List<Item> itemList) {
+					mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제
+					showResult(itemList); // 검색 결과 보여줌
+				}
+
+				@Override
+				public void onFail(){
+					Log.w("오류: ","오류");
+					showToast(getString(R.string.not_connected));
+				}
+			});
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 
     class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter {
     	
@@ -154,10 +157,12 @@ public class SearchActivity extends FragmentActivity implements
 		ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 		mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
 	}
+
     @Override
 	protected void onPause(){
 		super.onPause();
 	}
+
     @Override
 	protected void onDestroy(){
 		super.onDestroy();
@@ -225,7 +230,7 @@ public class SearchActivity extends FragmentActivity implements
 	@Override
 	public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
 		Item item = mTagItemMap.get(mapPOIItem.getTag());
-	NavigationDialog(item.newAddress, item.latitude, item.longitude);
+		NavigationDialog(item.newAddress, item.latitude, item.longitude);
 	}
 	
 	@Override
@@ -273,6 +278,7 @@ public class SearchActivity extends FragmentActivity implements
     @Override
     public void onMapViewZoomLevelChanged(MapView mapView, int zoomLevel) {
     }
+
 	public void NavigationDialog(final String des, final Double lat, final Double lon){
 		android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(SearchActivity.this);
 		alertDialog.setTitle(getString(R.string.direction));

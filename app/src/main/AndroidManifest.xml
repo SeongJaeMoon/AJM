@@ -37,6 +37,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.REBOOT" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -93,25 +94,23 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD8w-qBv7GVXivpX-ATUq8KrN8UzSt7stc"/>
+            android:value="AIzaSyD8w-qBv7GVXivpX-ATUq8KrN8UzSt7stc" />
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
         <activity
             android:name=".Activity.PermissionActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.TrackActivity"
             android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.MapActivity"
             android:parentActivityName=".Activity.TrackActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activity.MapPageAcitivity"></activity>
     </application>
 
 </manifest>

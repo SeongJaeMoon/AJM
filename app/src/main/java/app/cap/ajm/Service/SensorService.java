@@ -122,59 +122,60 @@ public class SensorService extends Service implements SensorEventListener, TextT
     @Override
     public int onStartCommand(Intent intent, int flag, int startId) {
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//
+//        locationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                latitude = location.getLatitude();
+//                longitude = location.getLongitude();
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//
+//            }
+//        };
+//
+////        //위치 정보를 획득하기 위해 Location Listener와 Location Manager 등록
+////        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+////        if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+////            && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+////        {
+////            handler.post(new Runnable() {
+////                @Override
+////                public void run() {
+////                    Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
+////                }
+////            });
+////        }
+////        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+////
+////        String locationProvider = LocationManager.NETWORK_PROVIDER;
+////
+//        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+//        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+//        {
+//            handler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//////        }
+////        latitude = locationManager.getLastKnownLocation(locationProvider).getLatitude();
+////        longitude = locationManager.getLastKnownLocation(locationProvider).getLongitude();
 
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        //위치 정보를 획득하기 위해 Location Listener와 Location Manager 등록
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-
-        String locationProvider = LocationManager.NETWORK_PROVIDER;
-
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.permission_error_app_location), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        latitude = locationManager.getLastKnownLocation(locationProvider).getLatitude();
-        longitude = locationManager.getLastKnownLocation(locationProvider).getLongitude();
         onTaskRemoved(intent);
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -390,39 +391,40 @@ public class SensorService extends Service implements SensorEventListener, TextT
             //**********위험 감지**********
             double SMV = Math.sqrt(accel[0] * accel[0] + accel[1] * accel[1] + accel[2] * accel[2]);
 
-            if (SMV > 35) {
-                if (sentRecently == 'N') {
-                    Log.d("Accelerometer vector:", "" + SMV);
-                    degreeFloat = (float) (fusedOrientation[1] * 180 / Math.PI);
-                    degreeFloat2 = (float) (fusedOrientation[2] * 180 / Math.PI);
-                    if (degreeFloat < 0)
-                        degreeFloat = degreeFloat * -1;
-                    if (degreeFloat2 < 0)
-                        degreeFloat2 = degreeFloat2 * -1;
-                    if (degreeFloat > 30 || degreeFloat2 > 30) {
-                        Log.d("Degree1:", "" + degreeFloat);
-                        Log.d("Degree2:", "" + degreeFloat2);
-                        speak(getString(R.string.fall_detect));
-                        Intent intent = new Intent(SensorService.this, DialogActivity.class);
-                        intent.putExtra("lastlat",latitude);
-                        intent.putExtra("lastlon",longitude);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+            if (SMV > 35 ) {
+                GPSService gpsService = new GPSService();
+                if (gpsService.getLastlocation() != null) {
+                    if (sentRecently == 'N') {
+                        Log.d("Accelerometer vector:", "" + SMV);
+                        degreeFloat = (float) (fusedOrientation[1] * 180 / Math.PI);
+                        degreeFloat2 = (float) (fusedOrientation[2] * 180 / Math.PI);
+                        if (degreeFloat < 0)
+                            degreeFloat = degreeFloat * -1;
+                        if (degreeFloat2 < 0)
+                            degreeFloat2 = degreeFloat2 * -1;
+                        if (degreeFloat > 30 || degreeFloat2 > 30) {
+                            Log.d("Degree1:", "" + degreeFloat);
+                            Log.d("Degree2:", "" + degreeFloat2);
+                            speak(getString(R.string.fall_detect));
+                            Intent intent = new Intent(SensorService.this, DialogActivity.class);
+                            intent.putExtra("lastlat", gpsService.getLastlocation().getLatitude());
+                            intent.putExtra("lastlon", gpsService.getLastlocation().getLongitude());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.be_careful), Toast.LENGTH_LONG).show();
+                                    speak(getString(R.string.be_careful_tts));
+                                    Log.d("Send!", "센서 값 변화!!!!! " + sendCount);
+                                }
+                            });
+                            sendCount++;
+                        }
+                        sentRecently = 'Y';
+                        mPeriodicEventHandler.postDelayed(doPeriodicTask, PERIODIC_EVENT_TIMEOUT);
                     }
-                    else
-                        {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(SensorService.this.getApplicationContext(), getString(R.string.be_careful), Toast.LENGTH_LONG).show();
-                                speak(getString(R.string.be_careful_tts));
-                                Log.d("Send!", "센서 값 변화!!!!! " + sendCount);
-                            }
-                        });
-                        sendCount++;
-                    }
-                    sentRecently='Y';
-                    mPeriodicEventHandler.postDelayed(doPeriodicTask, PERIODIC_EVENT_TIMEOUT);
                 }
             }
             gyroMatrix = getRotationMatrixFromOrientation(fusedOrientation);
