@@ -2,13 +2,13 @@ package app.cap.ajm.Model;
 
 public class Search {
 
-    private String search;
+    private String query;
 
-    public Search(String search){
-        this.search = search;
+    public Search(String query){
+        this.query = query;
     }
 
-    public String getSearch(){
-        return search;
+    public String getquery(){
+        return query;
     }
 }

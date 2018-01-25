@@ -25,8 +25,7 @@ public enum Utils {
             List<Address> addr = null;
                 addr = geocoder.getFromLocation(lat, lng, 1);
                 if (addr!=null&&addr.size()>0){
-                    address = addr.get(0).getThoroughfare().toString();
-                    Log.w("Main :", address);
+                    address = addr.get(0).getThoroughfare();
                 }
             return address;
         }

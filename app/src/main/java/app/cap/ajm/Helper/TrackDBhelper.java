@@ -13,7 +13,7 @@ import app.cap.ajm.Model.TrackPoint;
 
 public class TrackDBhelper{
 
-     static final String TAG ="TrackDBhelper";
+     static final String TAG = TrackDBhelper.class.getSimpleName();
 
     public static final String KEY_ROWID = "_id";
     private static final String KEY_START_ADDR = "startAddr";

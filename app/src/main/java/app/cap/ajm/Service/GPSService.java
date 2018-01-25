@@ -32,8 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import app.cap.ajm.Model.Data;
@@ -61,6 +59,7 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     private Query query;
     private TextToSpeech tts;
     private Handler handler;
+
     @Override
     public void onCreate() {
         handler = new Handler();

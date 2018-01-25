@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import app.cap.ajm.Helper.SMSDBhelper;
 import app.cap.ajm.R;
 import app.cap.ajm.Service.SensorService;
+import butterknife.ButterKnife;
 
 public class AccActivity extends AppCompatActivity{
     private Button start,stop,addContacts,removes;
@@ -37,6 +38,7 @@ public class AccActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acc);
+        ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -46,6 +48,8 @@ public class AccActivity extends AppCompatActivity{
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             }
         }
+
+
         start = (Button) findViewById(R.id.start);
         stop = (Button) findViewById(R.id.stop);
         lv = (ListView) findViewById(R.id.contacts);
@@ -169,10 +173,10 @@ public class AccActivity extends AppCompatActivity{
         return true;
    }
 
-    public long addNewContact(String contact){
+    public void addNewContact(String contact){
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_CONTACT,contact);
-        return sql.insert(TABLE_NAME,null,cv);
+        sql.insert(TABLE_NAME,null,cv);
     }
 
     public void removeContact(String contact){
