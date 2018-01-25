@@ -1,4 +1,4 @@
-package app.cap.ajm.Helper;
+package app.cap.ajm.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;

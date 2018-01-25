@@ -38,12 +38,9 @@ import net.daum.mf.map.api.MapView;
 
 import com.kakao.kakaonavi.options.RpOption;
 import com.kakao.kakaonavi.options.VehicleType;
-import com.melnykov.fab.FloatingActionButton;
-import java.io.IOException;
 import java.util.List;
 import app.cap.ajm.R;
 import app.cap.ajm.Service.GPSService;
-import app.cap.ajm.Util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -382,8 +379,4 @@ public class RouteActivity extends FragmentActivity implements
     @Override
     public void onCurrentLocationUpdateCancelled(MapView mapView) {
     }
-
-    private void initUI(){
-
-    }
-}
+ }
