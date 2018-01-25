@@ -62,7 +62,8 @@ public class RouteActivity extends FragmentActivity implements
     //@BindView(R.id.mypositions) FloatingActionButton myposition;
     private MapView mMapView;
     private boolean mapsSelection = false;
-       private MapPOIItem mapPOIItem;
+    private MapPOIItem mapPOIItem;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

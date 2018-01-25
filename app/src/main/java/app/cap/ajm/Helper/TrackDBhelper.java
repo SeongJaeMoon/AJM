@@ -112,6 +112,7 @@ public class TrackDBhelper{
         contentValues.put(KEY_COORDINATE_Y, lng);
         mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
+
     //종료할 때 위치, 시간 저장
     public void trackDBlocationStop(String endTime, double lat, double lng){
         ContentValues contentValues = new ContentValues();
@@ -120,6 +121,7 @@ public class TrackDBhelper{
         contentValues.put(KEY_COORDINATE_Y, lng);
         mDb.insert(DATABASE_TABLE_MAP, null, contentValues);
     }
+
     //달리는 중일 때 시간, 위치 저장
     public void trackDBlocationRunning(String time, double lat, double lng){
         ContentValues contentValues = new ContentValues();
@@ -154,9 +156,9 @@ public class TrackDBhelper{
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
         return mDb.rawQuery( "select * from "+ DATABASE_TABLE +" order by "+KEY_ROWID + " desc", null);
-}
+    }
 
-//_id로 값 삭제하기
+    //_id로 값 삭제하기
     public void removeList(int id){
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
