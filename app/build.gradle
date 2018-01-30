@@ -80,6 +80,7 @@ android {
         compile 'com.firebase:geofire-android:2.1.1'
         compile 'org.parceler:parceler-api:1.1.1'
         compile 'devlight.io:navigationtabbar:1.2.5'
+
         testCompile 'junit:junit:4.12'
     }
 }

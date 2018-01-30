@@ -157,8 +157,7 @@ public class AccActivity extends AppCompatActivity{
         try{
             Integer.parseInt(s);
             return true;
-        }catch (NumberFormatException e)
-        {
+        }catch (NumberFormatException e) {
             return false;
         }
     }

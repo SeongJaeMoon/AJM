@@ -47,8 +47,6 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     private SharedPreferences sharedPreferences;
     private Location lastlocation = new Location("last");
     private Data data;
-    private double currentLon = 0;
-    private double currentLat = 0;
     private double lastLon = 0;
     private double lastLat = 0;
     PendingIntent contentIntent;
@@ -62,6 +60,7 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
 
     @Override
     public void onCreate() {
+
         handler = new Handler();
         ref = FirebaseDatabase.getInstance().getReference();
         geoFire = new GeoFire(ref);
@@ -117,8 +116,8 @@ public class GPSService extends Service implements LocationListener, TextToSpeec
     public void onLocationChanged(Location location) {
         data = MainActivity.getData();
         if (data.isRunning()) {
-            currentLat = location.getLatitude();
-            currentLon = location.getLongitude();
+           double currentLat = location.getLatitude();
+           double currentLon = location.getLongitude();
 
             if (data.isFirstTime()) {
                 lastLat = currentLat;

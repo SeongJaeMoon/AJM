@@ -76,6 +76,17 @@
         fab:fab_colorRipple="@color/white"
         fab:fab_type="normal" />
 
+       <com.melnykov.fab.FloatingActionButton
+           android:id="@+id/changview"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="start|end"
+           android:src="@drawable/ic_compare_arrows_white_24dp"
+           fab:fab_colorNormal="@color/red"
+           fab:fab_colorPressed="@color/black"
+           fab:fab_colorRipple="@color/white"
+           fab:fab_type="normal" />
+
     </FrameLayout>
 
     <!--<android.support.v4.view.ViewPager

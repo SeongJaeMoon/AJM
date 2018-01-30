@@ -30,9 +30,12 @@ import net.daum.mf.map.api.MapView;
 
 import com.kakao.kakaonavi.options.RpOption;
 import com.kakao.kakaonavi.options.VehicleType;
+
+import java.io.IOException;
 import java.util.List;
 import app.cap.ajm.R;
 import app.cap.ajm.Service.GPSService;
+import app.cap.ajm.Util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +48,8 @@ import com.kakao.kakaonavi.KakaoNaviParams;
 import com.kakao.kakaonavi.KakaoNaviService;
 import com.kakao.kakaonavi.NaviOptions;
 import com.kakao.kakaonavi.options.CoordType;
+import com.melnykov.fab.FloatingActionButton;
+
 
 public class RouteActivity extends FragmentActivity implements
         MapView.MapViewEventListener,
@@ -54,15 +59,17 @@ public class RouteActivity extends FragmentActivity implements
     private static final String LOG_TAG = RouteActivity.class.getSimpleName();
     private static final int PLACE_PIKER_REQUEST = 1;
     private static final int PLACE_PIKER_REQUEST_EP = 2;
+    private MapView mMapView;
+    private boolean mapsSelection = false;
+    private MapPOIItem mapPOIItem;
+
     @BindView(R.id.etOrigin) EditText spEditext;
     @BindView(R.id.etDestination) EditText epEditext;
     @BindView(R.id.btnFindPath) Button findbutton;
     @BindView(R.id.myFindPath) Button findStartLocation;
     @BindView(R.id.myMapPath) Button mSearchbymap;
-    //@BindView(R.id.mypositions) FloatingActionButton myposition;
-    private MapView mMapView;
-    private boolean mapsSelection = false;
-    private MapPOIItem mapPOIItem;
+    @BindView(R.id.myposition) FloatingActionButton myposition;
+    @BindView(R.id.changview) FloatingActionButton changeView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -86,7 +93,8 @@ public class RouteActivity extends FragmentActivity implements
         // 다음지도 불러오기
         mMapView = findViewById(R.id.map_view);
         mMapView.setCurrentLocationEventListener(this);
-        mMapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
+        // 고해상도 지도 타일 사용
+        mMapView.setHDMapTileEnabled(true);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
 
@@ -106,7 +114,6 @@ public class RouteActivity extends FragmentActivity implements
             try{
                 list = geocoder.getFromLocationName(sped1, 10);
                 list1 = geocoder.getFromLocationName(eped1, 10);
-
             if (list != null && list1 != null) {
                 if (list.size() == 0 || list1.size() == 0) {
                     Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
@@ -225,6 +232,11 @@ public class RouteActivity extends FragmentActivity implements
         return false;
     }
 
+    @OnClick(R.id.changview) void onClickChange(){
+        startActivity(new Intent(RouteActivity.this, SearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        finish();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PIKER_REQUEST) {
@@ -275,6 +287,7 @@ public class RouteActivity extends FragmentActivity implements
                 mapView.removePOIItem(mapPOIItem);
             } else {
                 MapPoint SELECT_POINT = MapPoint.mapPointWithGeoCoord(mapPoint.getMapPointGeoCoord().latitude, mapPoint.getMapPointGeoCoord().longitude);
+                MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
                 mapPOIItem = new MapPOIItem();
                 mapPOIItem.setItemName(getString(R.string.settings));
                 mapPOIItem.setTag(1);
@@ -286,6 +299,14 @@ public class RouteActivity extends FragmentActivity implements
                 mapView.addPOIItem(mapPOIItem);
                 mapView.setMapCenterPoint(SELECT_POINT, true);
                 mapView.setZoomLevel(3, true);
+                try {
+                    String address = Utils.INSTANCE.getGeocode(getApplicationContext(), mapPointGeo.latitude, mapPointGeo.longitude);
+                    epEditext.setText(address);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_SHORT).show();
+                } finally {
+                    mapsSelection = false;
+                }
             }
         }
     }
@@ -300,7 +321,7 @@ public class RouteActivity extends FragmentActivity implements
     @Override
     public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
 //        Geocoder geocoder = new Geocoder(this);
-//    if (mapsSelection){
+//        if (mapsSelection){
 //        try {
 //            MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
 //            List<Address> list = null;
@@ -317,7 +338,7 @@ public class RouteActivity extends FragmentActivity implements
 //        catch(Exception e){
 //            e.printStackTrace();
 //            Toast.makeText(getApplicationContext(), e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
-//        }
+//            }
 //        }
     }
     @Override

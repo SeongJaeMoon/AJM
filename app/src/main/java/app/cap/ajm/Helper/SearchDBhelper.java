@@ -52,7 +52,7 @@ public class SearchDBhelper {
     public void close() {
         mDbHelper.close();
     }
-    
+
     public Cursor getAllSearch(){
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getReadableDatabase();
