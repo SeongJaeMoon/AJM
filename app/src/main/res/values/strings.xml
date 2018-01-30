@@ -130,8 +130,8 @@
     <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>
     <string name="bike">자전거</string>
     <string name="introduce">소개</string>
-    <string name="wrong_data">저장 된 기록이 잘못 되었습니다.</string>
-    <string name="wrong_map">지도정보를 불러오는데 문제가 있습니다. \n다시 시도해주세요.</string>
+    <string name="wrong_data">저장된 기록이 잘못 되었습니다.</string>
+    <string name="wrong_map">지도 정보를 불러오는데 문제가 있습니다. \n다시 시도해주세요.</string>
     <string name="left_alert">주위 구간에서 벗어납니다.</string>
     <string name="moved_alert">주위 구간에 진입하였습니다.</string>
     <string name="call_emergency">119 전화 걸기</string>

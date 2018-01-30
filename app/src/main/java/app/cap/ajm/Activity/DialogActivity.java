@@ -37,8 +37,9 @@ public class DialogActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
-        SMSDBhelper dpHelper = new SMSDBhelper(this);
-        sqls = dpHelper.getReadableDatabase();
+        final SMSDBhelper smsdBhelper = new SMSDBhelper(this);
+        smsdBhelper.open();
+
         handler = new Handler();
         final Dialog dialog = new Dialog(context);
 
@@ -63,7 +64,8 @@ public class DialogActivity extends AppCompatActivity{
                 double latitude = intent.getExtras().getDouble("lastlat");
                 double longitude = intent.getExtras().getDouble("lastlon");
                 List<String> itemIds = new ArrayList<>();
-                Cursor cursor = getAllContacts();
+                Cursor cursor = smsdBhelper.getAllContacts();
+                smsdBhelper.close();
                 cursor.moveToFirst();
                 if (cursor.moveToFirst()) {
                     do {
@@ -94,8 +96,5 @@ public class DialogActivity extends AppCompatActivity{
                 finish();
             }
         }, 7000);
-    }
-    public Cursor getAllContacts(){
-        return sqls.query(TABLE_NAME,null,null,null,null,null,COLUMN_CONTACT);
     }
 }

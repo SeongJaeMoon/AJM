@@ -4,7 +4,6 @@ package app.cap.ajm.Util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +24,7 @@ public enum Utils {
             List<Address> addr = null;
                 addr = geocoder.getFromLocation(lat, lng, 1);
                 if (addr!=null&&addr.size()>0){
-                    address = addr.get(0).getThoroughfare();
+                    address = addr.get(0).getAddressLine(0);
                 }
             return address;
         }

@@ -13,7 +13,7 @@ public class SearchDBhelper {
     private SQLiteDatabase mDb;
     private final Context mCtx;
     private static final int DATABASE_VERSION = 1;
-    public static final String KEY_ROWID = "_id";
+    private static final String KEY_ROWID = "_id";
     private static final String DATABASE_TABLE = "searcher";
     private static final String DATABASE_NAME = "search";
     public static final String KEY_SEARCH = "query";

@@ -1,6 +1,8 @@
 package app.cap.ajm.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -12,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -22,6 +26,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
+import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -32,7 +37,15 @@ import com.kakao.kakaonavi.options.RpOption;
 import com.kakao.kakaonavi.options.VehicleType;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+
+import app.cap.ajm.API.OnFinishSearchListener;
+import app.cap.ajm.API.Searcher;
+import app.cap.ajm.Model.Item;
 import app.cap.ajm.R;
 import app.cap.ajm.Service.GPSService;
 import app.cap.ajm.Util.Utils;
@@ -60,6 +73,7 @@ public class RouteActivity extends FragmentActivity implements
     private static final int PLACE_PIKER_REQUEST = 1;
     private static final int PLACE_PIKER_REQUEST_EP = 2;
     private MapView mMapView;
+    //지도에서 도착지 선택
     private boolean mapsSelection = false;
     private MapPOIItem mapPOIItem;
 
@@ -70,6 +84,7 @@ public class RouteActivity extends FragmentActivity implements
     @BindView(R.id.myMapPath) Button mSearchbymap;
     @BindView(R.id.myposition) FloatingActionButton myposition;
     @BindView(R.id.changview) FloatingActionButton changeView;
+    private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -97,7 +112,17 @@ public class RouteActivity extends FragmentActivity implements
         mMapView.setHDMapTileEnabled(true);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
+        mMapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
 
+        Intent intent = getIntent();
+        try {
+            if (intent.getExtras().getString("search") != null) {
+                String search = intent.getExtras().getString("search");
+                getSearch(search);
+            }
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), getString(R.string.error_default), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnFindPath) void onClickFindRoute() {
@@ -361,7 +386,8 @@ public class RouteActivity extends FragmentActivity implements
     }
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-
+        Item item = mTagItemMap.get(mapPOIItem.getTag());
+        NavigationDialog(item.newAddress, item.latitude, item.longitude);
     }
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
@@ -389,5 +415,155 @@ public class RouteActivity extends FragmentActivity implements
     }
     @Override
     public void onCurrentLocationUpdateCancelled(MapView mapView) {
+    }
+
+    public void getSearch(String query) throws NullPointerException{
+        try{
+        MapPoint.GeoCoordinate geoCoordinate = mMapView.getMapCenterPoint().getMapPointGeoCoord();
+        double latitude = geoCoordinate.latitude;
+        double longitude = geoCoordinate.longitude; // 경도
+        int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
+        int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
+
+        Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
+        Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
+        searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, "97171e5d82d63c9d6353e66c403745f9", new OnFinishSearchListener() {
+            @Override
+            public void onSuccess(List<Item> itemList) {
+                mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제
+                showResult(itemList); // 검색 결과 보여줌
+            }
+
+            @Override
+            public void onFail(){
+                Log.w("오류: ","오류");
+                showToast(getString(R.string.not_connected));
+            }
+        });
+    }catch (Exception e){
+        e.printStackTrace();
+      }
+    }
+
+    private void showToast(final String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RouteActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void showResult(List<Item> itemList) 	{
+        MapPointBounds mapPointBounds = new MapPointBounds();
+
+        for (int i = 0; i < itemList.size(); i++) {
+            Item item = itemList.get(i);
+
+            MapPOIItem poiItem = new MapPOIItem();
+            poiItem.setItemName(item.title+", "+item.distance);
+            poiItem.setTag(i);
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude);
+            poiItem.setMapPoint(mapPoint);
+            mapPointBounds.add(mapPoint);
+            poiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+            poiItem.setCustomImageResourceId(R.drawable.map_pin_blue);
+            poiItem.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
+            poiItem.setCustomSelectedImageResourceId(R.drawable.map_pin_red);
+            poiItem.setCustomImageAutoscale(false);
+            poiItem.setCustomImageAnchor(0.5f, 1.0f);
+            mMapView.addPOIItem(poiItem);
+            mTagItemMap.put(poiItem.getTag(), item);
+        }
+        mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds));
+        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+        MapPOIItem[] poiItems = mMapView.getPOIItems();
+        if (poiItems.length > 0) {
+            mMapView.selectPOIItem(poiItems[0], false);
+        }
+    }
+
+    private void NavigationDialog(final String des, final Double lat, final Double lon){
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(RouteActivity.this);
+        alertDialog.setTitle(getString(R.string.direction));
+        alertDialog.setMessage(getString(R.string.set_map_loc_ok));
+        alertDialog.setPositiveButton(getString(R.string.start), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                try {
+                    if(KakaoNaviService.isKakaoNaviInstalled(getApplicationContext())) {
+                        com.kakao.kakaonavi.Location kakao = Destination.newBuilder(des, lon, lat).build();
+                        KakaoNaviParams params = KakaoNaviParams.newBuilder(kakao)
+                                .setNaviOptions(NaviOptions.newBuilder()
+                                        .setCoordType(CoordType.WGS84)
+                                        .setRpOption(RpOption.NO_AUTO)
+                                        .setStartAngle(200)
+                                        .setVehicleType(VehicleType.TWO_WHEEL).build()).build();
+                        KakaoNaviService.navigate(RouteActivity.this, params);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.locnall.KimGiSa"));
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), getString(R.string.navi_install),Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),e.toString()+getString(R.string.error_default),Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        alertDialog.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+    class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter {
+
+        private final View mCalloutBalloon;
+
+        public CustomCalloutBalloonAdapter() {
+            mCalloutBalloon = getLayoutInflater().inflate(R.layout.custom_callout_balloon, null);
+        }
+
+        @Override
+        public View getCalloutBalloon(MapPOIItem poiItem) {
+            if (poiItem == null) return null;
+            Item item = mTagItemMap.get(poiItem.getTag());
+            if (item == null) return null;
+            ImageView imageViewBadge = (ImageView) mCalloutBalloon.findViewById(R.id.badge);
+            TextView textViewTitle = (TextView) mCalloutBalloon.findViewById(R.id.title);
+            textViewTitle.setText(item.title);
+            TextView textViewDesc = (TextView) mCalloutBalloon.findViewById(R.id.desc);
+            textViewDesc.setText(item.address);
+            imageViewBadge.setImageDrawable(createDrawableFromUrl(item.imageUrl));
+            return mCalloutBalloon;
+        }
+
+        @Override
+        public View getPressedCalloutBalloon(MapPOIItem poiItem) {
+            return null;
+        }
+    }
+    private Drawable createDrawableFromUrl(String url) {
+        try {
+            InputStream is = (InputStream) this.fetch(url);
+            Drawable d = Drawable.createFromStream(is, "src");
+            return d;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Object fetch(String address) throws MalformedURLException,IOException {
+        URL url = new URL(address);
+        Object content = url.getContent();
+        return content;
     }
  }

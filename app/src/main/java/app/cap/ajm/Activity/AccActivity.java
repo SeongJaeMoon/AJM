@@ -33,7 +33,6 @@ public class AccActivity extends AppCompatActivity{
     @BindView(R.id.editText) EditText edit;
     private List<String> list = new ArrayList<>();
     private SMSDBhelper smsdBhelper;
-    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class AccActivity extends AppCompatActivity{
         setContentView(R.layout.activity_acc);
 
         ButterKnife.bind(this);
-
 
         smsdBhelper = new SMSDBhelper(this);
         smsdBhelper.open();
@@ -54,7 +52,7 @@ public class AccActivity extends AppCompatActivity{
                 list.add(data);
             } while (cursor.moveToNext());
         }
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.simplerow);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.simplerow);
         arrayAdapter.addAll(list);
         lv.setAdapter(arrayAdapter);
 
