@@ -61,39 +61,43 @@ public class DialogActivity extends AppCompatActivity{
             @Override
             public void run() {
                 Intent intent = getIntent();
-                double latitude = intent.getExtras().getDouble("lastlat");
-                double longitude = intent.getExtras().getDouble("lastlon");
-                List<String> itemIds = new ArrayList<>();
-                Cursor cursor = smsdBhelper.getAllContacts();
-                smsdBhelper.close();
-                cursor.moveToFirst();
-                if (cursor.moveToFirst()) {
-                    do {
-                        String data = cursor.getString(cursor.getColumnIndex("contact"));
-                        itemIds.add(data);
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-                for(String s : itemIds){
-                    phoneNum = s;
-                    if (!phoneNum.equals(prevNumber) && phoneNum != null && ContextCompat.checkSelfPermission(getApplicationContext(),
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED &&
-                            ContextCompat.checkSelfPermission(getApplicationContext(),
-                                    android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_DENIED) {
-                        textMsg = getString(R.string.accident) + "http://maps.google.com/?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude);
-                        try {
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(phoneNum, null, textMsg, null, null);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("Message", textMsg + "<" + phoneNum + ">");
-                        prevNumber = phoneNum;
+                try {
+                    double latitude = intent.getExtras().getDouble("lastlat");
+                    double longitude = intent.getExtras().getDouble("lastlon");
+                    List<String> itemIds = new ArrayList<>();
+                    Cursor cursor = smsdBhelper.getAllContacts();
+                    smsdBhelper.close();
+                    cursor.moveToFirst();
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String data = cursor.getString(cursor.getColumnIndex("contact"));
+                            itemIds.add(data);
+                        } while (cursor.moveToNext());
                     }
+                    cursor.close();
+                    for (String s : itemIds) {
+                        phoneNum = s;
+                        if (!phoneNum.equals(prevNumber) && phoneNum != null && ContextCompat.checkSelfPermission(getApplicationContext(),
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED &&
+                                ContextCompat.checkSelfPermission(getApplicationContext(),
+                                        android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_DENIED) {
+                            textMsg = getString(R.string.accident) + "http://maps.google.com/?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude);
+                            try {
+                                SmsManager sms = SmsManager.getDefault();
+                                sms.sendTextMessage(phoneNum, null, textMsg, null, null);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("Message", textMsg + "<" + phoneNum + ">");
+                            prevNumber = phoneNum;
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), getString(R.string.send_message), Toast.LENGTH_LONG).show();
+                    handler.removeCallbacksAndMessages(null);
+                    finish();
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_default), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(),getString(R.string.send_message),Toast.LENGTH_LONG).show();
-                handler.removeCallbacksAndMessages(null);
-                finish();
             }
         }, 7000);
     }

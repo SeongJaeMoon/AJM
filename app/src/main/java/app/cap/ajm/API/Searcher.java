@@ -21,8 +21,8 @@ import app.cap.ajm.Model.Item;
 
 public class Searcher {
     // http://dna.daum.net/apis/local
-	public static final String DAUM_MAPS_LOCAL_KEYWORD_SEARCH_API_FORMAT = "https://apis.daum.net/local/v1/search/keyword.json?query=%s&location=%f,%f&radius=%d&page=%d&apikey=%s";
-	public static final String DAUM_MAPS_LOCAL_CATEGORY_SEARCH_API_FORMAT = "https://apis.daum.net/local/v1/search/category.json?code=%s&location=%f,%f&radius=%d&page=%d&apikey=%s";
+	public static final String DAUM_MAPS_LOCAL_KEYWORD_SEARCH_API_FORMAT = "https://apis.daum.net/local/v1/activity_search/keyword.json?query=%s&location=%f,%f&radius=%d&page=%d&apikey=%s";
+	public static final String DAUM_MAPS_LOCAL_CATEGORY_SEARCH_API_FORMAT = "https://apis.daum.net/local/v1/activity_search/category.json?code=%s&location=%f,%f&radius=%d&page=%d&apikey=%s";
 	/** category codes
 	MT1 대형마트
 	CS2 편의점

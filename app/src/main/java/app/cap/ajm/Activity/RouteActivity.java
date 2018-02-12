@@ -425,7 +425,7 @@ public class RouteActivity extends FragmentActivity implements
         int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
         int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
 
-        Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
+        Searcher searcher = new Searcher(); // net.daum.android.map.openapi.activity_search.Searcher
         Toast.makeText(getApplicationContext(), String.format(getString(R.string.search_10km), query),Toast.LENGTH_SHORT).show();
         searcher.searchKeyword(getApplicationContext(), query, latitude, longitude, radius, page, "97171e5d82d63c9d6353e66c403745f9", new OnFinishSearchListener() {
             @Override
