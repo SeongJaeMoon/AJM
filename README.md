@@ -22,7 +22,7 @@ This open source project was won 3rd at the Seoul mobile platform contest in 201
 [picasso](https://github.com/square/picasso)
 [okhttp](https://github.com/square/okhttp)
 [volley](https://github.com/google/volley)
-[butternife](https://github.com/JakeWharton/butterknife)
+[butterknife](https://github.com/JakeWharton/butterknife)
 [parcler](https://github.com/johncarl81/parceler)
 [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 [AndroidSwipeLayout](https://github.com/daimajia/AndroidSwipeLayout)
