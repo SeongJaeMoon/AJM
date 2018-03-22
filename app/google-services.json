@@ -1,27 +1,27 @@
 {
   "project_info": {
     "project_number": "135418655873",
-    "firebase_url": "https://ajmproject-83d86.firebaseio.com",
-    "project_id": "ajmproject-83d86",
-    "storage_bucket": "ajmproject-83d86.appspot.com"
+    "firebase_url": ,
+    "project_id": ,
+    "storage_bucket": 
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:135418655873:android:2124d9e17131e9a2",
+        "mobilesdk_app_id": ,
         "android_client_info": {
-          "package_name": "app.cap.ajm"
+          "package_name":
         }
       },
       "oauth_client": [
         {
-          "client_id": "135418655873-rq4ilrab7pnmcu2qd7rcqc6nfngc6qm5.apps.googleusercontent.com",
+          "client_id": ,
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD3eWV5V7F_p2IdZQtSNlvneQET71XYHeQ"
+          "current_key": 
         }
       ],
       "services": {
