@@ -32,7 +32,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'OWM_API_KEY', "\"4b2bc2e6803718b6afbe6563efa5eba9\""
+        it.buildConfigField 'String', 'OWM_API_KEY', ""
     }
     splits {
         abi {
